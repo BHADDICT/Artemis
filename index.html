@@ -9,210 +9,149 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  height: 100vh;
-  background: url('background.jpg') no-repeat center center/cover;
-  color: #e0c870;
-  font-family: 'Press Start 2P', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  background-color: #0A2A52;
-  overflow-x: hidden;
-}
-
-/* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  font-size: 14px;
-  position: relative;
-  z-index: 20;
-}
-
-/* Logo */
-.logo {
-  font-size: 80px;
-  font-weight: bold;
-  color: #FFC300;
-  opacity: 0;
-  transform: scale(0.8);
-  animation: fadeIn 2s forwards;
-  margin-top: 40px;
-  position: relative;
-  z-index: 1;
-}
-
-.logo img {
-  height: 230px;
-  width: auto;
-  transition: 0.3s;
-}
-
-.logo img:hover {
-  animation: glitch 0.3s infinite;
-}
-
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(2px, -2px); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(1px, -1px); }
-  100% { transform: translate(0); }
-}
-
-/* Character + Bubble */
-.waitlist-box {
-  position: absolute;
-  bottom: 80px;
-  left: 30px;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 10px;
-  z-index: 10;
-}
-
-.waitlist-box img {
-  width: 100px;
-}
-
-.bubble {
-  background: #fff;
-  color: #09001a;
-  font-size: 12px;
-  padding: 10px 10px;
-  border-radius: 20px;
-  position: relative;
-  max-width: 160px;
-  text-align: center;
-  font-family: 'Press Start 2P', sans-serif;
-  cursor: pointer;
-}
-
-.bubble:hover {
-  background: #ffe066;
-}
-
-.bubble::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 10px solid transparent;
-  border-top-color: #fff;
-}
-
-/* Start Button */
-.start-btn {
-  display: block;
-  margin: -100px auto 0 auto;
-  width: 150px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  opacity: 1;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0%   { transform: scale(1); opacity: 1; }
-  50%  { transform: scale(1.05); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Footer */
-footer {
-  padding: 20px;
-  font-size: 8px;
-  overflow: hidden;
-  white-space: nowrap;
-  color: #FFC300;
-}
-
-/* Popup Forms */
-.popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 300px;
-  position: relative;
-}
-
-.popup-content h2 {
-  font-size: 12px;
-  color: #09001a;
-  margin-bottom: 10px;
-}
-
-.popup-content input {
-  width: 90%;
-  padding: 8px;
-  margin: 10px 0;
-  font-size: 10px;
-  font-family: 'Press Start 2P', sans-serif;
-}
-
-.popup-content button {
-  background: #09001a;
-  color: #fff;
-  border: none;
-  padding: 8px 15px;
-  font-size: 10px;
-  cursor: pointer;
-}
-
-.popup-content button:hover {
-  background: #333;
-}
-
-/* Close button */
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #333;
-  transition: 0.2s;
-}
-.close-btn:hover {
-  color: red;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; transform: scale(1); }
-}
-
-@media (max-width: 600px) {
-  .logo img { height: 250px; }
-  .waitlist-box { bottom: -10px; left: -5px; }
-  .waitlist-box img { width: 110px; margin-top: 0; }
-  .bubble { font-size: 10px; padding: 10px; max-width: 150px; margin-top: -10px; }
-}
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      height: 100vh;
+      background: url('background.jpg') no-repeat center center/cover;
+      color: #e0c870;
+      font-family: 'Press Start 2P', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      background-color: #0A2A52;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      font-size: 14px;
+      position: relative;
+      z-index: 20;
+    }
+    .logo {
+      font-size: 80px;
+      font-weight: bold;
+      color: #FFC300;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: fadeIn 2s forwards;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .logo img {
+      height: 230px;
+      width: auto;
+      transition: 0.3s;
+    }
+    .logo img:hover { animation: glitch 0.3s infinite; }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-1px, 1px); }
+      80% { transform: translate(1px, -1px); }
+      100% { transform: translate(0); }
+    }
+    .waitlist-box {
+      position: absolute;
+      bottom: 80px;
+      left: 30px;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+    }
+    .waitlist-box img { width: 100px; }
+    .bubble {
+      background: #fff;
+      color: #09001a;
+      font-size: 12px;
+      padding: 10px 10px;
+      border-radius: 20px;
+      position: relative;
+      max-width: 160px;
+      text-align: center;
+      font-family: 'Press Start 2P', sans-serif;
+      cursor: pointer;
+    }
+    .bubble:hover { background: #ffe066; }
+    .bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-top-color: #fff;
+    }
+    .start-btn {
+      display: block;
+      margin: -100px auto 0 auto;
+      width: 150px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 1;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    footer {
+      padding: 20px;
+      font-size: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+      color: #FFC300;
+    }
+    .popup {
+      position: fixed;
+      top:0; left:0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 300px;
+      position: relative;
+    }
+    .popup-content h2 { font-size: 12px; color:#09001a; margin-bottom:10px; }
+    .popup-content input {
+      width: 90%; padding: 8px; margin: 10px 0;
+      font-size: 10px; font-family: 'Press Start 2P', sans-serif;
+    }
+    .popup-content button {
+      background: #09001a; color:#fff; border:none; padding:8px 15px;
+      font-size: 10px; cursor:pointer;
+    }
+    .popup-content button:hover { background:#333; }
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      font-size: 24px; font-weight: bold;
+      cursor: pointer; color:#333; transition:0.2s;
+    }
+    .close-btn:hover { color:red; }
+    @keyframes fadeIn { to { opacity:1; transform:scale(1); } }
+    @media (max-width:600px) {
+      .logo img { height: 250px; }
+      .waitlist-box { bottom: -10px; left:-5px; }
+      .waitlist-box img { width:110px; margin-top:0; }
+      .bubble { font-size:10px; padding:10px; max-width:150px; margin-top:-10px; }
+    }
   </style>
 </head>
 <body>
@@ -260,7 +199,7 @@ footer {
   </div>
 </div>
 
-<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
   emailjs.init("1uThHFmx4SJgzaxOh");
 
@@ -270,13 +209,13 @@ footer {
   const waitlistText = document.getElementById("waitlistText");
   const openPopupBtn = document.getElementById("openPopup");
   const closePopupBtn = document.getElementById("closePopup");
-  const startBtn = document.querySelector(".start-btn");
   const waitlistForm = document.getElementById("waitlistForm");
 
   const lockBtn = document.getElementById("lockPopupBtn");
   const closePasswordBtn = document.getElementById("closePasswordPopup");
   const passwordInput = document.getElementById("passwordInput");
   const passwordSubmit = document.getElementById("passwordSubmit");
+  const startBtnImg = document.querySelector(".start-btn");
 
   // Waitlist popup
   waitlistText.addEventListener("click", () => { popup.style.display = "flex"; });
@@ -285,8 +224,10 @@ footer {
 
   // Password popup
   lockBtn.addEventListener("click", () => { passwordPopup.style.display = "flex"; });
+  startBtnImg.addEventListener("click", () => { passwordPopup.style.display = "flex"; });
   closePasswordBtn.addEventListener("click", () => { passwordPopup.style.display = "none"; });
 
+  // Password submission
   passwordSubmit.addEventListener("click", () => {
     const pwd = passwordInput.value.trim();
     if(pwd === "anniversary") {
@@ -296,10 +237,7 @@ footer {
     }
   });
 
-  // Start button
-  startBtn.addEventListener("click", () => { window.location.href = "product.html"; });
-
-  // Handle waitlist form submission
+  // Waitlist form submission
   waitlistForm.addEventListener("submit", function(e) {
     e.preventDefault();
     emailjs.sendForm("service_yd2isl8", "template_e4oilzb", this)
