@@ -1,545 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Discover Artemis Phnom Penh — a Cambodian fashion brand by Thai Mengchhay, blending modern style with local culture. Explore new collections, game-inspired designs, and pixel art aesthetics. Enter the world of ARTEMIS now.">
-<link rel="icon" href="./img/head.png" type="image/png">
-<title>ARTEMIS</title>
-
-
-  <!-- Google Fons -->
-  <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artemis Landing</title>
+  <meta name="description" content="Discover Artemis Phnom Penh — retro fashion with a pixel-art vibe. Join the waitlist now.">
+  <link rel="icon" href="./favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
-        * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      font-family: 'GFS Didot', serif;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-.background-video {
-  position: fixed;       /* stays fixed during scroll */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;     /* ensures it covers entire screen without distortion */
-  z-index: -1;           /* sends it behind your content */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-    
-    .overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      text-shadow: 0 0 10px rgba(0,0,0,0.8);
-      gap: 20px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start; /* left align children */
-      max-width: 500px; /* max container width */
-      width: 90vw; /* responsive width */
-      box-sizing: border-box;
-    }
-
-    .logo-img {
-      display: block;        /* remove inline gap */
-      margin: 0;             /* remove any margin */
-      padding: 0;            /* remove any padding */
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-      object-fit: contain;   /* maintain aspect ratio */
-    }
-
-    #start-btn {
-      width: 100%;          /* button fills container width */
-      padding: 16px 0;      /* no horizontal padding */
-      font-size: 26px;
-      font-family: 'Press Start 2P', cursive;
-      background: transparent;
-      border: none;
-      color: white;
-      cursor: pointer;
-  
-      transition: transform 0.3s, text-shadow 0.3s;
-      text-align: center;     /* text aligned left */
-    }
-
-    #start-btn span {
-      display: inline-block;
-      padding-left: 24px;   /* indent text inside button */
-    }
-
-    #start-btn:hover {
-      background: rgba(255,255,255,0.2);
-    }
-
-    footer {
-      position: fixed;
-      bottom: 10px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 10px;
-      color: #ccc;
-      font-family: 'Press Start 2P', cursive;
-      text-shadow: 0 0 5px #000;
-      z-index: 10;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .pixel-dialogue {
-      position: absolute;
-      bottom: 50px;
-      left: 50px;
-      display: flex;
-      align-items: flex-start;
-      gap: 25px;
-      z-index: 2;
-      animation: fadeIn 1s ease-out forwards;
-    }
-
-    .pixel-img {
-      width: 200px;
-      height: auto;
-      image-rendering: pixelated;
-    }
-
-    .speech-bubble {
-      background: #fff;
-      color: #000;
-      padding: 18px 24px;
-      border: 4px solid #000;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 12px;
-      max-width: 300px;
-      line-height: 1.6;
-      position: relative;
-      text-align: left;
-      box-shadow: 4px 4px 0 #000;
-    }
-
-    .speech-bubble::after {
-      content: "";
-      position: absolute;
-      top: 20px;
-      left: -30px;
-      width: 0;
-      height: 0;
-      border-top: 14px solid transparent;
-      border-right: 30px solid #fff;
-      border-bottom: 14px solid transparent;
-    }
-
-    .speech-bubble a {
-      color: #007700;
-      text-decoration: none;
-    }
-
-    .speech-bubble a:hover {
-      text-decoration: underline;
-    }
-
-    /* Mobile view customization */
-    @media (max-width: 480px) {
-      .logo-img {
-        max-width: 80vw; /* enlarged logo */
-      }
-
-      #start-btn {
-        font-size: 20px;
-        padding: 14px 0;
-        margin: -60px auto 0 auto; /* top margin, auto sides for center */
-        display: block;
-      }
-
-      .pixel-dialogue {
-        left: 10px; /* moved figure left near chair */
-        bottom: 50px;
-        max-width: 95vw;
-        display: flex;
-        flex-direction: row;
-        align-items: flex-end;
-        gap: 10px;
-        padding: 6px;
-        box-sizing: border-box;
-      }
-
-      .pixel-img {
-        width: 120px;
-        height: auto;
-        image-rendering: pixelated;
-        flex-shrink: 0;
-      }
-
-      .speech-bubble {
-        max-width: 75vw;
-        font-size: 11px;
-        line-height: 1.4;
-        background: #fff;
-        color: #000;
-        border: 3px solid #000;
-        border-radius: 8px;
-        padding: 10px 12px;
-        box-sizing: border-box;
-        word-wrap: break-word;
-      }
-
-      .speech-bubble::after {
-        content: "";
-        position: absolute;
-        top: 10px;
-        right: -12px;
-        width: 0;
-        height: 0;
-        border-top: 6px solid transparent;
-        border-left: 12px solid #fff;
-        border-bottom: 6px solid transparent;
-      }
-
-      .speech-bubble::before {
-        content: "";
-        position: absolute;
-        top: 9px;
-        right: -13px;
-        width: 0;
-        height: 0;
-        border-top: 7px solid transparent;
-        border-left: 13px solid #000;
-        border-bottom: 7px solid transparent;
-        z-index: -1;
-      }
-    }
-
- .login-trigger {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10;
-  padding: 12px 16px;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 25px;
-  background: transparent;  /* No background box */
-  color: #fff;
-  border: none;             /* No border */
-  cursor: pointer;
-  text-shadow: 1px 1px 2px #000;
-  transition: color 0.3s ease;
-}
-
-.login-trigger:hover {
-  color: #ccff00;  /* Optional: subtle color change on hover */
-  text-shadow: 1px 1px 5px #ccff00;
-}
-
-
-/* Centered Login Box */
-    .login-popup {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #111;
-      border: 4px solid white;
-      padding: 40px 20px 20px;
-      box-shadow: 8px 8px 0 black;
-      width: 320px;
-      z-index: 10;
-      color: #ffe600;
-    }
-
-    .login-form h2 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-
-    .login-form label {
-      font-size: 14px;
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    .login-form input {
-      width: 100%;
-      padding: 10px;
-      font-size: 12px;
-      color: #00ff99;
-      background: #000;
-      border: 2px solid #00ff99;
-      margin-bottom: 16px;
-      outline: none;
-    }
-
-    .login-form button {
-      width: 100%;
-      padding: 10px;
-      background: #ccff00;
-      color: #000;
-      border: none;
-      cursor: pointer;
-      font-size: 12px;
-      transition: background 0.3s;
-    }
-
-    .login-form button:hover {
-      background: #aacc00;
-    }
-.pixel-login {
-  position: absolute;
-  top: -90px;
-  left: 20px; /* shifted left */
-  transform: none;
+body {
+  height: 100vh;
+  background: url('background.jpg') no-repeat center center/cover;
+  color: #e0c870;
+  font-family: 'Press Start 2P', sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  z-index: 11;
+  justify-content: space-between;
+  text-align: center;
+  background-color: #0A2A52;
+  overflow-x: hidden;
 }
 
-.pixel-login-img {
-  width: 100px;
-  image-rendering: pixelated;
-  z-index: 11;
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-size: 14px;
+  position: relative;
+  z-index: 20;
 }
 
-.pixel-hearts {
+/* Logo */
+.logo {
+  font-size: 80px;
+  font-weight: bold;
+  color: #FFC300;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeIn 2s forwards;
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo img {
+  height: 230px;
+  width: auto;
+  transition: 0.3s;
+}
+
+.logo img:hover {
+  animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+/* Character + Bubble */
+.waitlist-box {
   position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 80px;
+  left: 30px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 10px;
   z-index: 10;
 }
 
-.pixel-heart {
-  position: absolute;
-  width: 18px;
-  image-rendering: pixelated;
-  animation: floatHeart 1.4s infinite alternate;
+.waitlist-box img {
+  width: 100px;
 }
-.close-login-btn {
+
+.bubble {
+  background: #fff;
+  color: #09001a;
+  font-size: 12px;
+  padding: 10px 10px;
+  border-radius: 20px;
+  position: relative;
+  max-width: 160px;
+  text-align: center;
+  font-family: 'Press Start 2P', sans-serif;
+  cursor: pointer;
+}
+
+.bubble:hover {
+  background: #ffe066;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-top-color: #fff;
+}
+
+/* Start Button */
+.start-btn {
+  display: block;
+  margin: -100px auto 0 auto;
+  width: 150px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.05); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Footer */
+footer {
+  padding: 20px;
+  font-size: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #FFC300;
+}
+
+/* Popup Forms */
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 300px;
+  position: relative;
+}
+
+.popup-content h2 {
+  font-size: 12px;
+  color: #09001a;
+  margin-bottom: 10px;
+}
+
+.popup-content input {
+  width: 90%;
+  padding: 8px;
+  margin: 10px 0;
+  font-size: 10px;
+  font-family: 'Press Start 2P', sans-serif;
+}
+
+.popup-content button {
+  background: #09001a;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background: #333;
+}
+
+/* Close button */
+.close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: transparent;
-  border: none;
-  color: #ffe600;
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: bold;
   cursor: pointer;
-  font-family: 'Press Start 2P', cursive;
-  z-index: 12;
-  text-shadow: 2px 2px 0 #000;
-  transition: color 0.3s, transform 0.3s;
+  color: #333;
+  transition: 0.2s;
+}
+.close-btn:hover {
+  color: red;
 }
 
-.close-login-btn:hover {
-  color: #ff4444;
-  transform: scale(1.1);
+@keyframes fadeIn {
+  to { opacity: 1; transform: scale(1); }
 }
 
-
-    .pixel-heart:nth-child(1) { top: -10px; left: -30px; }
-    .pixel-heart:nth-child(2) { top: -10px; left: 10px; }
-    .pixel-heart:nth-child(3) { top: 10px; left: -20px; }
-
-    @keyframes floatHeart {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
-    }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      .login-popup {
-        width: 90vw;
-        padding: 30px 16px 16px;
-      }
-
-      .pixel-login {
-        top: -80px;
-      }
-
-      .pixel-login-img {
-        width: 80px;
-      }
-
-      .login-form h2 {
-        font-size: 16px;
-      }
-
-      .login-form input,
-      .login-form button {
-        font-size: 10px;
-        padding: 8px;
-      }
-    }
-.countdown-timer {
-  margin-bottom: 0px; /* reduced from px */
-  font-family: 'Press Start 2P', cursive;
-  font-size: 16px;
-  color: #ffe600;
-  text-shadow: 2px 2px 0 #000;
-  align-self: center;
+@media (max-width: 600px) {
+  .logo img { height: 250px; }
+  .waitlist-box { bottom: -10px; left: -5px; }
+  .waitlist-box img { width: 110px; margin-top: 0; }
+  .bubble { font-size: 10px; padding: 10px; max-width: 150px; margin-top: -10px; }
 }
-.disabled-link[aria-disabled="true"] {
-  pointer-events: none;      
-  color: gray;                /* visually looks disabled */
-  cursor: default;
-  text-decoration: none;
-}
-
-
-
   </style>
 </head>
 <body>
 
- <audio id="bg-audio" src="./img/luffy.mp3" autoplay loop></audio>
+<header>
+  <div style="font-size: 10px; cursor: pointer;" id="waitlistText">WAITLIST</div>
+  <div id="lockPopupBtn" style="cursor:pointer;">🔒🔑</div>
+</header>
 
-  <div class="pixel-dialogue">
-    <img src="./img/luuu.png" alt="Pixel Character" class="pixel-img" />
-    <div class="speech-bubble">
-      <strong>WELCOME!</strong><br />
-   <a href="product.html">ENTER</a>
-
-
-
-    </div>
-  </div>
-
-  <!-- Background Video -->
-  <img src="./img/bg.JPEG" alt="Background image" class="background-video" />
-
-
-  <!-- Logo & Start Button -->
-  <div class="overlay">
-    <div id="countdown" class="countdown-timer"></div>
-    <img src="./img/tmc.gif" alt="artemis" class="logo-img" />
- 
-    <button id="start-btn"><span>NEW GAME</span></button>
-  </div>
-
-
-<div class="login-popup" id="login-popup">
- 
-  <button type="button" id="close-login" class="close-login-btn">✖</button>
-
-  <!-- Pixel Avatar -->
-  <div class="pixel-login">
-    <img src="./img/jerseypixel.png" alt="Pixel Guy" class="pixel-login-img" />
-    <div class="pixel-hearts">
-      <img src="./img/heart.png" class="pixel-heart" />
-    </div>
-  </div>
-
-  <!-- Login Form -->
-  <form class="login-form">
-    <h2>🔑 LOGIN</h2>
-    <label for="password">Password:</label>
-    <input type="password" id="password" required />
-    <button type="submit">ENTER</button>
-  </form>
+<div class="waitlist-box">
+  <img src="./img/batman.png" alt="Character">
+  <div class="bubble" id="openPopup">Join our waitlist!</div>
 </div>
 
+<main>
+  <div class="logo">
+    <img src="./img/pop.png" alt="ARTEMIS Logo">
+  </div>
+  <img src="./img/touch.png" alt="Start Journey" class="start-btn" style="cursor:pointer;"/>
+</main>
 
- 
+<footer><span>ARTEMIS PHNOMPENH</span></footer>
+
+<!-- Waitlist Email Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h2>Join the Waitlist</h2>
+    <form id="waitlistForm">
+      <input type="email" name="user_email" id="waitlistEmail" placeholder="Enter your email" required>
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+    <span class="close-btn" id="closePopup">&times;</span>
+  </div>
 </div>
 
+<!-- Password Popup -->
+<div class="popup" id="passwordPopup">
+  <div class="popup-content">
+    <h2>Enter Password</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <br>
+    <button id="passwordSubmit">Enter</button>
+    <span class="close-btn" id="closePasswordPopup">&times;</span>
+  </div>
+</div>
 
-  <!-- Login Trigger -->
-  <button id="login-btn" class="login-trigger">🔒🔑</button>
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  emailjs.init("1uThHFmx4SJgzaxOh");
 
+  // Elements
+  const popup = document.getElementById("popup");
+  const passwordPopup = document.getElementById("passwordPopup");
+  const waitlistText = document.getElementById("waitlistText");
+  const openPopupBtn = document.getElementById("openPopup");
+  const closePopupBtn = document.getElementById("closePopup");
+  const startBtn = document.querySelector(".start-btn");
+  const waitlistForm = document.getElementById("waitlistForm");
 
-  
+  const lockBtn = document.getElementById("lockPopupBtn");
+  const closePasswordBtn = document.getElementById("closePasswordPopup");
+  const passwordInput = document.getElementById("passwordInput");
+  const passwordSubmit = document.getElementById("passwordSubmit");
 
+  // Waitlist popup
+  waitlistText.addEventListener("click", () => { popup.style.display = "flex"; });
+  openPopupBtn.addEventListener("click", () => { popup.style.display = "flex"; });
+  closePopupBtn.addEventListener("click", () => { popup.style.display = "none"; });
 
-  <!-- Scripts -->
- <script>
-  document.getElementById('close-login').addEventListener('click', () => {
-  loginPopup.style.display = 'none';
-});
+  // Password popup
+  lockBtn.addEventListener("click", () => { passwordPopup.style.display = "flex"; });
+  closePasswordBtn.addEventListener("click", () => { passwordPopup.style.display = "none"; });
 
-  const bgAudio = document.getElementById('bg-audio');
-  bgAudio.volume = 0.3; // softer background volume
-
-  // Unmute on first user interaction
-  document.addEventListener('click', () => {
-    if (bgAudio.paused) {
-      bgAudio.play();
+  passwordSubmit.addEventListener("click", () => {
+    const pwd = passwordInput.value.trim();
+    if(pwd === "anniversary") {
+      window.location.href = "product.html";
+    } else {
+      alert("Incorrect password");
     }
-  }, { once: true });
+  });
+
+  // Start button
+  startBtn.addEventListener("click", () => { window.location.href = "product.html"; });
+
+  // Handle waitlist form submission
+  waitlistForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    emailjs.sendForm("service_yd2isl8", "template_e4oilzb", this)
+      .then(() => {
+        alert("Thanks for joining! Check your inbox for the image.");
+        popup.style.display = "none";
+        waitlistForm.reset();
+      }, (error) => {
+        console.error("FAILED...", error);
+        alert("Oops! Something went wrong. Try again later.");
+      });
+  });
 </script>
 
- <script>
-    document.getElementById('start-btn').addEventListener('click', function () {
-      this.remove();
-      window.location.href = "product.html";
-    });
-
-    const loginBtn = document.getElementById('login-btn');
-    const loginPopup = document.getElementById('login-popup');
-
-    loginBtn.addEventListener('click', () => {
-      loginPopup.style.display = 'block';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === loginPopup) {
-        loginPopup.style.display = 'none';
-      }
-    });
-
-    document.querySelector('.login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const password = document.getElementById('password').value;
-      if (password === "TCM") {
-        alert("Access granted.");
-        loginPopup.style.display = 'none';
-        window.location.href = "ArtemisStock.html"; // Redirect to stock management page
-      } else {
-        alert("Incorrect password. Try again.");
-      }
-    });
-
-    // Countdown Script
-    function updateCountdown() {
-      const countdownElement = document.getElementById('countdown');
-      const targetDate = new Date("2025-07-20T15:00:00+07:00");
-      const now = new Date();
-
-      const diff = targetDate - now;
-
-      if (diff <= 0) {
-        countdownElement.innerHTML = "ARTEMISPHNOMPENH";
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      countdownElement.innerHTML = `🕒 ${days}D ${hours}H ${minutes}M ${seconds}S`;
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
 </body>
 </html>
