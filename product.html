@@ -191,8 +191,8 @@ header {
   z-index: 1200;
 }
 .popup.active { bottom: 0; }
-.popup-header { position: relative; display: flex; justify-content: left; align-items: center; }
-.close-btn { position: absolute; right: 30px; top: 5px; font-size: 28px; font-weight: bold; cursor: pointer; color: #333; transition: 0.2s; }
+.popup-header { position: relative; display: flex; justify-content: space-between; align-items: center; }
+.close-btn { position: static; right: 30px; top: 5px; font-size: 28px; font-weight: bold; cursor: pointer; color: #333; transition: 0.2s; }
 .close-btn:hover { color: red; }
 .popup-img-wrapper { margin-top: 10px; }
 .popup-img-wrapper img { width: 120px; border-radius: 8px; }
@@ -270,6 +270,11 @@ header {
   }
 }
 
+#popupPrice {
+  font-size: 22px;   /* adjust as needed */
+  font-weight: bold; /* makes it stand out */
+  margin-top: 10px;
+}
 
 /* sizes + quantity */
 .sizes { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
