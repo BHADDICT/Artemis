@@ -242,7 +242,8 @@
     const imageInput = document.createElement("input");
     imageInput.type = "hidden";
     imageInput.name = "image_url"; // Must match {{image_url}} in template
-    imageInput.value = "https://www.artemisphnompenh.xyz/.img/poster.png";
+   imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/poster.png";
+
     this.appendChild(imageInput);
 
     emailjs.sendForm("service_yd2isl8", "template_e4oilzb", this)
