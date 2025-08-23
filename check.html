@@ -76,9 +76,17 @@
     <div class="payment-method">
       <label><input type="radio" name="paymentMethod" value="paid" checked /> Paid (QR)</label>
     </div>
+    <h2><i class="fas fa-tag"></i> Promo Code</h2>
+<div style="display:flex; gap:10px; margin-bottom:12px;">
+  <input type="text" id="promoCodeInput" placeholder="Enter promo code" style="flex:1;" />
+</div>
+<div id="promoMessage" style="color:#8cff8c; font-weight:bold; margin-bottom:12px;"></div>
+
     <button id="payNow"><i class="fas fa-check-circle" style="margin-right:8px;"></i>Confirm Order</button>
   </div>
+  
   <div class="checkout-right" id="orderSummary"></div>
+  
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -92,12 +100,15 @@ document.addEventListener("DOMContentLoaded", function(){
   const buyNowItem = JSON.parse(localStorage.getItem("buyNowProduct"));
   let cart = buyNowItem ? [buyNowItem] : (JSON.parse(localStorage.getItem("cart")) || []);
   const deliveryFee = Number(localStorage.getItem("deliveryFee")) || 0;
-  let discountAmountFixed = 0; // You can extend this to get discount from storage or input
+  let discountAmountFixed = 0; // Discount amount, updated by promo code
 
   function renderOrderSummary(){
     const summary = document.getElementById("orderSummary");
     summary.innerHTML = "";
-    if(cart.length===0){ summary.innerHTML="<p>Your cart is empty.</p>"; return; }
+    if(cart.length === 0){ 
+      summary.innerHTML = "<p>Your cart is empty.</p>"; 
+      return; 
+    }
     let subtotal = 0;
     cart.forEach(item=>{
       subtotal += item.price * item.qty;
@@ -110,11 +121,11 @@ document.addEventListener("DOMContentLoaded", function(){
           </div>
         </div>`;
     });
-    const total = Math.max(subtotal - discountAmountFixed + deliveryFee,0);
+    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
     summary.innerHTML += `
       <div class="summary">
         <div>Subtotal: $${subtotal.toFixed(2)}</div>
-        ${discountAmountFixed>0?`<div>Discount: -$${discountAmountFixed.toFixed(2)}</div>`:""}
+        ${discountAmountFixed > 0 ? `<div>Discount: -$${discountAmountFixed.toFixed(2)}</div>` : ""}
         <div>Shipping: $${deliveryFee.toFixed(2)}</div>
         <div><strong>Total: $${total.toFixed(2)}</strong></div>
       </div>`;
@@ -122,57 +133,78 @@ document.addEventListener("DOMContentLoaded", function(){
 
   // Show/hide province input if region is PR
   document.getElementById("regionSelect").addEventListener("change", function(){
-    document.getElementById("provinceInputContainer").style.display=this.value==="pr"?"block":"none";
+    document.getElementById("provinceInputContainer").style.display = this.value === "pr" ? "block" : "none";
+  });
+
+  // Promo code input listener to update discount live
+  document.getElementById("promoCodeInput").addEventListener("input", function() {
+    const code = this.value.trim().toUpperCase();
+    if (code === "2A") {
+      discountAmountFixed = 2.5;
+    } else {
+      discountAmountFixed = 0;
+    }
+    renderOrderSummary();
   });
 
   // Pay Now button click handler
   document.getElementById("payNow").addEventListener("click", function(){
-    const email=document.getElementById("email").value.trim();
-    const firstName=document.getElementById("firstName").value.trim();
-    const lastName=document.getElementById("lastName").value.trim();
-    const instagram=document.getElementById("instagramInput").value.trim();
-    const address=document.getElementById("address").value.trim();
-    const phone=document.getElementById("phone").value.trim();
-    const regionSelect=document.getElementById("regionSelect").value;
-    const provinceInput=document.getElementById("provinceInput").value.trim();
-    const region=regionSelect==="pr"?provinceInput:"Phnom Penh";
+    const email = document.getElementById("email").value.trim();
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const instagram = document.getElementById("instagramInput").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const regionSelect = document.getElementById("regionSelect").value;
+    const provinceInput = document.getElementById("provinceInput").value.trim();
+    const promoCode = document.getElementById("promoCodeInput").value.trim().toUpperCase();
+    const region = regionSelect === "pr" ? provinceInput : "Phnom Penh";
 
-    if(cart.length===0) return alert("🛒 Your cart is empty.");
-    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert("❌ Enter valid email.");
+    if(cart.length === 0) return alert("🛒 Your cart is empty.");
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert("❌ Enter valid email.");
     if(!firstName) return alert("❌ Enter first name.");
     if(!lastName) return alert("❌ Enter last name.");
     if(!instagram) return alert("❌ Enter Instagram.");
     if(!address) return alert("❌ Enter address.");
 
-    const phonePattern=/^\+?\d{7,15}$/;
-    const cleanedPhone=phone.replace(/\D/g,"");
-    const repeatedDigits=/^(\d)\1+$/;
-    const sequential=["0123456789","123456789","987654321"].some(seq=>cleanedPhone.startsWith(seq));
-    if(!phonePattern.test(phone)||repeatedDigits.test(cleanedPhone)||sequential||/0{5,}/.test(cleanedPhone)) return alert("❌ Invalid phone.");
+    const phonePattern = /^\+?\d{7,15}$/;
+    const cleanedPhone = phone.replace(/\D/g,"");
+    const repeatedDigits = /^(\d)\1+$/;
+    const sequential = ["0123456789","123456789","987654321"].some(seq => cleanedPhone.startsWith(seq));
+    if(!phonePattern.test(phone) || repeatedDigits.test(cleanedPhone) || sequential || /0{5,}/.test(cleanedPhone)) 
+      return alert("❌ Invalid phone.");
     if(!regionSelect) return alert("❌ Select region.");
-    if(regionSelect==="pr"&&!provinceInput) return alert("❌ Enter province.");
+    if(regionSelect === "pr" && !provinceInput) return alert("❌ Enter province.");
+
+    // Validate promo code again on submit
+    if(promoCode === "2A") {
+      discountAmountFixed = 2.5;
+    } else {
+      discountAmountFixed = 0;
+    }
 
     // Build order table for email
-    let subtotal=0,rows="";
-    cart.forEach(item=>{
-      const itemTotal=item.price * item.qty;
-      subtotal+=itemTotal;
-      rows+=`<tr><td>${item.title}</td><td>${item.size||'-'}</td><td>${item.qty}</td><td>$${itemTotal.toFixed(2)}</td></tr>`;
+    let subtotal = 0, rows = "";
+    cart.forEach(item => {
+      const itemTotal = item.price * item.qty;
+      subtotal += itemTotal;
+      rows += `<tr><td>${item.title}</td><td>${item.size||'-'}</td><td>${item.qty}</td><td>$${itemTotal.toFixed(2)}</td></tr>`;
     });
-    const total=Math.max(subtotal-discountAmountFixed+deliveryFee,0);
-    const orderHTML=`<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:600px;">
+    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
+    const orderHTML = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:600px;">
       <thead style="background:#eee;">
         <tr><th>Product</th><th>Size</th><th>Qty</th><th>Price</th></tr>
       </thead>
       <tbody>${rows}</tbody></table>
       <br/><strong>Subtotal:</strong> $${subtotal.toFixed(2)}
       <br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}
-      ${discountAmountFixed>0?`<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}`:""}
-      <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
+      ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
+      <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>
+      ${discountAmountFixed > 0 ? `<br/><strong>Promo Code Applied:</strong> ${promoCode}` : ""}`;
 
   
-    document.querySelector(".checkout-left").style.display="none";
-    document.getElementById("orderSummary").innerHTML=`
+    document.querySelector(".checkout-left").style.display = "none";
+    document.getElementById("orderSummary").innerHTML = `
       <div class="payment-card-modern">
         <div class="countdown-timer" id="countdown">06:00</div>
         <div class="store-name">artemisphnompenh</div>
@@ -190,49 +222,51 @@ document.addEventListener("DOMContentLoaded", function(){
       </div>`;
 
     // Countdown timer for 6 minutes
-    let time=360;
-    const countdown=document.getElementById("countdown");
-    const timer=setInterval(()=>{
-      if(time<=0){
+    let time = 360;
+    const countdown = document.getElementById("countdown");
+    const timer = setInterval(() => {
+      if(time <= 0){
         clearInterval(timer);
-        countdown.textContent="00:00";
-      }else{
-        const min=String(Math.floor(time/60)).padStart(2,"0");
-        const sec=String(time%60).padStart(2,"0");
-        countdown.textContent=`${min}:${sec}`;
+        countdown.textContent = "00:00";
+      } else {
+        const min = String(Math.floor(time/60)).padStart(2, "0");
+        const sec = String(time % 60).padStart(2, "0");
+        countdown.textContent = `${min}:${sec}`;
         time--;
       }
-    },1000);
+    }, 1000);
 
     // Done button sends the email
-    requestAnimationFrame(()=>{
-      const doneBtn=document.getElementById("doneBtn");
+    requestAnimationFrame(() => {
+      const doneBtn = document.getElementById("doneBtn");
       if(!doneBtn) return;
-      doneBtn.addEventListener("click",function(){
-        doneBtn.disabled=true;
-        doneBtn.innerHTML="Sending... <span class='loader'></span>";
+      doneBtn.addEventListener("click", function(){
+        doneBtn.disabled = true;
+        doneBtn.innerHTML = "Sending... <span class='loader'></span>";
         emailjs.send("service_wuj46zm","template_3xm1tyg",{
-          user_email:email,
-          user_name:`${firstName} ${lastName}`,
-          message_html:`<strong>Email:</strong> ${email}<br/>
+          user_email: email,
+          user_name: `${firstName} ${lastName}`,
+          message_html: `<strong>Email:</strong> ${email}<br/>
                         <strong>Name:</strong> ${firstName} ${lastName}<br/>
                         <strong>Instagram:</strong> ${instagram}<br/>
                         <strong>Address:</strong> ${address}<br/>
                         <strong>Phone:</strong> ${phone}<br/>
-                        <strong>Region:</strong> ${region}<br/><br/>${orderHTML}`
+                        <strong>Region:</strong> ${region}<br/>
+                        ${discountAmountFixed > 0 ? `<strong>Promo Code Applied:</strong> ${promoCode}<br/>` : ""}
+                        <br/>${orderHTML}`
         })
-        .then(()=>{
+        .then(() => {
           alert("✅ Order sent successfully!");
           localStorage.removeItem("cart");
           localStorage.removeItem("deliveryFee");
           localStorage.removeItem("buyNowProduct"); // Clear buyNow product after order
-          window.location.href="thankyou.html";
+          window.location.href = "thankyou.html";
         })
-        .catch(err=>{
+        .catch(err => {
           console.error(err);
           alert("❌ Failed to send.");
-          doneBtn.disabled=false;
-          doneBtn.innerHTML="✅ Done";
+          doneBtn.disabled = false;
+          doneBtn.innerHTML = "✅ Done";
         });
       });
     });
@@ -240,6 +274,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   renderOrderSummary();
 });
+
 </script>
 
 
