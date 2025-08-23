@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(){
       ${discountAmountFixed>0?`<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}`:""}
       <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
 
-    // Hide form / cart and show payment instructions
+  
     document.querySelector(".checkout-left").style.display="none";
     document.getElementById("orderSummary").innerHTML=`
       <div class="payment-card-modern">
