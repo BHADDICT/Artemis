@@ -88,10 +88,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
   emailjs.init("1uThHFmx4SJgzaxOh");
 
-  // ✅ Get from new localStorage
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  // Get buyNowProduct or fallback to cart
+  const buyNowItem = JSON.parse(localStorage.getItem("buyNowProduct"));
+  let cart = buyNowItem ? [buyNowItem] : (JSON.parse(localStorage.getItem("cart")) || []);
   const deliveryFee = Number(localStorage.getItem("deliveryFee")) || 0;
-  let discountAmountFixed = 0;
+  let discountAmountFixed = 0; // You can extend this to get discount from storage or input
 
   function renderOrderSummary(){
     const summary = document.getElementById("orderSummary");
@@ -119,10 +120,12 @@ document.addEventListener("DOMContentLoaded", function(){
       </div>`;
   }
 
+  // Show/hide province input if region is PR
   document.getElementById("regionSelect").addEventListener("change", function(){
     document.getElementById("provinceInputContainer").style.display=this.value==="pr"?"block":"none";
   });
 
+  // Pay Now button click handler
   document.getElementById("payNow").addEventListener("click", function(){
     const email=document.getElementById("email").value.trim();
     const firstName=document.getElementById("firstName").value.trim();
@@ -149,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function(){
     if(!regionSelect) return alert("❌ Select region.");
     if(regionSelect==="pr"&&!provinceInput) return alert("❌ Enter province.");
 
-    // Build order table
+    // Build order table for email
     let subtotal=0,rows="";
     cart.forEach(item=>{
       const itemTotal=item.price * item.qty;
@@ -167,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function(){
       ${discountAmountFixed>0?`<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}`:""}
       <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
 
+    // Hide form / cart and show payment instructions
     document.querySelector(".checkout-left").style.display="none";
     document.getElementById("orderSummary").innerHTML=`
       <div class="payment-card-modern">
@@ -185,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function(){
         </div>
       </div>`;
 
-    // Countdown
+    // Countdown timer for 6 minutes
     let time=360;
     const countdown=document.getElementById("countdown");
     const timer=setInterval(()=>{
@@ -200,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function(){
       }
     },1000);
 
-    // Done button
+    // Done button sends the email
     requestAnimationFrame(()=>{
       const doneBtn=document.getElementById("doneBtn");
       if(!doneBtn) return;
@@ -221,6 +225,7 @@ document.addEventListener("DOMContentLoaded", function(){
           alert("✅ Order sent successfully!");
           localStorage.removeItem("cart");
           localStorage.removeItem("deliveryFee");
+          localStorage.removeItem("buyNowProduct"); // Clear buyNow product after order
           window.location.href="thankyou.html";
         })
         .catch(err=>{
@@ -236,6 +241,7 @@ document.addEventListener("DOMContentLoaded", function(){
   renderOrderSummary();
 });
 </script>
+
 
 </body>
 </html>
