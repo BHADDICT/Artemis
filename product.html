@@ -248,6 +248,7 @@ header {
   user-select: none;
 }
 
+
 .popup-img-wrapper .arrow:hover {
   background: #ffc300;
   color: #000;
@@ -365,8 +366,8 @@ header {
     <p>$32</p>
   </div>
 
-  <div class="product" data-title="PLEATED PANT" data-price="$30" data-img="./img/pantfront.png">
-    <div class="product-img"><img src="./img/pantfront.png" class="front"><img src="./img/pantback.png" class="back"></div>
+  <div class="product" data-title="PLEATED PANT" data-price="$30" data-img="./img/selu2.png"">
+    <div class="product-img"><img src="./img/selu2.png" class="front"><img src="./img/selu.png" class="back"></div>
     <h3>PLEATED PANT</h3>
     <p>$30</p>
   </div>
@@ -458,31 +459,26 @@ document.getElementById('plus').onclick = () => { qty++; qtyEl.textContent = qty
 const productData = {
   "ARTEMIS FANTASY PARK": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-    desc: ["Discharge print", "Reverse Collar", "Custom fitting"],
     imgs: ["./img/frontbat.png", "./img/new.png"]
   },
   "ZIPUP HOODIE": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-    desc: ["Custom fitting", "Puff Print Logo front", "Discharge print back"],
     imgs: ["./img/hoodiefront.png", "./img/hoodieback.png"]
   },
   "PLEATED PANT": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}],
-    imgs: ["./img/pantfront.png", "./img/pantback.png"]
+    imgs: ["./img/selu2.png", "./img/selu.png"]
   },
   "ARTEMIS VISCA BARCA": {
     sizes: [{size:"S", soldOut:true}, {size:"M"}, {size:"L"}, {size:"XL", soldOut:true}],
-    desc: ["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM"],
     imgs: ["./img/jer.png", "./img/jerback.png"]
   },
   "ARTEMIS HALA MADRID": {
     sizes: [{size:"S", soldOut:true}, {size:"M"}, {size:"L"}, {size:"XL", soldOut:true}],
-    desc: ["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM"],
     imgs: ["./img/jerwhitefront.png", "./img/jerwhite.png"]
   },
   "ARTEMISMADE HOODIE": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-    desc: ["400GSM", "Double Face Fabric", "Boxy Fitted"],
     imgs: ["./img/pro3.png", "./img/pro2.png"]
   }
 };

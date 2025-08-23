@@ -46,15 +46,7 @@
       width: auto;
       transition: 0.3s;
     }
-    .logo img:hover { animation: glitch 0.3s infinite; }
-    @keyframes glitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(2px, -2px); }
-      60% { transform: translate(-1px, 1px); }
-      80% { transform: translate(1px, -1px); }
-      100% { transform: translate(0); }
-    }
+ 
     .waitlist-box {
       position: absolute;
       bottom: 80px;
@@ -198,9 +190,9 @@
     <span class="close-btn" id="closePasswordPopup">&times;</span>
   </div>
 </div>
-
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
+  // Initialize EmailJS
   emailjs.init("1uThHFmx4SJgzaxOh");
 
   // Elements
@@ -217,17 +209,22 @@
   const passwordSubmit = document.getElementById("passwordSubmit");
   const startBtnImg = document.querySelector(".start-btn");
 
-  // Waitlist popup
-  waitlistText.addEventListener("click", () => { popup.style.display = "flex"; });
-  openPopupBtn.addEventListener("click", () => { popup.style.display = "flex"; });
-  closePopupBtn.addEventListener("click", () => { popup.style.display = "none"; });
+  // --- Popup Handlers ---
+  const openWaitlist = () => { popup.style.display = "flex"; }
+  const closeWaitlist = () => { popup.style.display = "none"; }
 
-  // Password popup
-  lockBtn.addEventListener("click", () => { passwordPopup.style.display = "flex"; });
-  startBtnImg.addEventListener("click", () => { passwordPopup.style.display = "flex"; });
-  closePasswordBtn.addEventListener("click", () => { passwordPopup.style.display = "none"; });
+  waitlistText.addEventListener("click", openWaitlist);
+  openPopupBtn.addEventListener("click", openWaitlist);
+  closePopupBtn.addEventListener("click", closeWaitlist);
 
-  // Password submission
+  const openPassword = () => { passwordPopup.style.display = "flex"; }
+  const closePassword = () => { passwordPopup.style.display = "none"; }
+
+  lockBtn.addEventListener("click", openPassword);
+  startBtnImg.addEventListener("click", openPassword);
+  closePasswordBtn.addEventListener("click", closePassword);
+
+  // --- Password Submission ---
   passwordSubmit.addEventListener("click", () => {
     const pwd = passwordInput.value.trim();
     if(pwd === "anniversary") {
@@ -237,9 +234,17 @@
     }
   });
 
-  // Waitlist form submission
+  // --- Waitlist Form Submission ---
   waitlistForm.addEventListener("submit", function(e) {
     e.preventDefault();
+
+    // Add image URL for EmailJS template
+    const imageInput = document.createElement("input");
+    imageInput.type = "hidden";
+    imageInput.name = "image_url"; // Must match {{image_url}} in template
+    imageInput.value = "https://www.artemisphnompenh.xyz/.img/poster.png";
+    this.appendChild(imageInput);
+
     emailjs.sendForm("service_yd2isl8", "template_e4oilzb", this)
       .then(() => {
         alert("Thanks for joining! Check your inbox for the image.");
@@ -251,6 +256,8 @@
       });
   });
 </script>
+
+
 
 </body>
 </html>
