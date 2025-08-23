@@ -190,10 +190,14 @@
     <span class="close-btn" id="closePasswordPopup">&times;</span>
   </div>
 </div>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+<!-- ✅ Updated EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  // Initialize EmailJS
-  emailjs.init("rOjCZZ29eugq2L6bn");
+  // ✅ Initialize EmailJS with Public Key
+  (function(){
+    emailjs.init({ publicKey: "rOjCZZ29eugq2L6bn" });
+  })();
 
   // Elements
   const popup = document.getElementById("popup");
@@ -242,23 +246,19 @@
     const imageInput = document.createElement("input");
     imageInput.type = "hidden";
     imageInput.name = "image_url"; // Must match {{image_url}} in template
-   imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/poster.png";
-
+    imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/poster.png";
     this.appendChild(imageInput);
 
-    emailjs.sendForm("service_ko8tdy6", "template_5s7qp5p", this)
+    emailjs.sendForm("service_ko8tdy6", "template_sseb6td", this)
       .then(() => {
-        alert("Thanks for joining! Check your inbox for the image.");
+        alert("✅ Thanks for joining! Check your inbox for the image.");
         popup.style.display = "none";
         waitlistForm.reset();
       }, (error) => {
         console.error("FAILED...", error);
-        alert("Oops! Something went wrong. Try again later.");
+        alert("❌ Oops! Something went wrong. Try again later.");
       });
   });
 </script>
-
-
-
 </body>
 </html>
