@@ -466,7 +466,7 @@ header {
 </div>
 
 <script>
-// Sidebar & Cart
+
 const sidebar = document.getElementById('sidebar');
 const cartSidebar = document.getElementById('cartSidebar');
 const cartIcon = document.getElementById('cartIcon');
@@ -475,7 +475,7 @@ const cartTotalEl = document.getElementById('cartTotal');
 let cart = [];
 const deliveryFee = 2;
 
-// Sidebar toggle
+
 document.getElementById('hamburger').onclick = () => sidebar.classList.toggle('active');
 
 document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('active');
@@ -500,11 +500,11 @@ let selectedSize = null;
 let currentImages = [];
 let currentImgIndex = 0;
 
-// Quantity buttons
+
 document.getElementById('minus').onclick = () => { if(qty>1) qty--; qtyEl.textContent = qty; };
 document.getElementById('plus').onclick = () => { qty++; qtyEl.textContent = qty; };
 
-// Product data
+
 const productData = {
   "ARTEMIS FANTASY PARK": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
