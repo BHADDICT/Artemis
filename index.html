@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>artemisphnompenh</title>
-    <link rel="icon" href="./img/head.png" type="image/png">
+  <link rel="icon" href="./img/head.png" type="image/png">
   <meta name="description" content="Discover Artemis Phnom Penh — retro fashion with a pixel-art vibe. Join the waitlist now.">
   <link rel="icon" href="./favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -80,32 +80,28 @@
       border: 10px solid transparent;
       border-top-color: #fff;
     }
-.start-btn {
-  display: block;
-  margin: -100px auto 0 auto;
-  background: none;
-  border: none;
-  cursor: pointer;
-  animation: pulse 1.5s infinite;
-  padding: 0;
-  position: relative;  /* Add this */
-  z-index: 5;          /* Ensure it's above the logo */
-}
-
-.start-btn img {
-  display: block;
-  width: 150px;
-  height: auto;
-  pointer-events: auto; /* Make sure it can be clicked */
-}
-
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
+    .start-btn {
+      display: block;
+      margin: -100px auto 0 auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      padding: 0;
+      position: relative;
+      z-index: 5;
+    }
+    .start-btn img {
+      display: block;
+      width: 150px;
+      height: auto;
+      pointer-events: auto;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
     footer {
       padding: 20px;
       font-size: 8px;
@@ -158,130 +154,82 @@
   </style>
 </head>
 <body>
+  <header>
+    <div style="font-size: 10px; cursor: pointer;" id="waitlistText">WAITLIST</div>
+  </header>
 
-<header>
-  <div style="font-size: 10px; cursor: pointer;" id="waitlistText">WAITLIST</div>
-  <div id="lockPopupBtn" style="cursor:pointer;">🔒🔑</div>
-</header>
-
-<div class="waitlist-box">
-  <img src="./img/batman.png" alt="Character">
-  <div class="bubble" id="openPopup">Join waitlist!</div>
-</div>
-
-<main>
-  <div class="logo">
-    <img src="./img/pop.png" alt="ARTEMIS Logo">
+  <div class="waitlist-box">
+    <img src="./img/batman.png" alt="Character">
+    <div class="bubble" id="openPopup">Join waitlist!</div>
   </div>
-<!-- Start Journey Button -->
-<button class="start-btn">
-  <img src="./img/touch.png" alt="Touch to Start" />
-</button>
 
-</main>
+  <main>
+    <div class="logo">
+      <img src="./img/pop.png" alt="ARTEMIS Logo">
+    </div>
+    <!-- Start Journey Button -->
+    <button class="start-btn" onclick="window.location.href='product.html'">
+      <img src="./img/touch.png" alt="Touch to Start" />
+    </button>
+  </main>
 
-<footer><span>ARTEMIS PHNOMPENH</span></footer>
+  <footer><span>ARTEMIS PHNOMPENH</span></footer>
 
-<!-- Waitlist Email Popup -->
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <h2>Join waitlist</h2>
-    <form id="waitlistForm">
-      <input type="email" name="user_email" id="waitlistEmail" placeholder="Enter your email" required>
-      <br>
-      <button type="submit">Submit</button>
-    </form>
-    <span class="close-btn" id="closePopup">&times;</span>
+  <!-- Waitlist Email Popup -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>Join waitlist</h2>
+      <form id="waitlistForm">
+        <input type="email" name="user_email" id="waitlistEmail" placeholder="Enter your email" required>
+        <br>
+        <button type="submit">Submit</button>
+      </form>
+      <span class="close-btn" id="closePopup">&times;</span>
+    </div>
   </div>
-</div>
 
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      emailjs.init("fzLnDgH_63_mYtLe-");
 
-<div class="popup" id="passwordPopup">
-  <div class="popup-content">
-    <h2>Enter Password</h2>
-    <input type="password" id="passwordInput" placeholder="Enter password">
-    <br>
-    <button id="passwordSubmit">Enter</button>
-    <span class="close-btn" id="closePasswordPopup">&times;</span>
-  </div>
-</div>
+      const popup = document.getElementById("popup");
+      const waitlistText = document.getElementById("waitlistText");
+      const openPopupBtn = document.getElementById("openPopup");
+      const closePopupBtn = document.getElementById("closePopup");
+      const waitlistForm = document.getElementById("waitlistForm");
 
-<!-- EmailJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  // --- Initialize EmailJS ---
-  emailjs.init("fzLnDgH_63_mYtLe-");
+      const openWaitlist = () => popup.style.display = "flex";
+      const closeWaitlist = () => popup.style.display = "none";
 
-  // --- Elements ---
-  const popup = document.getElementById("popup");
-  const passwordPopup = document.getElementById("passwordPopup");
-  const waitlistText = document.getElementById("waitlistText");
-  const openPopupBtn = document.getElementById("openPopup");
-  const closePopupBtn = document.getElementById("closePopup");
-  const waitlistForm = document.getElementById("waitlistForm");
+      if (waitlistText) waitlistText.addEventListener("click", openWaitlist);
+      if (openPopupBtn) openPopupBtn.addEventListener("click", openWaitlist);
+      if (closePopupBtn) closePopupBtn.addEventListener("click", closeWaitlist);
 
-  const lockBtn = document.getElementById("lockPopupBtn");
-  const closePasswordBtn = document.getElementById("closePasswordPopup");
-  const passwordInput = document.getElementById("passwordInput");
-  const passwordSubmit = document.getElementById("passwordSubmit");
-  const startBtn = document.querySelector(".start-btn");
+      if (waitlistForm) {
+        waitlistForm.addEventListener("submit", function(e) {
+          e.preventDefault();
 
-  // --- Waitlist Popup Handlers ---
-  const openWaitlist = () => popup.style.display = "flex";
-  const closeWaitlist = () => popup.style.display = "none";
+          const imageInput = document.createElement("input");
+          imageInput.type = "hidden";
+          imageInput.name = "image_url";
+          imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/poster.png";
+          this.appendChild(imageInput);
 
-  if (waitlistText) waitlistText.addEventListener("click", openWaitlist);
-  if (openPopupBtn) openPopupBtn.addEventListener("click", openWaitlist);
-  if (closePopupBtn) closePopupBtn.addEventListener("click", closeWaitlist);
-
-  // --- Password Popup Handlers ---
-  const openPassword = () => passwordPopup.style.display = "flex";
-  const closePassword = () => passwordPopup.style.display = "none";
-
-  if (lockBtn) lockBtn.addEventListener("click", openPassword);
-  if (startBtn) startBtn.addEventListener("click", openPassword);
-  if (closePasswordBtn) closePasswordBtn.addEventListener("click", closePassword);
-
-
-  if (passwordSubmit) {
-    passwordSubmit.addEventListener("click", () => {
-      const pwd = passwordInput.value.trim();
-      if (pwd === "anniversary") {
-        window.location.href = "product.html";
-      } else {
-        alert("wrong password fam ❌");
+          emailjs.sendForm("service_8zq4q6o", "template_phcoej8", this)
+            .then(() => {
+              alert("✅ Thanks for joining! Check your inbox for our special deal.");
+              popup.style.display = "none";
+              waitlistForm.reset();
+            })
+            .catch((error) => {
+              console.error("FAILED...", error);
+              alert("❌ Oops! Something went wrong. Try again later.");
+            });
+        });
       }
     });
-  }
-
-  // --- Waitlist Form Submission ---
-  if (waitlistForm) {
-    waitlistForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      // Add hidden image field
-      const imageInput = document.createElement("input");
-      imageInput.type = "hidden";
-      imageInput.name = "image_url";
-      imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/poster.png";
-      this.appendChild(imageInput);
-
-      // Send form data via EmailJS
-      emailjs.sendForm("service_8zq4q6o", "template_phcoej8", this)
-        .then(() => {
-          alert("✅ Thanks for joining! Check your inbox for our special deal.");
-          popup.style.display = "none";
-          waitlistForm.reset();
-        })
-        .catch((error) => {
-          console.error("FAILED...", error);
-          alert("❌ Oops! Something went wrong. Try again later.");
-        });
-    });
-  }
-});
-</script>
-
+  </script>
 </body>
 </html>
