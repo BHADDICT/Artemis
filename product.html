@@ -335,6 +335,14 @@ header {
   cursor: pointer;
   font-size: 16px;
 }
+.old-price {
+  text-decoration: line-through;
+  color: gray; /* makes it look muted */
+}
+.new-price {
+  font-weight: bold;
+  color: #000; /* stands out */
+}
 .add-cart { background: #222; color: #fff; }
 .buy-now { background: #FFC300; color: #000; }
 @media (max-width: 768px) {
@@ -431,7 +439,8 @@ header {
     <img src="./img/pro2.png" class="back">
   </div>
   <h3>ARTEMISMADE HOODIE</h3>
-  <p>$28</p>
+<p class="old-price">$32</p>
+<p class="new-price">$28</p>
 </div>
 
 </div>
