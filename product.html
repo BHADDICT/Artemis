@@ -488,7 +488,7 @@ document.getElementById('hamburger').onclick = () => sidebar.classList.toggle('a
 
 document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('active');
 
-// Cart toggle
+
 document.getElementById('closeCart').onclick = () => cartSidebar.classList.remove('active');
 cartIcon.onclick = () => cartSidebar.classList.toggle('active');
 
@@ -523,7 +523,7 @@ const productData = {
     imgs: ["./img/hoodiefront.png", "./img/hoodieback.png"]
   },
   "PLEATED PANT": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L", soldOut:true}],
+    sizes: [{size:"S", soldOut:true}, {size:"M"}, {size:"L", soldOut:true}],
     imgs: ["./img/selu2.png", "./img/selu.png"]
   },
   "ARTEMIS VISCA BARCA": {
