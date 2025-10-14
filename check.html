@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function(){
   const buyNowItem = JSON.parse(localStorage.getItem("buyNowProduct"));
   let cart = buyNowItem ? [buyNowItem] : (JSON.parse(localStorage.getItem("cart")) || []);
   const deliveryFee = Number(localStorage.getItem("deliveryFee")) || 0;
-  let discountAmountFixed = 0; // Discount amount, updated by promo code
+  let discountAmountFixed = 0; 
 
   function renderOrderSummary(){
     const summary = document.getElementById("orderSummary");
