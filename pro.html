@@ -217,6 +217,100 @@ header {
   z-index: 10;
   pointer-events: none;
 }
+/* ====== HERO CAROUSEL STYLING ====== */
+.hero-carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 85vh; /* you can adjust this if needed */
+}
+
+.hero-carousel img {
+  width: 100%;
+  max-height: 80%; /* make the image slightly smaller */
+  object-fit: cover;
+  filter: brightness(0.65);
+  display: block;
+  margin: 0 auto; /* centers the image horizontally */
+}
+
+
+.carousel-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+}
+
+.carousel-text {
+  position: absolute;
+  bottom: 18%;
+  left: 8%;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+
+
+.carousel-text p {
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+/* Arrows */
+.prev, .next {
+  position: absolute;
+  top: 30%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  user-select: none;
+  transition: color 0.3s;
+  margin: 0 auto;
+}
+
+.prev:hover, .next:hover {
+  color: #d1b85f; /* gold accent */
+}
+
+.prev { left: 30px; }
+.next { right: 30px; }
+
+/* Fade animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from { opacity: 0.4 }
+  to { opacity: 1 }
+}
+
+/* Responsive for tablets and phones */
+@media (max-width: 768px) {
+  .carousel-text {
+    bottom: 5%; /* move text closer to the image */
+    left: 5%;
+  }
+
+  .carousel-text h1 {
+    font-size: 2rem;
+  }
+
+  .carousel-text p {
+    font-size: 1rem;
+    margin-top: -5px;
+  }
+}
 
 
 .popup.active { bottom: 0; }
@@ -282,6 +376,26 @@ header {
   background: #ffc300;
   color: #000;
   transform: scale(1.1);
+}
+.hero-carousel h1 {
+  font-size: 1rem; /* default size */
+  font-weight: 600;
+  color: #fff;
+  margin: 10px;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+  .hero-carousel h1 {
+    font-size: 16px; /* smaller font on phones */
+    padding: 0 10px; /* keeps some side spacing */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-carousel h1 {
+    font-size: 10px; /* very small phones */
+  }
 }
 
 .popup-img-wrapper .arrow.left { left: 10px; }
@@ -394,6 +508,34 @@ header {
   <div class="cart-total" id="cartTotal">Total: $0</div>
    <button id="checkoutBtn" class="checkout-btn">Checkout</button>
 </div>
+<!-- ====== HERO CAROUSEL (Artemis Style) ====== -->
+<section class="hero-carousel">
+    <h1> ARTEMISMADE TEE AVAILABLE 24/7</h1>
+  <div class="carousel-slide fade active">
+    <img src="./img/eve1.png" alt="New Collection">
+    <div class="carousel-text">
+      <p>ONLY FEW WILL OWN THIS</p>
+    </div>
+  </div>
+
+  <div class="carousel-slide fade">
+    <img src="./img/eve3.png" alt="Streetwear Edition">
+    <div class="carousel-text">
+    <p>ONLY FEW WILL OWN THIS</p>
+    </div>
+  </div>
+
+  <div class="carousel-slide fade">
+    <img src="img/hero3.jpg" alt="Limited Capsule">
+    <div class="carousel-text">
+      <p>ONLY FEW WILL OWN THIS</p>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <a class="prev" onclick="moveSlide(-1)">&#10094;</a>
+  <a class="next" onclick="moveSlide(1)">&#10095;</a>
+</section>
 
 
 <div class="product-grid">
@@ -482,6 +624,22 @@ header {
 
   </div>
 </div>
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+
+function showSlide(index) {
+  slides.forEach(slide => slide.classList.remove('active'));
+  currentSlide = (index + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+}
+
+function moveSlide(n) {
+  showSlide(currentSlide + n);
+}
+
+setInterval(() => moveSlide(1), 6000); // auto change every 6 sec
+</script>
 
 <script>
 
@@ -528,7 +686,14 @@ const productData = {
     sizes: [{size:"S"}, {size:"M"}, {size:"L",soldOut:true}, {size:"XL"}],
     imgs: ["./img/frontbat.png", "./img/new.png"]
   },
-  
+   "Artemismade tee available 24/7(blue)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+    imgs: ["./img/eve1.png", "./img/eve2.png"]
+  },
+   "Artemismade tee available 24/7(red)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+    imgs: ["./img/eve4.png", "./img/eve3.png"]
+  },
   "ZIPUP HOODIE": {
     sizes: [{size:"S"}, {size:"M",soldOut:true}, {size:"L", soldOut:true}, {size:"XL", soldOut:true}],
     imgs: ["./img/hoodiefront.png", "./img/hoodieback.png"]
