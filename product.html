@@ -383,6 +383,19 @@ header {
   z-index: 10;
   pointer-events: none;
 }
+.artemis-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artemis-product p {
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  margin-top: 8px;
+  font-size: 1rem;
+}
 
 
 .popup.active { bottom: 0; }
@@ -452,6 +465,23 @@ header {
 
 .popup-img-wrapper .arrow.left { left: 10px; }
 .popup-img-wrapper .arrow.right { right: 10px; }
+
+.artemis-top-text {
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+  font-weight: bold;
+  animation: moveRight 6s linear infinite;
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(-100%); /* start fully to the left */
+  }
+  100% {
+    transform: translateX(100%); /* move fully to the right */
+  }
+}
 
 
 @media (max-width: 600px) {
@@ -551,32 +581,38 @@ header {
 
       <div class="artemis-carousel-track">
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(red)" data-price="$25" data-img="./img/front2.png">
-          <img src="./img/eve3.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve4.png" class="artemis-back" alt="back tee">
+        <div class="artemis-product" data-title="ARTEMISMADETEE(red)" data-price="$20" data-img="./img/eve4.png">
+          <img src="./img/eve4.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve3.png" class="artemis-back" alt="back tee">
+          <p>$20</p>
         </div>
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(white)" data-price="$25" data-img="./img/front3.png">
+        <div class="artemis-product" data-title="ARTEMISMADETEE(white)" data-price="$20" data-img="./img/eve5.png">
           <img src="./img/eve5.png" class="artemis-front" alt="front tee">
           <img src="./img/eve6.png" class="artemis-back" alt="back tee">
+           <p>$20</p>
         </div>
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(black)" data-price="$25" data-img="./img/front4.png">
+        <div class="artemis-product" data-title="ARTEMISMADETEE(black)" data-price="$20" data-img="./img/eve7.png">
           <img src="./img/eve7.png" class="artemis-front" alt="front tee">
           <img src="./img/eve8.png" class="artemis-back" alt="back tee">
+           <p>$20</p>
         </div>
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(blue)" data-price="$25" data-img="./img/front5.png">
-          <img src="./img/eve1.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve2.png" class="artemis-back" alt="back tee">
+        <div class="artemis-product" data-title="ARTEMISMADETEE(blue)" data-price="$20" data-img="./img/eve2.png">
+          <img src="./img/eve2.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve1.png" class="artemis-back" alt="back tee">
+           <p>$20</p>
         </div>
-        <div class="artemis-product" data-title="ARTEMISMADETEE(green)" data-price="$25" data-img="./img/front2.png">
+        <div class="artemis-product" data-title="ARTEMISMADETEE(green)" data-price="$20" data-img="./img/eve9.png">
           <img src="./img/eve9.png" class="artemis-front" alt="front tee">
           <img src="./img/eve10.png" class="artemis-back" alt="back tee">
+           <p>$20</p>
         </div>
-         <div class="artemis-product" data-title="ARTEMISMADETEE(blue)" data-price="$25" data-img="./img/front2.png">
+         <div class="artemis-product" data-title="ARTEMISMADETEE(lightblue)" data-price="$20" data-img="./img/eve11.png">
           <img src="./img/eve11.png" class="artemis-front" alt="front tee">
           <img src="./img/eve12.png" class="artemis-back" alt="back tee">
+           <p>$20</p>
         </div>
       </div>
 
@@ -731,29 +767,29 @@ document.addEventListener('DOMContentLoaded', () => {
       sizes: [{size:"S"}, {size:"M"}, {size:"L",soldOut:true}, {size:"XL"}],
       imgs: ["./img/frontbat.png", "./img/new.png"]
     },
-   "ARTEMISMADETEE 24/7(red)": {
+   "ARTEMISMADETEE(red)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
     imgs: ["./img/eve4.png", "./img/eve3.png"]
   },
-    "ARTEMISMADETEE 24/7(blue)": {
+    "ARTEMISMADETEE(black)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
     imgs: ["./img/eve11.png", "./img/eve12.png"]
   },
-    "ARTEMISMADETEE 24/7(green)": {
+  "ARTEMISMADETEE(green)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
     imgs: ["./img/eve9.png", "./img/eve10.png"]
   },
-  "ARTEMISMADETEE 24/7(white)": {
+ "ARTEMISMADETEE(white)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
   imgs: ["./img/eve5.png", "./img/eve6.png"]
   },
-  "ARTEMISMADETEE 24/7(black)": {
+  "ARTEMISMADETEE(black)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
    imgs: ["./img/eve7.png", "./img/eve8.png"]
   },
-  "ARTEMISMADETEE 24/7(blue)": {
+ "ARTEMISMADETEE(lightblue)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-  imgs: ["./img/eve2.png", "./img/eve1.png"]
+  imgs: ["./img/eve12.png", "./img/eve11.png"]
   },
     "ZIPUP HOODIE": {
       sizes: [{size:"S"}, {size:"M",soldOut:true}, {size:"L", soldOut:true}, {size:"XL", soldOut:true}],
