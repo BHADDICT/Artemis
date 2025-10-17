@@ -11,6 +11,7 @@ body {
   margin: 0;
   background-color: #0A2A52;
   color: #FFC300;
+  height: 100vh;
 }
 
 header {
@@ -23,6 +24,171 @@ header {
   top: 0;
   z-index: 2000;
 }
+
+/* --- Container --- */
+.artemis-carousel-container {
+  text-align: center;
+  width: 90%;
+  max-width: 1000px;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Top & Bottom Text --- */
+.artemis-top-text, .artemis-bottom-text {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+/* --- Carousel --- */
+.artemis-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artemis-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+/* --- Product Cards --- */
+.artemis-product {
+  flex: 0 0 calc(100% / 3); /* exactly 3 visible */
+  box-sizing: border-box;
+  padding: 0 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.artemis-product img {
+  width: 100%;
+  border-radius: 8px;
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+
+.artemis-product:hover img.artemis-front {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.artemis-product img.artemis-back {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  opacity: 0;
+  width: calc(100% - 20px);
+  border-radius: 8px;
+  transition: opacity 0.4s ease;
+}
+
+.artemis-product:hover img.artemis-back {
+  opacity: 1;
+}
+
+/* --- Navigation Buttons --- */
+.artemis-nav-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #FFC300;
+  font-size: 2.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.artemis-nav-btn:hover {
+  background: rgba(255, 195, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.artemis-prev { left: 5px; }
+.artemis-next { right: 5px; }
+
+/* --- Tablet view --- */
+@media (max-width: 768px) {
+  .artemis-carousel-container {
+    text-align: left;
+    align-items: flex-start;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .artemis-top-text { text-align: left; width: 100%; }
+  .artemis-bottom-text { text-align: center; width: 100%; }
+
+  .artemis-product {
+    min-width: 50%; /* show 2 products */
+    padding: 5px;
+  }
+
+  .artemis-product img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .artemis-product img:hover {
+    transform: scale(1.05);
+  }
+
+  .artemis-nav-btn {
+    font-size: 1.8rem;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* --- Mobile phones (max-width: 500px) --- */
+@media (max-width: 500px) {
+  .artemis-carousel-container {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .artemis-product {
+    min-width: 50%; /* show 2 products on phone */
+    padding: 3px;
+  }
+
+  .artemis-product img {
+    height: 180px;
+  }
+
+  .artemis-nav-btn {
+    top: 45%;
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+  }
+
+  .artemis-top-text, .artemis-bottom-text {
+    font-size: 0.85rem;
+  }
+}
+
+
 .header-left { flex: 1; display: flex; align-items: center; }
 #hamburger { font-size: 28px; cursor: pointer; color: #fff; user-select: none; }
 .header-center { flex: 1; display: flex; justify-content: center; }
@@ -377,7 +543,48 @@ header {
     <span id="cartIcon" data-count="0">&#128722;</span>
   </div>
 </header>
+ <div class="artemis-carousel-container">
+    <h4 class="artemis-top-text" style="text-align: left;">ARTEMISMADETEE 24/7 AVAILABLE</h4>
 
+    <div class="artemis-carousel">
+      <button class="artemis-nav-btn artemis-prev">&#10094;</button>
+
+      <div class="artemis-carousel-track">
+
+        <div class="artemis-product" data-title="ARTEMISMADETEE(red)" data-price="$25" data-img="./img/front2.png">
+          <img src="./img/eve3.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve4.png" class="artemis-back" alt="back tee">
+        </div>
+
+        <div class="artemis-product" data-title="ARTEMISMADETEE(white)" data-price="$25" data-img="./img/front3.png">
+          <img src="./img/eve5.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve6.png" class="artemis-back" alt="back tee">
+        </div>
+
+        <div class="artemis-product" data-title="ARTEMISMADETEE(black)" data-price="$25" data-img="./img/front4.png">
+          <img src="./img/eve7.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve8.png" class="artemis-back" alt="back tee">
+        </div>
+
+        <div class="artemis-product" data-title="ARTEMISMADETEE(blue)" data-price="$25" data-img="./img/front5.png">
+          <img src="./img/eve1.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve2.png" class="artemis-back" alt="back tee">
+        </div>
+        <div class="artemis-product" data-title="ARTEMISMADETEE(green)" data-price="$25" data-img="./img/front2.png">
+          <img src="./img/eve9.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve10.png" class="artemis-back" alt="back tee">
+        </div>
+         <div class="artemis-product" data-title="ARTEMISMADETEE(blue)" data-price="$25" data-img="./img/front2.png">
+          <img src="./img/eve11.png" class="artemis-front" alt="front tee">
+          <img src="./img/eve12.png" class="artemis-back" alt="back tee">
+        </div>
+      </div>
+
+      <button class="artemis-nav-btn artemis-next">&#10095;</button>
+    </div>
+
+    <p class="artemis-bottom-text">ONLY FEW WILL OWN THIS</p>
+  </div>
 <div class="sidebar" id="sidebar">
   <span class="close-btn" id="closeSidebar">&times;</span>
   <a href="index.html">Home</a>
@@ -484,209 +691,312 @@ header {
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', () => {
 
-const sidebar = document.getElementById('sidebar');
-const cartSidebar = document.getElementById('cartSidebar');
-const cartIcon = document.getElementById('cartIcon');
-const cartItemsEl = document.getElementById('cartItems');
-const cartTotalEl = document.getElementById('cartTotal');
-let cart = [];
-const deliveryFee = 2;
+  // ------------------ Sidebar ------------------
+  const sidebar = document.getElementById('sidebar');
+  const cartSidebar = document.getElementById('cartSidebar');
+  const cartIcon = document.getElementById('cartIcon');
+  const cartItemsEl = document.getElementById('cartItems');
+  const cartTotalEl = document.getElementById('cartTotal');
+  let cart = [];
+  const deliveryFee = 2;
 
+  document.getElementById('hamburger').onclick = () => sidebar.classList.toggle('active');
+  document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('active');
+  document.getElementById('closeCart').onclick = () => cartSidebar.classList.remove('active');
+  cartIcon.onclick = () => cartSidebar.classList.toggle('active');
 
-document.getElementById('hamburger').onclick = () => sidebar.classList.toggle('active');
+  // ------------------ Popup ------------------
+  const popup = document.getElementById('popup');
+  const popupTitle = document.getElementById('popupTitle');
+  const popupPrice = document.getElementById('popupPrice');
+  const popupImg = document.getElementById('popupImg');
+  const popupSizes = document.getElementById('popupSizes');
+  const popupDesc = document.getElementById('popupDesc');
+  const qtyEl = document.getElementById('qty');
+  const popupPrevBtn = document.getElementById('prevImg');
+  const popupNextBtn = document.getElementById('nextImg');
 
-document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('active');
+  let qty = 1;
+  let selectedSize = null;
+  let currentImages = [];
+  let currentImgIndex = 0;
 
+  document.getElementById('minus').onclick = () => { if(qty>1) qty--; qtyEl.textContent = qty; };
+  document.getElementById('plus').onclick = () => { qty++; qtyEl.textContent = qty; };
 
-document.getElementById('closeCart').onclick = () => cartSidebar.classList.remove('active');
-cartIcon.onclick = () => cartSidebar.classList.toggle('active');
-
-
-const popup = document.getElementById('popup');
-const popupTitle = document.getElementById('popupTitle');
-const popupPrice = document.getElementById('popupPrice');
-const popupImg = document.getElementById('popupImg');
-const popupSizes = document.getElementById('popupSizes');
-const popupDesc = document.getElementById('popupDesc');
-const qtyEl = document.getElementById('qty');
-const prevBtn = document.getElementById('prevImg');
-const nextBtn = document.getElementById('nextImg');
-
-let qty = 1;
-let selectedSize = null;
-let currentImages = [];
-let currentImgIndex = 0;
-
-
-document.getElementById('minus').onclick = () => { if(qty>1) qty--; qtyEl.textContent = qty; };
-document.getElementById('plus').onclick = () => { qty++; qtyEl.textContent = qty; };
-
-
-const productData = {
-  "ARTEMIS FANTASY PARK": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L",soldOut:true}, {size:"XL"}],
-    imgs: ["./img/frontbat.png", "./img/new.png"]
-  },
-  
-  "ZIPUP HOODIE": {
-    sizes: [{size:"S"}, {size:"M",soldOut:true}, {size:"L", soldOut:true}, {size:"XL", soldOut:true}],
-    imgs: ["./img/hoodiefront.png", "./img/hoodieback.png"]
-  },
-  "PLEATED PANT": {
-    sizes: [{size:"S", soldOut:true}, {size:"M"}, {size:"L", soldOut:true}],
-    imgs: ["./img/selu2.png", "./img/selu.png"]
-  },
-  "ARTEMIS VISCA BARCA": {
-    sizes: [{size:"S", soldOut:true}, {size:"M", soldOut:true}, {size:"L"},{size:"XL", soldOut:true}],
-    imgs: ["./img/jer.png", "./img/jerback.png"]
-  },
-  "ARTEMIS HALA MADRID": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"},{size:"XL", soldOut:true}],
-    imgs: ["./img/jerwhitefront.png", "./img/jerwhite.png"]
-  },
-  "ARTEMISMADE HOODIE": {
+  const productData = {
+    "ARTEMIS FANTASY PARK": {
+      sizes: [{size:"S"}, {size:"M"}, {size:"L",soldOut:true}, {size:"XL"}],
+      imgs: ["./img/frontbat.png", "./img/new.png"]
+    },
+   "ARTEMISMADETEE 24/7(red)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-    imgs: ["./img/pro3.png", "./img/pro2.png"]
-  }
-};
-// Buy Now functionality
-document.getElementById('buyNowBtn').onclick = () => {
-  if (!selectedSize) {
-    alert('Please select a size first!');
-    return;
-  }
-
-  const title = popupTitle.textContent;
-  const price = Number(popupPrice.textContent.replace('$', ''));
-  const img = currentImages[0];
-
-  const product = {
-    title,
-    price,
-    qty,
-    img,
-    size: selectedSize
+    imgs: ["./img/eve4.png", "./img/eve3.png"]
+  },
+    "ARTEMISMADETEE 24/7(blue)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+    imgs: ["./img/eve11.png", "./img/eve12.png"]
+  },
+    "ARTEMISMADETEE 24/7(green)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+    imgs: ["./img/eve9.png", "./img/eve10.png"]
+  },
+  "ARTEMISMADETEE 24/7(white)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+  imgs: ["./img/eve5.png", "./img/eve6.png"]
+  },
+  "ARTEMISMADETEE 24/7(black)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+   imgs: ["./img/eve7.png", "./img/eve8.png"]
+  },
+  "ARTEMISMADETEE 24/7(blue)": {
+    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+  imgs: ["./img/eve2.png", "./img/eve1.png"]
+  },
+    "ZIPUP HOODIE": {
+      sizes: [{size:"S"}, {size:"M",soldOut:true}, {size:"L", soldOut:true}, {size:"XL", soldOut:true}],
+      imgs: ["./img/hoodiefront.png", "./img/hoodieback.png"]
+    },
+    "PLEATED PANT": {
+      sizes: [{size:"S", soldOut:true}, {size:"M"}, {size:"L", soldOut:true}],
+      imgs: ["./img/selu2.png", "./img/selu.png"]
+    },
+    "ARTEMIS VISCA BARCA": {
+      sizes: [{size:"S", soldOut:true}, {size:"M", soldOut:true}, {size:"L"},{size:"XL", soldOut:true}],
+      imgs: ["./img/jer.png", "./img/jerback.png"]
+    },
+    "ARTEMIS HALA MADRID": {
+      sizes: [{size:"S"}, {size:"M"}, {size:"L"},{size:"XL", soldOut:true}],
+      imgs: ["./img/jerwhitefront.png", "./img/jerwhite.png"]
+    },
+    "ARTEMISMADE HOODIE": {
+      sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+      imgs: ["./img/pro3.png", "./img/pro2.png"]
+    }
   };
 
-  localStorage.setItem("buyNowProduct", JSON.stringify(product));
-  localStorage.setItem("deliveryFee", deliveryFee);
-  window.location.href = "check.html";
-};
+  // ------------------ Show Product ------------------
+  function showProduct(productEl){
+    const title = productEl.dataset.title;
+    const price = productEl.dataset.price;
 
-// Show product in popup
-function showProduct(productEl){
-  const title = productEl.dataset.title;
-  const price = productEl.dataset.price;
-  popupTitle.textContent = title;
-  popupPrice.textContent = price;
+    popupTitle.textContent = title;
+    popupPrice.textContent = price;
 
-  currentImages = productData[title]?.imgs || [productEl.dataset.img];
-  currentImgIndex = 0;
-  popupImg.src = currentImages[currentImgIndex];
+    currentImages = productData[title]?.imgs || [productEl.dataset.img];
+    currentImgIndex = 0;
+    popupImg.src = currentImages[currentImgIndex];
 
-  // Sizes
-  popupSizes.innerHTML = '';
-  selectedSize = null;
-  (productData[title]?.sizes || []).forEach(item=>{
-    const btn = document.createElement('button');
-    btn.textContent = item.size;
-    btn.disabled = item.soldOut || false;
-    btn.onclick = () => {
-      if(!item.soldOut){
-        selectedSize = item.size;
-        document.querySelectorAll('#popupSizes button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-      }
+    // Sizes
+    popupSizes.innerHTML = '';
+    selectedSize = null;
+    (productData[title]?.sizes || []).forEach(item => {
+      const btn = document.createElement('button');
+      btn.textContent = item.size;
+      btn.disabled = item.soldOut || false;
+      btn.onclick = () => {
+        if(!item.soldOut){
+          selectedSize = item.size;
+          document.querySelectorAll('#popupSizes button').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+      };
+      popupSizes.appendChild(btn);
+    });
+
+    // Description (if any)
+    popupDesc.innerHTML = "<ul>" + (productData[title]?.desc || []).map(d=>`<li>${d}</li>`).join('') + "</ul>";
+
+    qty = 1;
+    qtyEl.textContent = qty;
+    popup.classList.add('active');
+  }
+
+  document.querySelectorAll('.product').forEach(product => product.addEventListener('click', ()=>showProduct(product)));
+  document.getElementById('popupClose').onclick = () => popup.classList.remove('active');
+
+  // ------------------ Popup Image Navigation ------------------
+  popupPrevBtn.onclick = () => { 
+    currentImgIndex = (currentImgIndex-1+currentImages.length) % currentImages.length; 
+    popupImg.src = currentImages[currentImgIndex]; 
+  };
+  popupNextBtn.onclick = () => { 
+    currentImgIndex = (currentImgIndex+1) % currentImages.length; 
+    popupImg.src = currentImages[currentImgIndex]; 
+  };
+
+  // ------------------ Add to Cart ------------------
+  document.getElementById('addCartBtn').onclick = () => {
+    if(!selectedSize){ alert('Please select a size first!'); return; }
+
+    const title = popupTitle.textContent;
+    const price = Number(popupPrice.textContent.replace('$',''));
+    const img = currentImages[0];
+
+    const item = cart.find(i=>i.title===title && i.size===selectedSize);
+    if(item){ item.qty += qty; } 
+    else { cart.push({title, price, qty, img, size:selectedSize}); }
+
+    selectedSize=null;
+    document.querySelectorAll('#popupSizes button').forEach(b=>b.classList.remove('active'));
+    qty = 1; qtyEl.textContent = qty;
+
+    updateCart();
+    popup.classList.remove('active');
+    cartSidebar.classList.add('active');
+  };
+
+  // ------------------ Buy Now ------------------
+  document.getElementById('buyNowBtn').onclick = () => {
+    if(!selectedSize){ alert('Please select a size first!'); return; }
+
+    const product = {
+      title: popupTitle.textContent,
+      price: Number(popupPrice.textContent.replace('$','')),
+      qty,
+      img: currentImages[0],
+      size: selectedSize
     };
-    popupSizes.appendChild(btn);
-  });
 
-  // Description
-  popupDesc.innerHTML = "<ul>" + (productData[title]?.desc || []).map(d=>`<li>${d}</li>`).join('') + "</ul>";
+    localStorage.setItem("buyNowProduct", JSON.stringify(product));
+    localStorage.setItem("deliveryFee", deliveryFee);
+    window.location.href = "check.html";
+  };
 
-  qty = 1;
-  qtyEl.textContent = qty;
-  popup.classList.add('active');
-}
+  // ------------------ Cart Functions ------------------
+  function updateCart(){
+    cartItemsEl.innerHTML = '';
+    let totalQty = 0;
+    let totalPrice = deliveryFee;
 
-// Attach product clicks
-document.querySelectorAll('.product').forEach(product => product.addEventListener('click', ()=>showProduct(product)));
+    cart.forEach((i,index)=>{
+      totalQty += i.qty;
+      totalPrice += i.price*i.qty;
 
-// Close popup
-document.getElementById('popupClose').onclick = () => popup.classList.remove('active');
-
-// Image navigation
-prevBtn.onclick = () => { currentImgIndex = (currentImgIndex-1+currentImages.length)%currentImages.length; popupImg.src = currentImages[currentImgIndex]; };
-nextBtn.onclick = () => { currentImgIndex = (currentImgIndex+1)%currentImages.length; popupImg.src = currentImages[currentImgIndex]; };
-
-// Add to cart
-document.getElementById('addCartBtn').onclick = () => {
-  if(!selectedSize){ alert('Please select a size first!'); return; }
-
-  const title = popupTitle.textContent;
-  const price = Number(popupPrice.textContent.replace('$',''));
-  const img = currentImages[0];
-
-  const item = cart.find(i=>i.title===title && i.size===selectedSize);
-  if(item){ item.qty += qty; } 
-  else { cart.push({title, price, qty, img, size:selectedSize}); }
-
-  selectedSize=null;
-  document.querySelectorAll('#popupSizes button').forEach(b=>b.classList.remove('active'));
-  qty = 1; qtyEl.textContent = qty;
-
-  updateCart();
-  popup.classList.remove('active');
-  cartSidebar.classList.add('active');
-};
-
-// Update cart
-function updateCart(){
-  cartItemsEl.innerHTML = '';
-  let totalQty = 0;
-  let totalPrice = deliveryFee;
-
-  cart.forEach((i,index)=>{
-    totalQty += i.qty;
-    totalPrice += i.price*i.qty;
-
-    const div = document.createElement('div');
-    div.className='cart-item';
-    div.innerHTML=`
-      <img src="${i.img}" alt="${i.title}">
-      <div class="cart-item-info">
-        <span>${i.title} (${i.size})</span>
-        <div class="cart-item-controls">
-          <button onclick="changeQty(${index},-1)">-</button>
-          <span>${i.qty}</span>
-          <button onclick="changeQty(${index},1)">+</button>
-          <button class="remove-btn" onclick="removeCart(${index})">&#128465;</button>
+      const div = document.createElement('div');
+      div.className='cart-item';
+      div.innerHTML=`
+        <img src="${i.img}" alt="${i.title}">
+        <div class="cart-item-info">
+          <span>${i.title} (${i.size})</span>
+          <div class="cart-item-controls">
+            <button onclick="changeQty(${index},-1)">-</button>
+            <span>${i.qty}</span>
+            <button onclick="changeQty(${index},1)">+</button>
+            <button class="remove-btn" onclick="removeCart(${index})">&#128465;</button>
+          </div>
+          <span>$${i.price*i.qty}</span>
         </div>
-        <span>$${i.price*i.qty}</span>
-      </div>
-    `;
-    cartItemsEl.appendChild(div);
+      `;
+      cartItemsEl.appendChild(div);
+    });
+
+    cartIcon.setAttribute('data-count', totalQty);
+    cartTotalEl.textContent = `Total: $${totalPrice} (including $${deliveryFee} delivery)`;
+  }
+
+  window.removeCart = function(index){ cart.splice(index,1); updateCart(); };
+  window.changeQty = function(index,delta){ 
+    cart[index].qty+=delta; 
+    if(cart[index].qty<1) cart[index].qty=1; 
+    updateCart(); 
+  };
+
+  document.getElementById('checkoutBtn').onclick = () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('deliveryFee', deliveryFee);
+    window.location.href="check.html";
+  };
+
+  // ------------------ Carousel ------------------
+  const track = document.querySelector('.artemis-carousel-track');
+  const carouselPrevBtn = document.querySelector('.artemis-prev');
+  const carouselNextBtn = document.querySelector('.artemis-next');
+  const carouselProducts = Array.from(track.children);
+// ------------------ Carousel Items Click ------------------
+carouselProducts.forEach(product => {
+  product.addEventListener('click', () => {
+    // Extract data from carousel item
+    const title = product.dataset.title || product.querySelector('.product-title')?.textContent;
+    const price = product.dataset.price || product.querySelector('.product-price')?.textContent;
+
+    if(!title || !price) return;
+
+    const dummy = document.createElement('div');
+    dummy.dataset.title = title;
+    dummy.dataset.price = price;
+
+    // Only set img if productData has it; otherwise use carousel image
+    dummy.dataset.img = productData[title]?.imgs?.[0] || product.querySelector('img')?.src;
+
+    showProduct(dummy);
+  });
+});
+
+  let index = 0;
+  let startX = 0;
+  let isDragging = false;
+
+  function getVisibleCount() {
+    if (window.innerWidth <= 500) return 2;
+    if (window.innerWidth <= 768) return 2;
+    return 3;
+  }
+
+  function updateCarousel() {
+    if(carouselProducts.length===0) return;
+    const visibleCount = getVisibleCount();
+    const productWidth = carouselProducts[0].getBoundingClientRect().width;
+
+    if (index > carouselProducts.length - visibleCount) index = carouselProducts.length - visibleCount;
+    if (index < 0) index = 0;
+
+    track.style.transform = `translateX(-${index * productWidth}px)`;
+    track.style.transition = 'transform 0.5s ease';
+  }
+
+  carouselNextBtn.addEventListener('click', () => {
+    if(index < carouselProducts.length - getVisibleCount()) index++;
+    updateCarousel();
+  });
+  carouselPrevBtn.addEventListener('click', () => {
+    if(index > 0) index--;
+    updateCarousel();
   });
 
-  cartIcon.setAttribute('data-count', totalQty);
-  cartTotalEl.textContent = `Total: $${totalPrice} (including $${deliveryFee} delivery)`;
-}
+  track.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  });
 
-// Remove item
-window.removeCart = function(index){ cart.splice(index,1); updateCart(); };
+  track.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const currentX = e.touches[0].clientX;
+    const diffX = startX - currentX;
+    const productWidth = carouselProducts[0].getBoundingClientRect().width;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(${-index*productWidth - diffX}px)`;
+  });
 
-// Change quantity
-window.changeQty = function(index,delta){ cart[index].qty+=delta; if(cart[index].qty<1) cart[index].qty=1; updateCart(); };
+  track.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    const productWidth = carouselProducts[0].getBoundingClientRect().width;
 
-// Checkout button
-document.getElementById('checkoutBtn').onclick = () => {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  localStorage.setItem('deliveryFee', deliveryFee);
-  window.location.href="check.html";
-};
+    if(diffX > productWidth/4 && index < carouselProducts.length - getVisibleCount()) index++;
+    else if(diffX < -productWidth/4 && index > 0) index--;
 
+    updateCarousel();
+    isDragging = false;
+  });
 
+  window.addEventListener('resize', updateCarousel);
+  updateCart();
+  updateCarousel();
+
+});
 </script>
 
 
