@@ -260,6 +260,8 @@ header {
   right: 0;
 }
 
+
+
 .cart-header {
   font-size: 20px;
   font-weight: bold;
@@ -368,6 +370,110 @@ header {
   padding: 20px;
   z-index: 1200;
 }
+.sold-out-text {
+  color: red;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.artemis-product {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Make all product images uniform */
+.artemis-product img {
+  width: 100%;
+  height: 250px; /* make image height fixed */
+  object-fit: cover;
+  display: block;
+}
+
+/* Dim sold-out products */
+.artemis-product.sold-out img {
+  opacity: 0.4;
+  filter: grayscale(60%);
+}
+
+/* Always visible "SOLD OUT" overlay — aligned exactly in the center of the image */
+.artemis-product .sold-out-overlay {
+  position: absolute;
+  top: 125px; /* half of the image height (250px / 2) */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.1rem;
+  background: rgba(68, 68, 68, 0.75);
+  padding: 8px 15px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* Price styling */
+.artemis-product p {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .artemis-product {
+    max-width: 180px;
+    margin: 10px auto; /* center horizontally */
+  }
+
+  .artemis-product img {
+    height: 180px;
+  }
+
+  .artemis-product .sold-out-overlay {
+    top: 90px; /* half of 180px */
+    font-size: 1rem;
+  }
+
+  /* if they are inside a parent grid or flexbox, center them */
+  .artemis-products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* center all items */
+    align-items: center;
+    gap: 15px; /* optional spacing */
+  }
+}
+
+@media (max-width: 480px) {
+  .artemis-product {
+    max-width: 150px;
+    margin: 10px auto; /* center horizontally */
+  }
+
+  .artemis-product img {
+    height: 150px;
+  }
+
+  .artemis-product .sold-out-overlay {
+    top: 75px; /* half of 150px */
+    font-size: 0.9rem;
+  }
+
+  /* ensure parent keeps products centered */
+  .artemis-products-container {
+    justify-content: center;
+  }
+}
+
+
 
 .badge {
   position: absolute;
@@ -581,39 +687,45 @@ header {
 
       <div class="artemis-carousel-track">
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(red)" data-price="$20" data-img="./img/eve4.png">
+        <div class="artemis-product" data-title="ARTEMISMADE TEE(RED)" data-price="$20" data-img="./img/eve4.png">
           <img src="./img/eve4.png" class="artemis-front" alt="front tee">
           <img src="./img/eve3.png" class="artemis-back" alt="back tee">
           <p>$20</p>
         </div>
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(white)" data-price="$20" data-img="./img/eve5.png">
+        <div class="artemis-product" data-title="ARTEMISMADE TEE(WHITE)" data-price="$20" data-img="./img/eve5.png">
           <img src="./img/eve5.png" class="artemis-front" alt="front tee">
           <img src="./img/eve6.png" class="artemis-back" alt="back tee">
            <p>$20</p>
         </div>
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(black)" data-price="$20" data-img="./img/eve7.png">
+        <div class="artemis-product" data-title="ARTEMISMADE TEE(BLACK)" data-price="$20" data-img="./img/eve7.png">
           <img src="./img/eve7.png" class="artemis-front" alt="front tee">
           <img src="./img/eve8.png" class="artemis-back" alt="back tee">
            <p>$20</p>
         </div>
+<div class="artemis-product" data-title="ARTEMISMADE TEE(BLUE)"data-price="$20" data-img="./img/eve2.png">
+  <img src="./img/eve2.png" class="artemis-front" alt="front tee">
+  <img src="./img/eve1.png" class="artemis-back" alt="back tee">
+  <p>$20</p>
+ 
 
-        <div class="artemis-product" data-title="ARTEMISMADETEE(blue)" data-price="$20" data-img="./img/eve2.png">
-          <img src="./img/eve2.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve1.png" class="artemis-back" alt="back tee">
-           <p>$20</p>
-        </div>
-        <div class="artemis-product" data-title="ARTEMISMADETEE(green)" data-price="$20" data-img="./img/eve9.png">
-          <img src="./img/eve9.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve10.png" class="artemis-back" alt="back tee">
-           <p>$20</p>
-        </div>
-         <div class="artemis-product" data-title="ARTEMISMADETEE(lightblue)" data-price="$20" data-img="./img/eve11.png">
-          <img src="./img/eve11.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve12.png" class="artemis-back" alt="back tee">
-           <p>$20</p>
-        </div>
+</div>
+
+<div class="artemis-product sold-out" data-title="ARTEMISMADE TEE(GREEN)" data-price="$20" data-img="./img/eve9.png">
+  <img src="./img/eve9.png" class="artemis-front" alt="front tee">
+  <img src="./img/eve10.png" class="artemis-back" alt="back tee">
+  <p>$20</p>
+  <div class="sold-out-overlay">SOLD OUT</div>
+</div>
+
+     <div class="artemis-product sold-out" data-title="ARTEMISMADE TEE(LIGHT BLUE)" data-price="$20" data-img="./img/eve11.png">
+  <img src="./img/eve11.png" class="artemis-front" alt="front tee">
+  <img src="./img/eve12.png" class="artemis-back" alt="back tee">
+  <p>$20</p>
+  <div class="sold-out-overlay">SOLD OUT</div>
+</div>
+
       </div>
 
       <button class="artemis-nav-btn artemis-next">&#10095;</button>
@@ -767,28 +879,38 @@ document.addEventListener('DOMContentLoaded', () => {
       sizes: [{size:"S"}, {size:"M"}, {size:"L",soldOut:true}, {size:"XL"}],
       imgs: ["./img/frontbat.png", "./img/new.png"]
     },
-   "ARTEMISMADETEE(red)": {
+   "ARTEMISMADE TEE(RED)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
     imgs: ["./img/eve4.png", "./img/eve3.png"]
   },
-    "ARTEMISMADETEE(black)": {
+    "ARTEMISMADE TEE(BLACK)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
     imgs: ["./img/eve11.png", "./img/eve12.png"]
   },
-  "ARTEMISMADETEE(green)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+  "ARTEMISMADE TEE(GREEN)": {
+   sizes: [
+      {size:"S", soldOut:true},
+      {size:"M", soldOut:true},
+      {size:"L", soldOut:true},
+      {size:"XL", soldOut:true}
+    ],
     imgs: ["./img/eve9.png", "./img/eve10.png"]
   },
- "ARTEMISMADETEE(white)": {
+ "ARTEMISMADE TEE(WHITE)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
   imgs: ["./img/eve5.png", "./img/eve6.png"]
   },
-  "ARTEMISMADETEE(black)": {
+  "ARTEMISMADE TEE(BLACK)": {
     sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
    imgs: ["./img/eve7.png", "./img/eve8.png"]
   },
- "ARTEMISMADETEE(lightblue)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
+ "ARTEMISMADE TEE(LIGHT BLUE)": {
+    sizes: [
+      {size:"S", soldOut:true},
+      {size:"M", soldOut:true},
+      {size:"L", soldOut:true},
+      {size:"XL", soldOut:true}
+    ],
   imgs: ["./img/eve12.png", "./img/eve11.png"]
   },
     "ZIPUP HOODIE": {
@@ -849,8 +971,17 @@ document.addEventListener('DOMContentLoaded', () => {
     qtyEl.textContent = qty;
     popup.classList.add('active');
   }
+document.querySelectorAll('.product').forEach(product => {
+  product.addEventListener('click', () => {
+    // Prevent popup for sold-out products
+    if (product.classList.contains('sold-out')) {
+      alert('This product is sold out and cannot be viewed.');
+      return;
+    }
+    showProduct(product);
+  });
+});
 
-  document.querySelectorAll('.product').forEach(product => product.addEventListener('click', ()=>showProduct(product)));
   document.getElementById('popupClose').onclick = () => popup.classList.remove('active');
 
   // ------------------ Popup Image Navigation ------------------
