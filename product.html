@@ -1,1176 +1,652 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artemisphnompenh</title>
-    <link rel="icon" href="./img/head.png" type="image/png">
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background-color: #0A2A52;
-  color: #FFC300;
-  height: 100vh;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streetwear Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: white;
+            color: #333;
+        }
+
+        /* Header Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 30px;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        nav a {
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8b5cf6;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .logo-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            animation: spin 8s linear infinite;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+     /*   @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        } */
+
+        .main-title {
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .subtitle {
+            color: #666;
+            letter-spacing: 3px;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .gradient-line {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #8b5cf6, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Products Section */
+        .products-container {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 40px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px;
+        }
+
+        .product-card {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .product-image-container {
+            position: relative;
+            background: #f5f5f5;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-card:hover .product-image-container {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .product-image.front {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .product-image.back {
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .product-card:hover .product-image.front {
+            opacity: 0;
+        }
+
+        .product-card:hover .product-image.back {
+            opacity: 1;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0);
+            transition: background 0.3s;
+            z-index: 3;
+        }
+
+        .product-card:hover .image-overlay {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .hover-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s;
+            z-index: 4;
+        }
+
+        .product-card:hover .hover-buttons {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .icon-btn {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-btn.liked {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            z-index: 4;
+        }
+
+        .floating-star {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            color: #fbbf24;
+            font-size: 30px;
+            opacity: 0;
+            animation: float 1s ease-in-out infinite;
+            z-index: 4;
+        }
+
+        .product-card:hover .floating-star {
+            opacity: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .product-info {
+            text-align: center;
+        }
+
+      .product-name {
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: color 0.3s;
+    text-transform: uppercase;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #041A33;
-  padding: 10px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 2000;
+        .product-card:hover .product-name {
+            color: #8b5cf6;
+        }
+
+        .product-price {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .view-text {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 8px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .product-card:hover .view-text {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        footer p {
+            animation: pulse 2s ease-in-out infinite;
+        }
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
 
-/* --- Container --- */
-.artemis-carousel-container {
-  text-align: center;
-  width: 90%;
-  max-width: 1000px;
-  margin: 40px auto;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* Tablet (2 per row) */
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-/* --- Top & Bottom Text --- */
-.artemis-top-text, .artemis-bottom-text {
-  margin: 10px 0;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  font-weight: bold;
+/* Mobile (1 per row) */
+@media (max-width: 640px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-/* --- Carousel --- */
-.artemis-carousel {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .products-grid {
+              object-fit: contain;
+.product-name{
+    font-size: 10px;
+
+};
+.product-price{
+    font-size: 10px;
 }
-
-.artemis-carousel-track {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-/* --- Product Cards --- */
-.artemis-product {
-  flex: 0 0 calc(100% / 3); /* exactly 3 visible */
-  box-sizing: border-box;
-  padding: 0 10px;
-  position: relative;
-  cursor: pointer;
-}
-
-.artemis-product img {
-  width: 100%;
-  border-radius: 8px;
-  transition: opacity 0.4s ease, transform 0.3s ease;
-}
-
-.artemis-product:hover img.artemis-front {
-  opacity: 0;
-  transform: scale(1.05);
-}
-
-.artemis-product img.artemis-back {
-  position: absolute;
-  top: 0;
-  left: 10px;
-  opacity: 0;
-  width: calc(100% - 20px);
-  border-radius: 8px;
-  transition: opacity 0.4s ease;
-}
-
-.artemis-product:hover img.artemis-back {
-  opacity: 1;
-}
-
-
-.artemis-nav-btn {
-  background: rgba(0, 0, 0, 0.5);
-  border: none;
-  color: #FFC300;
-  font-size: 2.5rem;
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.artemis-nav-btn:hover {
-  background: rgba(255, 195, 0, 0.8);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.artemis-prev { left: 5px; }
-.artemis-next { right: 5px; }
-
-/* --- Tablet view --- */
-@media (max-width: 768px) {
-  .artemis-carousel-container {
-    text-align: left;
-    align-items: flex-start;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .artemis-top-text { text-align: left; width: 100%; }
-  .artemis-bottom-text { text-align: center; width: 100%;font-weight: 800; font-size: 1.5rem;}
-
-  .artemis-product {
-    min-width: 50%; 
-    padding: 5px;
-  }
-
-  .artemis-product img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-  }
-
-  .artemis-product img:hover {
-    transform: scale(1.05);
-  }
-
-  .artemis-nav-btn {
-    font-size: 1.8rem;
-    width: 40px;
-    height: 40px;
-  }
-}
-
-
-@media (max-width: 500px) {
-  .artemis-carousel-container {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-
-  .artemis-product {
-    min-width: 50%; 
-    padding: 3px;
-  }
-
-  .artemis-product img {
-    height: 180px;
-  }
- .artemis-bottom-text { text-align: center; width: 100%;font-weight: 800; font-size: 1.5rem; margin-top: 60px;}
-  .artemis-nav-btn {
-    top: 45%;
-    font-size: 1.5rem;
-    width: 35px;
-    height: 35px;
-  }
-
-  .artemis-top-text, .artemis-bottom-text {
-    font-size: 1rem;
-  }
-}
-
-
-.header-left { flex: 1; display: flex; align-items: center; }
-#hamburger { font-size: 28px; cursor: pointer; color: #fff; user-select: none; }
-.header-center { flex: 1; display: flex; justify-content: center; }
-.header-center img { height: 40px; }
-.header-right { flex: 1; display: flex; justify-content: flex-end; gap: 15px; position: relative; }
-.header-right span { font-size: 22px; cursor: pointer; color: #fff; position: relative; }
-.header-right span::after {
-  content: attr(data-count);
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  background: #FFC300;
-  color: #000;
-  font-size: 12px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 18px;
-  display: none;
-}
-.header-right span[data-count]:not([data-count="0"])::after { display: block; }
-
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -250px;
-  width: 250px;
-  height: 100%;
- 
-  padding: 20px;
-  transition: left 0.3s ease-in-out;
-  z-index: 1100;
-  display: none;
-}
-.sidebar.active { display: block; left: 0; }
-.sidebar a { display: block; color: #FFC300; padding: 10px 0; text-decoration: none; }
-.sidebar a:hover { text-decoration: underline; }
-.sidebar .close-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.sidebar .close-btn:hover { color: red; }
-
-
-
-.cart-sidebar {
-  position: fixed;
-  top: 0;
-  right: -300px;
-  width: 300px;
-  height: 100%;
-  background-color: #041A33;
-  border-left: 2px solid #FFC300;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.4);
-  display: flex;
-  flex-direction: column;
-  transition: right 0.3s ease-in-out;
-  z-index: 999;
-}
-.cart-sidebar.active {
-  right: 0;
-}
-
-
-
-.cart-header {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 10px;
-  border-bottom: 1px solid #FFC300;
-  margin-top: -20px;
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  align-items: center;
-}
-
-.cart-item img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-}
-
-.cart-item-details {
-  flex: 1;
-  margin-left: 10px;
-}
-
-.cart-total {
-  padding: 15px;
-  font-weight: bold;
-  border-top: 1px solid #FFC300;
-}
-.cart-item-controls button {
-  background: #222;
-  color: #fff;
-  border: none;
-  padding: 2px 6px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.cart-item-controls .remove-btn {
-  background: red;
-}
-.cart-total {
-  margin-top: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: right;
-}
-
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 1200px;
-}
-.product {
-  background: #0A2A52;
-  border: 1px solid #ffffff;
-  border-radius: 8px;
-  padding: 15px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.product:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-}
-.product-img {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  overflow: hidden;
-}
-.product-img img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 6px;
-  transition: opacity 0.4s ease-in-out;
-}
-.product-img img.back { opacity: 0; }
-.product:hover .product-img img.front { opacity: 0; }
-.product:hover .product-img img.back { opacity: 1; }
-
-.product h3 { font-size: 14px; margin: 8px 0 4px; color: #FFC300; }
-.product p { font-size: 13px; color: #aaa; }
-
-
-.popup {
-  position: fixed;
-  left: 0;
-  bottom: -100%;
-  width: 90%;
-  background: #ffffff;
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.7);
-  transition: bottom 0.3s ease-in-out;
-  padding: 20px;
-  z-index: 1200;
-}
-.sold-out-text {
-  color: red;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.artemis-product {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  max-width: 250px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-/* Make all product images uniform */
-.artemis-product img {
-  width: 100%;
-  height: 250px; /* make image height fixed */
-  object-fit: cover;
-  display: block;
-}
-
-/* Dim sold-out products */
-.artemis-product.sold-out img {
-  opacity: 0.4;
-  filter: grayscale(60%);
-}
-
-/* Always visible "SOLD OUT" overlay — aligned exactly in the center of the image */
-.artemis-product .sold-out-overlay {
-  position: absolute;
-  top: 125px; /* half of the image height (250px / 2) */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-weight: 800;
-  font-size: 1.1rem;
-  background: rgba(68, 68, 68, 0.75);
-  padding: 8px 15px;
-  border-radius: 8px;
-  text-transform: uppercase;
-  opacity: 1;
-  pointer-events: none;
-}
-
-/* Price styling */
-.artemis-product p {
-  margin-top: 8px;
-  font-size: 1rem;
-  color: #fff;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .artemis-product {
-    max-width: 180px;
-    margin: 10px auto; /* center horizontally */
-  }
-
-  .artemis-product img {
-    height: 180px;
-  }
-
-  .artemis-product .sold-out-overlay {
-    top: 90px; /* half of 180px */
-    font-size: 1rem;
-  }
-
-  /* if they are inside a parent grid or flexbox, center them */
-  .artemis-products-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* center all items */
-    align-items: center;
-    gap: 15px; /* optional spacing */
-  }
-}
-
-@media (max-width: 480px) {
-  .artemis-product {
-    max-width: 150px;
-    margin: 10px auto; /* center horizontally */
-  }
-
-  .artemis-product img {
-    height: 150px;
-  }
-
-  .artemis-product .sold-out-overlay {
-    top: 75px; /* half of 150px */
-    font-size: 0.9rem;
-  }
-
- 
-  .artemis-products-container {
-    justify-content: center;
-  }
-}
-
-
-
-.badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: red;
-  color: white;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: bold;
-  border-radius: 5px;
-  text-transform: uppercase;
-  z-index: 10;
-  pointer-events: none;
-}
-.artemis-product {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.artemis-product p {
-  text-align: center;
-  font-weight: bold;
-  color: white;
-  margin-top: 8px;
-  font-size: 1rem;
-}
-
-
-.popup.active { bottom: 0; }
-.popup-header { position: relative; display: flex; justify-content: space-between; align-items: center; }
-.close-btn { position: static; right: 30px; top: 5px; font-size: 28px; font-weight: bold; cursor: pointer; color: #333; transition: 0.2s; }
-.close-btn:hover { color: red; }
-.popup-img-wrapper { margin-top: 10px; }
-.popup-img-wrapper img { width: 120px; border-radius: 8px; }
-
-.checkout-btn {
-  width: 90%;
-  margin: 15px auto;
-  display: block;
-  padding: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: #FFC300;
-  color: #0A2A52;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.checkout-btn:hover {
-  background-color: #ffda47;
-}
-
-.popup-img-wrapper {
-  margin: 15px 0;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-height: 50vh;       
-  overflow: hidden;
-}
-
-.popup-img-wrapper img {
-  max-width: 30%;
-  max-height: 30%;
-  width: auto;
-  height: auto;
-  border-radius: 12px;
-  object-fit: contain;    
-}
-
-.popup-img-wrapper .arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
-  background: rgba(255,255,255,0.7);
-  border-radius: 50%;
-  padding: 6px 12px;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.popup-img-wrapper .arrow:hover {
-  background: #ffc300;
-  color: #000;
-  transform: scale(1.1);
-}
-
-.popup-img-wrapper .arrow.left { left: 10px; }
-.popup-img-wrapper .arrow.right { right: 10px; }
-
-.artemis-top-text {
-  display: inline-block;
-  white-space: nowrap;
-  position: relative;
-  font-weight: bold;
-  animation: moveRight 6s linear infinite;
-}
-
-@keyframes moveRight {
-  0% {
-    transform: translateX(-100%); 
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-
-@media (max-width: 600px) {
-  .popup-img-wrapper img {
-    width: 100%;
-    max-width: 250px;
-  }
-
-  .popup-img-wrapper .arrow {
-    font-size: 22px;
-    padding: 4px 10px;
-  }
-}
-
-#popupPrice {
-  font-size: 22px;   
-  font-weight: bold; 
-  margin-top: 10px;
-}
-
-.sizes { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
-.sizes button {
-  padding: 8px 14px;
-  border: 1px solid #000000;
-  background: none;
-  color: #000000;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.sizes button:disabled { background: #ccc; color: #666; text-decoration: line-through; cursor: not-allowed; }
-.sizes button.active { background: #000; color: #fff; }
-.quantity { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-.quantity button { padding: 5px 10px; border: none; background: #333; color: #fff; cursor: pointer; border-radius: 4px; }
-
-
-.description { margin-top: 15px; }
-.description ul { padding-left: 20px; color: #333; }
-.description ul li { margin-bottom: 6px; }
-
-.actions { margin-top: 15px; display: flex; gap: 10px; }
-.actions button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.old-price {
-  text-decoration: line-through;
-  color: gray; 
-}
-.new-price {
-  font-weight: bold;
-  color: #000; 
-}
-.add-cart { background: #222; color: #fff; }
-.buy-now { background: #FFC300; color: #000; }
-@media (max-width: 768px) {
-  .cart-sidebar {
-    width: 80%;        
-    right: -80%;
-  }
-  .cart-sidebar.active {
-    right: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .cart-sidebar {
-    width: 50%;       
-    right: -100%;
-    border-left: none; 
-  }
-  .cart-sidebar.active {
-    right: 0;
-  }
-}
-@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
-</style>
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Header Navigation -->
+    <nav>
+        <a href="#store">HOME</a>
+        <a href="#contact">CONTACT</a>
+        <a href="#terms">TERMS</a>
+    </nav>
 
-<header>
-  <div class="header-left"><span id="hamburger">&#9776;</span></div>
-  <div class="header-center"><img src="./img/pop.png" alt="Logo"></div>
-  <div class="header-right">
-    <span id="cartIcon" data-count="0">&#128722;</span>
-  </div>
-</header>
- <div class="artemis-carousel-container">
-    <h4 class="artemis-top-text" style="text-align: left;">ARTEMISMADE TEE 24/7 AVAILABLE</h4>
-
-    <div class="artemis-carousel">
-      <button class="artemis-nav-btn artemis-prev">&#10094;</button>
-
-      <div class="artemis-carousel-track">
-
-        <div class="artemis-product" data-title="ARTEMISMADE TEE(RED)" data-price="$20" data-img="./img/eve4.png">
-          <img src="./img/eve4.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve3.png" class="artemis-back" alt="back tee">
-          <p>$20</p>
+    <!-- Logo Section -->
+    <div class="logo-section">
+        <div class="logo-container">
+            <img src="./img/logo3.png" alt="Brand Logo" id="logo">
         </div>
-
-        <div class="artemis-product" data-title="ARTEMISMADE TEE(WHITE)" data-price="$20" data-img="./img/eve5.png">
-          <img src="./img/eve5.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve6.png" class="artemis-back" alt="back tee">
-           <p>$20</p>
-        </div>
-
-        <div class="artemis-product" data-title="ARTEMISMADE TEE(BLACK)" data-price="$20" data-img="./img/eve7.png">
-          <img src="./img/eve7.png" class="artemis-front" alt="front tee">
-          <img src="./img/eve8.png" class="artemis-back" alt="back tee">
-           <p>$20</p>
-        </div>
-<div class="artemis-product" data-title="ARTEMISMADE TEE(BLUE)"data-price="$20" data-img="./img/eve2.png">
-  <img src="./img/eve2.png" class="artemis-front" alt="front tee">
-  <img src="./img/eve1.png" class="artemis-back" alt="back tee">
-  <p>$20</p>
- 
-
-</div>
-
-<div class="artemis-product sold-out" data-title="ARTEMISMADE TEE(GREEN)" data-price="$20" data-img="./img/eve9.png">
-  <img src="./img/eve9.png" class="artemis-front" alt="front tee">
-  <img src="./img/eve10.png" class="artemis-back" alt="back tee">
-  <p>$20</p>
-  <div class="sold-out-overlay">SOLD OUT</div>
-</div>
-
-     <div class="artemis-product sold-out" data-title="ARTEMISMADE TEE(LIGHT BLUE)" data-price="$20" data-img="./img/eve11.png">
-  <img src="./img/eve11.png" class="artemis-front" alt="front tee">
-  <img src="./img/eve12.png" class="artemis-back" alt="back tee">
-  <p>$20</p>
-  <div class="sold-out-overlay">SOLD OUT</div>
-</div>
-
-      </div>
-
-      <button class="artemis-nav-btn artemis-next">&#10095;</button>
+        <h1 class="main-title">COLLECTION</h1>
+        <p class="subtitle">ARTEMISMADE </p>
+        <div class="gradient-line"></div>
     </div>
 
-    <p class="artemis-bottom-text">ONLY FEW WILL OWN THIS</p>
-  </div>
-<div class="sidebar" id="sidebar">
-  <span class="close-btn" id="closeSidebar">&times;</span>
-  <a href="index.html">Home</a>
-    <a href="index.html">Home</a>
-  <a href="https://www.instagram.com/artemisphnompenh/?hl=en">Contact</a>
-</div>
+    <!-- Products Section -->
+    <div class="products-container">
+        <div class="products-grid" id="productsGrid">
+            <!-- Product 1 -->
+            <a href="batman.html" class="product-card" data-id="1">
+                <div class="product-image-container">
+                    <img src="./img/pro1.png" alt="Muted Shorts Front" class="product-image front">
+                    <img src="./img/pro2.png" alt="Muted Shorts Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 1)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Artemis station zipup</h3>
+                    <p class="product-price">$35.00 USD</p>
+                 
+                </div>
+            </a>
 
-<div class="cart-sidebar" id="cartSidebar">
-  <span class="close-btn" id="closeCart">&times;</span>
-<h2 style="margin-top: 40px; margin-left: 20px;">Shopping Cart</h2>
+            <!-- Product 2 -->
+            <a href="sleeve.html" class="product-card" data-id="2">
+                <div class="product-image-container">
+                    <img src="./img/pro3.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/pro33.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">crimson Longsleeve tee</h3>
+                    <p class="product-price">$28.00 USD</p>
+                   
+                </div>
+            </a>
+
+            <!-- Product 3 -->
+            <a href="tee.html" class="product-card" data-id="3">
+                <div class="product-image-container">
+                    <img src="./img/pro4.png" alt="She Devil Shorts Front" class="product-image front">
+                    <img src="./img/pro44.png" alt="She Devil Shorts Back" class="product-image back">
+                    <div class="image-overlay"></div>
+              
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 3)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Crimson blink blink</h3>
+                    <p class="product-price">$27.00 USD</p>
+                  
+                </div>
+            </a>
+                 <a href="pant.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/pro6.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/pro66.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Artemis station pant</h3>
+                    <p class="product-price">$30.00 USD</p>
+                   
+                </div>
+            </a>
+            
+       <a href="tee.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/eve4.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/eve3.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ARTEMISMADE TEE</h3>
+                    <p class="product-price">$20.00 USD</p>
+                   
+                </div>
+            </a>
+
+       <a href="product2.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/frontbat.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/new.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ARTEMIS FANTASY PARK</h3>
+                    <p class="product-price">$25.00 USD</p>
+                   
+                </div>
+            </a>
+                   <a href="product2.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/hoodiefront.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/hoodieback.png" alt="Pank Hoodie Back" class="product-image back">
+                     <div class="status-badge">SOLD OUT</div>
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ZIPUP HOODIE</h3>
+                    <p class="product-price">$32.00 USD</p>
+                   
+                </div>
+            </a>
+                   <a href="product2.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/selu2.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/selu.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                     <div class="status-badge">SOLD OUT</div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">PLEATED PANT</h3>
+                    <p class="product-price">$30.00 USD</p>
+                   
+                </div>
+            </a>
+                   <a href="jerred.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/jer.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/jerback.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ARTEMIS VISCA BARCA</h3>
+                    <p class="product-price">$30.00 USD</p>
+                   
+                </div>
+            </a>
+                   <a href="jerwhite.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/jerwhitefront.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/jerwhite.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ARTEMIS hala madrid</h3>
+                    <p class="product-price">$30.00 USD</p>
+                   
+                </div>
+            </a>
+                   <a href="product2.html" class="product-card" data-id="4">
+                <div class="product-image-container">
+                    <img src="./img/ho1.png" alt="Pank Hoodie Front" class="product-image front">
+                    <img src="./img/ho.png" alt="Pank Hoodie Back" class="product-image back">
+                    <div class="image-overlay"></div>
+                     <div class="status-badge">SOLD OUT</div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ARTEMISMADE HOODIE</h3>
+                    <p class="product-price">$28.00 USD</p>
+                   
+                </div>
+            </a>
 
 
-  <div id="cartItems"></div>
-  <div class="cart-total" id="cartTotal">Total: $0</div>
-   <button id="checkoutBtn" class="checkout-btn">Checkout</button>
-</div>
 
 
-<div class="product-grid">
-  <div class="product" data-title="ARTEMIS FANTASY PARK" data-price="$25" data-img="./img/frontbat.png">
-    <div class="product-img"><img src="./img/frontbat.png" class="front"><img src="./img/new.png" class="back"></div>
-    <h3>ARTEMIS FANTASY PARK</h3>
-    <p>$25</p>
-  </div>
-    <!-- <div class="product" data-title="Artemismade tee available 24/7(blue)" data-price="$25" data-img="./img/eve2.png">
-    <div class="product-img"><img src="./img/eve2.png" class="front"><img src="./img/eve1.png" class="back"></div>
-    <h3>Artemismade tee available 24/7</h3>
-    <p>$20</p>
-  </div> -->
-    <!-- <div class="product" data-title="Artemismade tee available 24/7(red)" data-price="$25" data-img="./img/eve4.png">
-    <div class="product-img"><img src="./img/eve4.png" class="front"><img src="./img/eve3.png" class="back"></div>
-    <h3>Artemismade tee available 24/7</h3>
-    <p>$20</p>
-  </div> -->
-
-  <div class="product" data-title="ZIPUP HOODIE" data-price="$32" data-img="./img/hoodiefront.png">
-    <div class="product-img"><img src="./img/hoodiefront.png" class="front"><img src="./img/hoodieback.png" class="back"></div>
-    <h3>ZIPUP HOODIE</h3>
-    <p>$32</p>
-  </div>
-
-  <div class="product" data-title="PLEATED PANT" data-price="$30" data-img="./img/selu2.png"">
-    <div class="product-img"><img src="./img/selu2.png" class="front"><img src="./img/selu.png" class="back"></div>
-    <h3>PLEATED PANT</h3>
-    <p>$30</p>
-  </div>
-
- <div class="product" data-title="ARTEMIS VISCA BARCA" data-price="$30" data-img="./img/jer.png">
-  
-    <div class="product-img"><img src="./img/jer.png" class="front"><img src="./img/jerback.png" class="back"></div>
-    <h3>ARTEMIS VISCA BARCA</h3>
-    <p>$30</p>
-  </div>
-
- <div class="product" data-title="ARTEMIS HALA MADRID" data-price="$32" data-img="./img/jerwhitefront.png">
-
-  <div class="product-img">
-    <img src="./img/jerwhitefront.png" class="front">
-    <img src="./img/jerwhite.png" class="back">
-  </div>
-  <h3>ARTEMIS HALA MADRID</h3>
-  <p>$32</p>
-</div>
-
-<div class="product" data-title="ARTEMISMADE HOODIE" data-price="$28" data-img="./img/pro3.png">
-  <div class="product-img">
-    <img src="./img/pro3.png" class="front">
-    <img src="./img/pro2.png" class="back">
-  </div>
-  <h3>ARTEMISMADE HOODIE</h3>
-<p class="old-price"> sale $32</p>
-<p class="new-price">$28</p>
-</div>
-
-</div>
-<div class="popup" id="popup">
-  <div class="popup-header">
-    <h2 id="popupTitle">Product</h2>
-    <span class="close-btn" id="popupClose">&times;</span>
-  </div>
-  <p id="popupPrice"></p>
-
-
-  <div class="popup-img-wrapper">
-    <span class="arrow left" id="prevImg">&#10094;</span> <!-- < -->
-    <img id="popupImg">
-    <span class="arrow right" id="nextImg">&#10095;</span> <!-- > -->
-  </div>
-
-  <div class="sizes" id="popupSizes"></div>
-  <div class="quantity">
-    <button id="minus">-</button>
-    <span id="qty">1</span>
-    <button id="plus">+</button>
-  </div>
-  <div class="description" id="popupDesc"></div>
-  <div class="actions">
-    <button class="add-cart" id="addCartBtn">Add to Cart</button>
-<button class="buy-now" id="buyNowBtn">Buy Now</button>
-
-
-
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  // ------------------ Sidebar ------------------
-  const sidebar = document.getElementById('sidebar');
-  const cartSidebar = document.getElementById('cartSidebar');
-  const cartIcon = document.getElementById('cartIcon');
-  const cartItemsEl = document.getElementById('cartItems');
-  const cartTotalEl = document.getElementById('cartTotal');
-  let cart = [];
-  const deliveryFee = 2;
-
-  document.getElementById('hamburger').onclick = () => sidebar.classList.toggle('active');
-  document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('active');
-  document.getElementById('closeCart').onclick = () => cartSidebar.classList.remove('active');
-  cartIcon.onclick = () => cartSidebar.classList.toggle('active');
-
-
-  const popup = document.getElementById('popup');
-  const popupTitle = document.getElementById('popupTitle');
-  const popupPrice = document.getElementById('popupPrice');
-  const popupImg = document.getElementById('popupImg');
-  const popupSizes = document.getElementById('popupSizes');
-  const popupDesc = document.getElementById('popupDesc');
-  const qtyEl = document.getElementById('qty');
-  const popupPrevBtn = document.getElementById('prevImg');
-  const popupNextBtn = document.getElementById('nextImg');
-
-  let qty = 1;
-  let selectedSize = null;
-  let currentImages = [];
-  let currentImgIndex = 0;
-
-  document.getElementById('minus').onclick = () => { if(qty>1) qty--; qtyEl.textContent = qty; };
-  document.getElementById('plus').onclick = () => { qty++; qtyEl.textContent = qty; };
-
-  const productData = {
-    "ARTEMIS FANTASY PARK": {
-      sizes: [{size:"S"}, {size:"M"}, {size:"L",soldOut:true}, {size:"XL"}],
-      imgs: ["./img/frontbat.png", "./img/new.png"]
-    },
-   "ARTEMISMADE TEE(RED)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-    imgs: ["./img/eve4.png", "./img/eve3.png"]
-  },
-    "ARTEMISMADE TEE(BLACK)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-    imgs: ["./img/eve11.png", "./img/eve12.png"]
-  },
-  "ARTEMISMADE TEE(GREEN)": {
-   sizes: [
-      {size:"S", soldOut:true},
-      {size:"M", soldOut:true},
-      {size:"L", soldOut:true},
-      {size:"XL", soldOut:true}
-    ],
-    imgs: ["./img/eve9.png", "./img/eve10.png"]
-  },
- "ARTEMISMADE TEE(WHITE)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-  imgs: ["./img/eve5.png", "./img/eve6.png"]
-  },
-   "ARTEMISMADE TEE(BLUE)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-  imgs: ["./img/eve2.png", "./img/eve1.png"]
-  },
-  "ARTEMISMADE TEE(BLACK)": {
-    sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-   imgs: ["./img/eve7.png", "./img/eve8.png"]
-  },
- "ARTEMISMADE TEE(LIGHT BLUE)": {
-    sizes: [
-      {size:"S", soldOut:true},
-      {size:"M", soldOut:true},
-      {size:"L", soldOut:true},
-      {size:"XL", soldOut:true}
-    ],
-  imgs: ["./img/eve12.png", "./img/eve11.png"]
-  },
-    "ZIPUP HOODIE": {
-      sizes: [{size:"S"}, {size:"M",soldOut:true}, {size:"L", soldOut:true}, {size:"XL", soldOut:true}],
-      imgs: ["./img/hoodiefront.png", "./img/hoodieback.png"]
-    },
-    "PLEATED PANT": {
-      sizes: [{size:"S", soldOut:true}, {size:"M"}, {size:"L", soldOut:true}],
-      imgs: ["./img/selu2.png", "./img/selu.png"]
-    },
-    "ARTEMIS VISCA BARCA": {
-      sizes: [{size:"S", soldOut:true}, {size:"M", soldOut:true}, {size:"L"},{size:"XL", soldOut:true}],
-      imgs: ["./img/jer.png", "./img/jerback.png"]
-    },
-    "ARTEMIS HALA MADRID": {
-      sizes: [{size:"S"}, {size:"M"}, {size:"L"},{size:"XL", soldOut:true}],
-      imgs: ["./img/jerwhitefront.png", "./img/jerwhite.png"]
-    },
-    "ARTEMISMADE HOODIE": {
-      sizes: [{size:"S"}, {size:"M"}, {size:"L"}, {size:"XL"}],
-      imgs: ["./img/pro3.png", "./img/pro2.png"]
-    }
-  };
-
-  // ------------------ Show Product ------------------
-  function showProduct(productEl){
-    const title = productEl.dataset.title;
-    const price = productEl.dataset.price;
-
-    popupTitle.textContent = title;
-    popupPrice.textContent = price;
-
-    currentImages = productData[title]?.imgs || [productEl.dataset.img];
-    currentImgIndex = 0;
-    popupImg.src = currentImages[currentImgIndex];
-
-    // Sizes
-    popupSizes.innerHTML = '';
-    selectedSize = null;
-    (productData[title]?.sizes || []).forEach(item => {
-      const btn = document.createElement('button');
-      btn.textContent = item.size;
-      btn.disabled = item.soldOut || false;
-      btn.onclick = () => {
-        if(!item.soldOut){
-          selectedSize = item.size;
-          document.querySelectorAll('#popupSizes button').forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-        }
-      };
-      popupSizes.appendChild(btn);
-    });
-
-    // Description (if any)
-    popupDesc.innerHTML = "<ul>" + (productData[title]?.desc || []).map(d=>`<li>${d}</li>`).join('') + "</ul>";
-
-    qty = 1;
-    qtyEl.textContent = qty;
-    popup.classList.add('active');
-  }
-document.querySelectorAll('.product').forEach(product => {
-  product.addEventListener('click', () => {
-    // Prevent popup for sold-out products
-    if (product.classList.contains('sold-out')) {
-      alert('This product is sold out and cannot be viewed.');
-      return;
-    }
-    showProduct(product);
-  });
-});
-
-  document.getElementById('popupClose').onclick = () => popup.classList.remove('active');
-
-  // ------------------ Popup Image Navigation ------------------
-  popupPrevBtn.onclick = () => { 
-    currentImgIndex = (currentImgIndex-1+currentImages.length) % currentImages.length; 
-    popupImg.src = currentImages[currentImgIndex]; 
-  };
-  popupNextBtn.onclick = () => { 
-    currentImgIndex = (currentImgIndex+1) % currentImages.length; 
-    popupImg.src = currentImages[currentImgIndex]; 
-  };
-
-  // ------------------ Add to Cart ------------------
-  document.getElementById('addCartBtn').onclick = () => {
-    if(!selectedSize){ alert('Please select a size first!'); return; }
-
-    const title = popupTitle.textContent;
-    const price = Number(popupPrice.textContent.replace('$',''));
-    const img = currentImages[0];
-
-    const item = cart.find(i=>i.title===title && i.size===selectedSize);
-    if(item){ item.qty += qty; } 
-    else { cart.push({title, price, qty, img, size:selectedSize}); }
-
-    selectedSize=null;
-    document.querySelectorAll('#popupSizes button').forEach(b=>b.classList.remove('active'));
-    qty = 1; qtyEl.textContent = qty;
-
-    updateCart();
-    popup.classList.remove('active');
-    cartSidebar.classList.add('active');
-  };
-
-  // ------------------ Buy Now ------------------
-  document.getElementById('buyNowBtn').onclick = () => {
-    if(!selectedSize){ alert('Please select a size first!'); return; }
-
-    const product = {
-      title: popupTitle.textContent,
-      price: Number(popupPrice.textContent.replace('$','')),
-      qty,
-      img: currentImages[0],
-      size: selectedSize
-    };
-
-    localStorage.setItem("buyNowProduct", JSON.stringify(product));
-    localStorage.setItem("deliveryFee", deliveryFee);
-    window.location.href = "check.html";
-  };
-
-  // ------------------ Cart Functions ------------------
-  function updateCart(){
-    cartItemsEl.innerHTML = '';
-    let totalQty = 0;
-    let totalPrice = deliveryFee;
-
-    cart.forEach((i,index)=>{
-      totalQty += i.qty;
-      totalPrice += i.price*i.qty;
-
-      const div = document.createElement('div');
-      div.className='cart-item';
-      div.innerHTML=`
-        <img src="${i.img}" alt="${i.title}">
-        <div class="cart-item-info">
-          <span>${i.title} (${i.size})</span>
-          <div class="cart-item-controls">
-            <button onclick="changeQty(${index},-1)">-</button>
-            <span>${i.qty}</span>
-            <button onclick="changeQty(${index},1)">+</button>
-            <button class="remove-btn" onclick="removeCart(${index})">&#128465;</button>
-          </div>
-          <span>$${i.price*i.qty}</span>
         </div>
-      `;
-      cartItemsEl.appendChild(div);
-    });
+    </div>
 
-    cartIcon.setAttribute('data-count', totalQty);
-    cartTotalEl.textContent = `Total: $${totalPrice} (including $${deliveryFee} delivery)`;
-  }
+    <!-- Footer -->
+    <footer>
+        <p>ARTEMIS</p>
+    </footer>
 
-  window.removeCart = function(index){ cart.splice(index,1); updateCart(); };
-  window.changeQty = function(index,delta){ 
-    cart[index].qty+=delta; 
-    if(cart[index].qty<1) cart[index].qty=1; 
-    updateCart(); 
-  };
+    <script>
+        let liked = {};
 
-  document.getElementById('checkoutBtn').onclick = () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    localStorage.setItem('deliveryFee', deliveryFee);
-    window.location.href="check.html";
-  };
-
-  // ------------------ Carousel ------------------
-  const track = document.querySelector('.artemis-carousel-track');
-  const carouselPrevBtn = document.querySelector('.artemis-prev');
-  const carouselNextBtn = document.querySelector('.artemis-next');
-  const carouselProducts = Array.from(track.children);
-// ------------------ Carousel Items Click ------------------
-carouselProducts.forEach(product => {
-  product.addEventListener('click', () => {
-    // Extract data from carousel item
-    const title = product.dataset.title || product.querySelector('.product-title')?.textContent;
-    const price = product.dataset.price || product.querySelector('.product-price')?.textContent;
-
-    if(!title || !price) return;
-
-    const dummy = document.createElement('div');
-    dummy.dataset.title = title;
-    dummy.dataset.price = price;
-
-    // Only set img if productData has it; otherwise use carousel image
-    dummy.dataset.img = productData[title]?.imgs?.[0] || product.querySelector('img')?.src;
-
-    showProduct(dummy);
-  });
-});
-
-  let index = 0;
-  let startX = 0;
-  let isDragging = false;
-
-  function getVisibleCount() {
-    if (window.innerWidth <= 500) return 2;
-    if (window.innerWidth <= 768) return 2;
-    return 3;
-  }
-
-  function updateCarousel() {
-    if(carouselProducts.length===0) return;
-    const visibleCount = getVisibleCount();
-    const productWidth = carouselProducts[0].getBoundingClientRect().width;
-
-    if (index > carouselProducts.length - visibleCount) index = carouselProducts.length - visibleCount;
-    if (index < 0) index = 0;
-
-    track.style.transform = `translateX(-${index * productWidth}px)`;
-    track.style.transition = 'transform 0.5s ease';
-  }
-
-  carouselNextBtn.addEventListener('click', () => {
-    if(index < carouselProducts.length - getVisibleCount()) index++;
-    updateCarousel();
-  });
-  carouselPrevBtn.addEventListener('click', () => {
-    if(index > 0) index--;
-    updateCarousel();
-  });
-
-  track.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    isDragging = true;
-  });
-
-  track.addEventListener('touchmove', e => {
-    if (!isDragging) return;
-    const currentX = e.touches[0].clientX;
-    const diffX = startX - currentX;
-    const productWidth = carouselProducts[0].getBoundingClientRect().width;
-    track.style.transition = 'none';
-    track.style.transform = `translateX(${-index*productWidth - diffX}px)`;
-  });
-
-  track.addEventListener('touchend', e => {
-    const endX = e.changedTouches[0].clientX;
-    const diffX = startX - endX;
-    const productWidth = carouselProducts[0].getBoundingClientRect().width;
-
-    if(diffX > productWidth/4 && index < carouselProducts.length - getVisibleCount()) index++;
-    else if(diffX < -productWidth/4 && index > 0) index--;
-
-    updateCarousel();
-    isDragging = false;
-  });
-
-  window.addEventListener('resize', updateCarousel);
-  updateCart();
-  updateCarousel();
-
-});
-</script>
-
-
-
+        function toggleLike(event, productId) {
+            // Prevent navigation when clicking like button
+            event.preventDefault();
+            event.stopPropagation();
+            
+            liked[productId] = !liked[productId];
+            const btn = document.querySelector(`.product-card[data-id="${productId}"] .like-btn`);
+            const svg = btn.querySelector('svg path');
+            
+            if (liked[productId]) {
+                btn.classList.add('liked');
+                svg.setAttribute('fill', 'currentColor');
+            } else {
+                btn.classList.remove('liked');
+                svg.setAttribute('fill', 'none');
+            }
+        }
+    </script>
 </body>
 </html>

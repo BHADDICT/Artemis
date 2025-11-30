@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Lookbook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            color: #000;
+        }
+
+        #clock {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: black;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 6px 10px;
+            border-radius: 6px;
+            z-index: 1000;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: black;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        .lookbook-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-card {
+            position: absolute;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.1s ease-out;
+            z-index: 1;
+        }
+
+        .photo-card:active {
+            cursor: grabbing;
+        }
+
+        .photo-card.focused {
+            z-index: 100;
+        }
+
+        .photo-wrapper {
+            padding: 15px;
+            padding-bottom: 50px;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .photo-info {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            text-align: center;
+        }
+
+        .photo-title {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: 0.2s;
+            font-weight: 300;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: 0.4;
+            text-align: center;
+            z-index: 1000;
+            text-transform: uppercase;
+        }
+
+        /* Responsive sizes for different cards */
+        .photo-card.small {
+            width: 280px;
+            height: 380px;
+        }
+
+        .photo-card.medium {
+            width: 320px;
+            height: 420px;
+        }
+
+        .photo-card.large {
+            width: 360px;
+            height: 480px;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+    <a href="#" class="back-button">← BACK</a>
+
+    <div class="lookbook-container" id="lookbookContainer">
+        <!-- Photos will be dynamically added here -->
+    </div>
+
+    <div class="instructions">Drag photos around • Click to bring forward • X to close</div>
+
+    <script>
+        // Photo data - replace these URLs with your actual images
+        const photos = [
+            { url: '../img/bg.JPEG', title: 'Look 01', size: 'medium' },
+            { url: './img/pho3.JPEG', title: 'Look 02', size: 'large' },
+            { url: './img/poo2.jpg', title: 'Look 03', size: 'small' },
+            { url: './img/pho15.JPEG', title: 'Look 04', size: 'medium' },
+            { url: './img/pho16.JPEG', title: 'Look 05', size: 'large' },
+            { url: './img/pixel3.JPG', title: 'Look 06', size: 'small' },
+            { url: './img/pho17.JPG', title: 'Look 07', size: 'medium' },
+             { url: './img/poo1.jpg', title: 'Look 07', size: 'medium' },
+            { url: './img/pixel3.JPG', title: 'Look 08', size: 'large' }
+        ];
+
+        const container = document.getElementById('lookbookContainer');
+        let highestZIndex = 1;
+
+        // Create photo cards
+        photos.forEach((photo, index) => {
+            const card = document.createElement('div');
+            card.className = `photo-card ${photo.size}`;
+            
+            // Random initial position
+            const randomX = Math.random() * (window.innerWidth - 400) + 50;
+            const randomY = Math.random() * (window.innerHeight - 500) + 50;
+            const randomRotate = (Math.random() - 0.5) * 8; // Random rotation between -4 and 4 degrees
+            
+            card.style.left = randomX + 'px';
+            card.style.top = randomY + 'px';
+            card.style.transform = `rotate(${randomRotate}deg)`;
+            
+            card.innerHTML = `
+                <span class="close-btn">&times;</span>
+                <div class="photo-wrapper">
+                    <img src="${photo.url}" alt="${photo.title}">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">${photo.title}</div>
+                </div>
+            `;
+            
+            container.appendChild(card);
+            
+            // Dragging functionality
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = randomX;
+            let yOffset = randomY;
+            let currentRotation = randomRotate;
+
+            card.addEventListener('mousedown', dragStart);
+            card.addEventListener('touchstart', dragStart);
+
+            function dragStart(e) {
+                if (e.target.classList.contains('close-btn')) return;
+                
+                // Bring to front
+                highestZIndex++;
+                card.style.zIndex = highestZIndex;
+                card.classList.add('focused');
+                
+                if (e.type === 'touchstart') {
+                    initialX = e.touches[0].clientX - xOffset;
+                    initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    initialX = e.clientX - xOffset;
+                    initialY = e.clientY - yOffset;
+                }
+
+                isDragging = true;
+            }
+
+            function drag(e) {
+                if (!isDragging) return;
+
+                e.preventDefault();
+
+                if (e.type === 'touchmove') {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                } else {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                }
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                card.style.left = currentX + 'px';
+                card.style.top = currentY + 'px';
+            }
+
+            function dragEnd() {
+                isDragging = false;
+            }
+
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('touchend', dragEnd);
+
+            // Close button
+            const closeBtn = card.querySelector('.close-btn');
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                card.style.opacity = '0';
+                card.style.transform = `rotate(${currentRotation}deg) scale(0.8)`;
+                setTimeout(() => {
+                    card.remove();
+                }, 300);
+            });
+        });
+
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>

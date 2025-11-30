@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="./img/head.png" type="image/png">
+  <title>ARTEMIS Checkout</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #333;
+      --primary-dark: #000;
+      --bg: #ffffff;
+      --card: #ffffff;
+      --text: #333333;
+      --input-bg: #ffffff;
+      --input-border: #d1d1d1;
+      --input-placeholder: #999;
+      --shadow: none;
+    }
+    * { box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg); 
+      color: var(--text); 
+      margin:0; 
+      padding:0;
+      line-height: 1.6;
+    }
+    header { 
+      text-align:center; 
+      padding:20px; 
+      background:#fff; 
+      position:relative; 
+      border-bottom: 1px solid #e0e0e0; 
+    }
+    header img { max-width:80px; }
+    .checkout-container { 
+      display:flex; 
+      flex-wrap:wrap; 
+      gap:60px; 
+      padding:60px 40px; 
+      max-width:1400px; 
+      margin:auto; 
+    }
+    .checkout-left { 
+      flex: 1.2;
+      min-width: 400px;
+    }
+    .checkout-right { 
+      flex: 0.8;
+      background: #fafafa;
+      padding: 30px;
+      border-radius: 8px;
+      align-self: flex-start;
+      position: sticky;
+      top: 20px;
+    }
+    h2 { 
+      font-size:16px; 
+      color:var(--text); 
+      margin-bottom:12px;
+      margin-top:32px;
+      font-weight:600;
+      letter-spacing: -0.2px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    
+    input, select { 
+      width:100%; 
+      padding:14px 16px; 
+      background:var(--input-bg); 
+      color:var(--text); 
+      border:1px solid var(--input-border); 
+      border-radius:6px; 
+      margin-bottom:16px; 
+      font-size:15px;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #333;
+    }
+    input::placeholder { color:var(--input-placeholder); }
+    
+    .name-fields { display:flex; gap:16px; }
+    .name-fields input { flex:1; }
+    
+    .row-fields { display:flex; gap:16px; }
+    .row-fields input { flex:1; }
+    
+    label.checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+    }
+    
+    button { 
+      background:var(--primary); 
+      color:#fff; 
+      padding:16px; 
+      border:none; 
+      width:100%; 
+      font-weight:600; 
+      font-size:15px; 
+      border-radius:6px; 
+      margin-top:24px; 
+      cursor:pointer; 
+      transition:0.2s;
+      font-family: inherit;
+    }
+    button:hover { background:var(--primary-dark); }
+    
+    /* Order Summary Styles */
+    #orderSummary .item { 
+      display:flex; 
+      gap: 16px;
+      align-items:flex-start; 
+      border-bottom:1px solid #e5e5e5; 
+      padding:16px 0;
+      position: relative;
+    }
+    #orderSummary .item:first-child { padding-top: 0; }
+    
+    #orderSummary img { 
+      width:64px; 
+      height:64px; 
+      object-fit:cover; 
+      border-radius:8px;
+      border: 1px solid #e5e5e5;
+      background: white;
+      position: relative;
+    }
+    
+    .item-badge {
+      position: absolute;
+      top: -6px;
+      left: 52px;
+      background: #666;
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      border: 2px solid #fafafa;
+    }
+    
+    .item-details {
+      flex: 1;
+      font-size: 14px;
+    }
+    
+    .item-details strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .item-details small {
+      color: #666;
+      font-size: 13px;
+    }
+    
+    .item-price {
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    #orderSummary .summary { 
+      margin-top:24px; 
+      font-size:15px;
+      padding-top:20px;
+      border-top: 1px solid #e5e5e5;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    
+    .summary-row.total {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e5e5;
+    }
+    
+    .summary-row .label {
+      color: #666;
+    }
+    
+    .summary-row.total .label {
+      color: #333;
+    }
+    
+    /* Promo code section */
+    .promo-section {
+      margin: 24px 0;
+      padding: 16px;
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+    }
+    
+    .promo-input-group {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .promo-input-group input {
+      margin-bottom: 0;
+    }
+    
+    .promo-input-group button {
+      width: auto;
+      padding: 14px 24px;
+      margin: 0;
+      white-space: nowrap;
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #d1d1d1;
+    }
+    
+    .promo-input-group button:hover {
+      background: #e5e5e5;
+    }
+    
+    #promoMessage {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    
+    .payment-card-modern { 
+      background:#fff; 
+      color:#333; 
+      text-align:center; 
+      padding:40px 30px; 
+      border-radius:12px; 
+      max-width:500px; 
+      margin:auto; 
+      box-shadow:0 2px 20px rgba(0,0,0,0.1); 
+      border: 1px solid #e0e0e0; 
+    }
+    .countdown-timer { 
+      font-size:24px; 
+      font-weight:bold; 
+      color:#e74c3c; 
+      margin-bottom:16px; 
+    }
+    .store-name { 
+      font-weight:600; 
+      font-size:15px; 
+      color:#666; 
+      margin-bottom:8px; 
+    }
+    .price-label { 
+      font-size:20px; 
+      margin-bottom:4px; 
+      color:#333; 
+    }
+    .total-amount { 
+      font-size:36px; 
+      font-weight:bold; 
+      margin-bottom:24px; 
+      color:#333; 
+    }
+    .loader { 
+      border:3px solid #f3f3f3; 
+      border-top:3px solid #333; 
+      border-radius:50%; 
+      width:20px; 
+      height:20px; 
+      animation:spin 0.8s linear infinite; 
+      display:inline-block; 
+      margin-left:8px; 
+      vertical-align:middle; 
+    }
+    @keyframes spin { 
+      0%{transform:rotate(0deg);} 
+      100%{transform:rotate(360deg);} 
+    }
+    .payment-method label { 
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .payment-method input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+    
+    @media(max-width:768px){
+      .checkout-container{
+        flex-direction:column;
+        padding: 20px;
+        gap: 30px;
+      }
+      .checkout-left {
+        min-width: auto;
+      }
+      .checkout-right {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="product.html" style="position:absolute;top:25px;left:25px;font-size:26px;color:#333;"><i class="fas fa-home"></i></a>
+       <img src="./img/logo3.png" class="top-logo" alt="Logo">
+</header>
+
+<div class="checkout-container">
+  <div class="checkout-left">
+    <h2>Contact</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    
+    <h2>Delivery</h2>
+    <select id="regionSelect">
+      <option value="">Country/Region</option>
+      <option value="MY">Cambodia - Phnom Penh</option>
+      <option value="pr">Cambodia - Provinces</option>
+    </select>
+    <div id="provinceInputContainer" style="display:none;">
+      <input type="text" id="provinceInput" placeholder="Your Province" />
+    </div>
+    <div class="name-fields">
+      <input type="text" id="firstName" placeholder="First Name" />
+      <input type="text" id="lastName" placeholder="Last Name" />
+    </div>
+    <input type="text" id="instagramInput" placeholder="Instagram @" />
+    <input type="text" id="address" placeholder="Address" />
+    <div class="row-fields">
+      <input type="text" id="city" placeholder="City" />
+      <input type="text" id="postalCode" placeholder="Postal code (optional)" />
+    </div>
+    <input type="tel" id="phone" placeholder="Phone" />
+    
+    <h2>Payment</h2>
+    <div class="payment-method">
+      <label>
+        <input type="radio" name="paymentMethod" value="paid" checked /> 
+        Paid (QR)
+      </label>
+    </div>
+    
+    <div class="promo-section">
+      <h2 style="margin-top:0;">Discount code</h2>
+      <div class="promo-input-group">
+        <input type="text" id="promoCodeInput" placeholder="Discount code" />
+        <button type="button" id="applyPromoBtn">Apply</button>
+      </div>
+      <div id="promoMessage"></div>
+    </div>
+
+    <button id="payNow">Complete order</button>
+  </div>
+  
+  <div class="checkout-right" id="orderSummary"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  emailjs.init("1uThHFmx4SJgzaxOh");
+
+  // Get cart from localStorage - works for all product pages (pro1.html, pro2.html, pro3.html, etc.)
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const deliveryFee = 2.00; // Fixed $2 shipping
+  let discountAmountFixed = 0; 
+
+  console.log("Cart loaded from localStorage:", cart);
+
+  function renderOrderSummary(){
+    const summary = document.getElementById("orderSummary");
+    summary.innerHTML = "";
+    
+    if(cart.length === 0){ 
+      summary.innerHTML = "<p>Your cart is empty.</p>"; 
+      return; 
+    }
+    
+    let subtotal = 0;
+    cart.forEach(item => {
+      const itemPrice = item.price || 0;
+      const itemQty = item.quantity || item.qty || 1;
+      const itemTotal = itemPrice * itemQty;
+      subtotal += itemTotal;
+      
+      summary.innerHTML += `
+        <div class="item">
+          <div style="position: relative;">
+            <img src="${item.image || item.img || ''}" alt="${item.name || item.title || 'Product'}" onerror="this.style.display='none'"/>
+            <span class="item-badge">${itemQty}</span>
+          </div>
+          <div class="item-details">
+            <strong>${item.name || item.title || 'Product'}</strong>
+            <small>Size: ${item.size || '-'} · Color: ${item.color || '-'}</small>
+          </div>
+          <div class="item-price">${itemTotal.toFixed(2)}</div>
+        </div>`;
+    });
+    
+    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
+    summary.innerHTML += `
+      <div class="summary">
+        <div class="summary-row">
+          <span class="label">Subtotal</span>
+          <span>${subtotal.toFixed(2)}</span>
+        </div>
+        ${discountAmountFixed > 0 ? `
+          <div class="summary-row">
+            <span class="label">Discount</span>
+            <span style="color:#27ae60;">-${discountAmountFixed.toFixed(2)}</span>
+          </div>` : ""}
+        <div class="summary-row">
+          <span class="label">Shipping</span>
+          <span>${deliveryFee.toFixed(2)}</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label">Total</span>
+          <span>USD ${total.toFixed(2)}</span>
+        </div>
+      </div>`;
+  }
+
+  // Show/hide province input if region is PR
+  document.getElementById("regionSelect").addEventListener("change", function(){
+    document.getElementById("provinceInputContainer").style.display = this.value === "pr" ? "block" : "none";
+  });
+
+  // Promo code handler with Apply button
+  document.getElementById("applyPromoBtn").addEventListener("click", function() {
+    const code = document.getElementById("promoCodeInput").value.trim().toUpperCase();
+    const promoMessage = document.getElementById("promoMessage");
+    
+    if (code === "2A") {
+      discountAmountFixed = 2.5;
+      promoMessage.textContent = "✓ Discount code applied";
+      promoMessage.style.color = "#27ae60";
+    } else if (code === "") {
+      discountAmountFixed = 0;
+      promoMessage.textContent = "";
+    } else {
+      discountAmountFixed = 0;
+      promoMessage.textContent = "Invalid discount code";
+      promoMessage.style.color = "#e74c3c";
+      setTimeout(() => {
+        promoMessage.textContent = "";
+      }, 3000);
+    }
+    renderOrderSummary();
+  });
+
+  // Pay Now button click handler
+  document.getElementById("payNow").addEventListener("click", function(){
+    const email = document.getElementById("email").value.trim();
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const instagram = document.getElementById("instagramInput").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const regionSelect = document.getElementById("regionSelect").value;
+    const provinceInput = document.getElementById("provinceInput").value.trim();
+    const promoCode = document.getElementById("promoCodeInput").value.trim().toUpperCase();
+    const region = regionSelect === "pr" ? provinceInput : "Phnom Penh";
+
+    // Validation
+    if(cart.length === 0) return alert("🛒 Your cart is empty.");
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert("❌ Enter valid email.");
+    if(!firstName) return alert("❌ Enter first name.");
+    if(!lastName) return alert("❌ Enter last name.");
+    if(!instagram) return alert("❌ Enter Instagram username.");
+    if(!address) return alert("❌ Enter full address.");
+
+    const phonePattern = /^\+?\d{7,15}$/;
+    const cleanedPhone = phone.replace(/\D/g,"");
+    const repeatedDigits = /^(\d)\1+$/;
+    const sequential = ["0123456789","123456789","987654321"].some(seq => cleanedPhone.startsWith(seq));
+    if(!phonePattern.test(phone) || repeatedDigits.test(cleanedPhone) || sequential || /0{5,}/.test(cleanedPhone)) 
+      return alert("❌ Invalid phone number.");
+    if(!regionSelect) return alert("❌ Select region.");
+    if(regionSelect === "pr" && !provinceInput) return alert("❌ Enter province name.");
+
+    // Apply promo code
+    if(promoCode === "2A") {
+      discountAmountFixed = 2.5;
+    } else {
+      discountAmountFixed = 0;
+    }
+
+    // Build order table for email
+    let subtotal = 0, rows = "";
+    cart.forEach(item => {
+      const itemPrice = item.price || 0;
+      const itemQty = item.quantity || item.qty || 1;
+      const itemTotal = itemPrice * itemQty;
+      subtotal += itemTotal;
+      const itemName = item.name || item.title || 'Product';
+      const itemSize = item.size || '-';
+      const itemColor = item.color || '-';
+      
+      rows += `<tr>
+        <td>${itemName}</td>
+        <td>${itemSize}</td>
+        <td>${itemColor}</td>
+        <td>${itemQty}</td>
+        <td>$${itemTotal.toFixed(2)}</td>
+      </tr>`;
+    });
+    
+    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
+    const orderHTML = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:600px;">
+      <thead style="background:#eee;">
+        <tr><th>Product</th><th>Size</th><th>Color</th><th>Qty</th><th>Price</th></tr>
+      </thead>
+      <tbody>${rows}</tbody></table>
+      <br/><strong>Subtotal:</strong> $${subtotal.toFixed(2)}
+      <br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}
+      ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
+      <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>
+      ${discountAmountFixed > 0 ? `<br/><strong>Promo Code Applied:</strong> ${promoCode}` : ""}`;
+
+    // Show payment QR screen
+    document.querySelector(".checkout-left").style.display = "none";
+    document.getElementById("orderSummary").innerHTML = `
+      <div class="payment-card-modern">
+        <div class="countdown-timer" id="countdown">06:00</div>
+        <div class="store-name">artemisphnompenh</div>
+        <div class="price-label">$</div>
+        <div class="total-amount">${total.toFixed(2)}</div>
+        <div class="qr-wrapper" style="text-align:center;">
+          <p>Scan the QR to Pay with ABA</p>
+          <img src="./img/bank.jpg" alt="ABA QR" style="width:300px;height:auto;border-radius:8px;" />
+        </div>
+        <div style="margin-top:20px;">
+          <p>Send the proof of payment to this Telegram:</p>
+          <p><a href="https://t.me/Tmcartemis34" target="_blank" style="color:#333;font-weight:bold;">📩 @artemis_contact</a></p>
+          <button id="doneBtn" style="display:block;">✅ Done</button>
+        </div>
+      </div>`;
+
+    // Countdown timer for 6 minutes
+    let time = 360;
+    const countdown = document.getElementById("countdown");
+    const timer = setInterval(() => {
+      if(time <= 0){
+        clearInterval(timer);
+        countdown.textContent = "00:00";
+      } else {
+        const min = String(Math.floor(time/60)).padStart(2, "0");
+        const sec = String(time % 60).padStart(2, "0");
+        countdown.textContent = `${min}:${sec}`;
+        time--;
+      }
+    }, 1000);
+
+    // Done button sends the email
+    requestAnimationFrame(() => {
+      const doneBtn = document.getElementById("doneBtn");
+      if(!doneBtn) return;
+      doneBtn.addEventListener("click", function(){
+        doneBtn.disabled = true;
+        doneBtn.innerHTML = "Sending... <span class='loader'></span>";
+        
+        emailjs.send("service_wuj46zm","template_3xm1tyg",{
+          user_email: email,
+          user_name: `${firstName} ${lastName}`,
+          message_html: `<strong>Email:</strong> ${email}<br/>
+                        <strong>Name:</strong> ${firstName} ${lastName}<br/>
+                        <strong>Instagram:</strong> ${instagram}<br/>
+                        <strong>Address:</strong> ${address}<br/>
+                        <strong>Phone:</strong> ${phone}<br/>
+                        <strong>Region:</strong> ${region}<br/>
+                        ${discountAmountFixed > 0 ? `<strong>Promo Code Applied:</strong> ${promoCode}<br/>` : ""}
+                        <br/>${orderHTML}`
+        })
+        .then(() => {
+          alert("✅ Order sent successfully!");
+          localStorage.removeItem("cart");
+          localStorage.removeItem("deliveryFee");
+          window.location.href = "thankyou.html";
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ Failed to send order. Please try again.");
+          doneBtn.disabled = false;
+          doneBtn.innerHTML = "✅ Done";
+        });
+      });
+    });
+  });
+
+  renderOrderSummary();
+});
+</script>
+
+</body>
+</html>

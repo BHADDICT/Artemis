@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goddess Tee - Product Details</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* ---- TOP BAR ---- */
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .back-button {
+        position: absolute;
+        left: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+        background: #f9f9f9;
+        border-color: #333;
+    }
+
+    .back-arrow {
+        font-size: 18px;
+    }
+
+    .top-logo {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+    }
+
+     .cart-icon {
+        position: absolute;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cart-icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: #333;
+    }
+
+    /* ---- CART COUNT BADGE ---- */
+    .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #333;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* ---- CART SIDEBAR ---- */
+    .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 450px;
+        height: 100vh;
+        background: white;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        transition: right 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cart-sidebar.open {
+        right: 0;
+    }
+
+    .cart-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+    }
+
+    .cart-overlay.active {
+        display: block;
+    }
+
+    .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 25px 30px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .cart-title {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .close-cart {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #333;
+        line-height: 1;
+    }
+
+    .cart-items {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 30px;
+    }
+
+    .cart-item {
+        display: flex;
+        gap: 15px;
+        padding: 20px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cart-item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        background: #f5f5f5;
+    }
+
+    .cart-item-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cart-item-name {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .cart-item-size {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .cart-item-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 50px;
+        padding: 5px 15px;
+    }
+
+    .quantity-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #333;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quantity-btn:hover {
+        color: #000;
+    }
+
+    .quantity {
+        font-weight: 600;
+        font-size: 14px;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .cart-item-price {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .remove-item {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #999;
+        font-size: 20px;
+        padding: 0;
+        margin-left: 10px;
+    }
+
+    .remove-item:hover {
+        color: #333;
+    }
+
+    .cart-footer {
+        border-top: 1px solid #e0e0e0;
+        padding: 25px 30px;
+    }
+
+    .cart-summary {
+        margin-bottom: 20px;
+    }
+
+    .cart-summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 14px;
+    }
+
+    .cart-summary-row.total {
+        font-size: 18px;
+        font-weight: 700;
+        padding-top: 12px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        padding: 16px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+        background: #000;
+    }
+
+    .continue-shopping {
+        width: 100%;
+        padding: 12px;
+        background: none;
+        color: #333;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 60px 30px;
+        color: #999;
+    }
+
+    .empty-cart-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    /* ---- PRODUCT LAYOUT ---- */
+    .product-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* ---- IMAGE GALLERY ---- */
+    .image-section {
+        position: relative;
+    }
+
+    .image-gallery {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        gap: 20px;
+        scrollbar-width: thin;
+        scrollbar-color: #333 #f0f0f0;
+    }
+
+    .image-gallery::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .image-gallery::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+
+    .image-gallery::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 10px;
+    }
+
+    .product-image {
+        min-width: 100%;
+        width: 100%;
+        height: 600px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .scroll-indicator {
+        text-align: center;
+        margin-top: 15px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* ---- PRODUCT DETAILS ---- */
+    .details-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .price {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .tax-info {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    /* ---- SIZE SELECTION ---- */
+    .size-section {
+        margin-bottom: 30px;
+    }
+
+    .size-label {
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .size-options {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .size-btn {
+        padding: 12px 20px;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .size-btn:hover {
+        border-color: #333;
+    }
+
+    .size-btn.selected {
+        background: #333;
+        color: white;
+        border-color: #333;
+    }
+
+    /* ---- ADD TO CART BUTTON ---- */
+    .add-to-cart {
+        width: 100%;
+        padding: 18px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-to-cart:hover {
+        background: #000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* ---- PRODUCT INFO LIST ---- */
+    .product-info {
+        list-style: none;
+    }
+
+    .product-info li {
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .product-info li:before {
+        content: "→ ";
+        color: #333;
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+        .product-container {
+            grid-template-columns: 1fr;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        .product-image {
+            height: 400px;
+        }
+
+        .product-title {
+            font-size: 24px;
+        }
+
+        .top-logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        .cart-sidebar {
+            width: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP BAR: Back Button + Logo + Cart -->
+    <div class="top-bar">
+        <a href="product.html" class="back-button">
+            <span class="back-arrow">←</span>
+        </a>
+
+        <img src="./img/logo3.png" class="top-logo" alt="Logo">
+
+        <div class="cart-icon" id="cartIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </div>
+
+    <!-- CART SIDEBAR -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <div class="cart-title">Your Cart - <span id="cartItemCount">0</span></div>
+            <button class="close-cart" id="closeCart">×</button>
+        </div>
+
+        <div class="cart-items" id="cartItemsContainer">
+            <div class="empty-cart" id="emptyCart">
+                <div class="empty-cart-icon">🛒</div>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <div class="cart-summary-row">
+                    <span>Shipping</span>
+                    <span>Calculated at next step</span>
+                </div>
+                <div class="cart-summary-row total">
+                    <span>Estimated total</span>
+                    <span id="cartTotal">$0.00 USD</span>
+                </div>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+            <button class="continue-shopping" id="continueShopping">Continue Shopping</button>
+        </div>
+    </div>
+
+    <div class="product-container">
+
+        <!-- IMAGES -->
+        <div class="image-section">
+            <div class="image-gallery" id="imageGallery">
+                <img src="./img/pro3.png" alt="Goddess Tee - Front View" class="product-image">
+                <img src="./img/pro33.png" alt="Goddess Tee - Back View" class="product-image">
+               
+            </div>
+            <div class="scroll-indicator">← Scroll to see more images →</div>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="details-section">
+
+            <h1 class="product-title">Artemis Tee with sleeve</h1>
+
+            <div class="price">$28.00 USD</div>
+          
+            <!-- SIZE -->
+            <div class="size-section">
+                <label class="size-label">Size</label>
+                <div class="size-options">
+                    <button class="size-btn selected" data-size="S">S</button>
+                    <button class="size-btn" data-size="M">M</button>
+                    <button class="size-btn" data-size="L">L</button>
+                    <button class="size-btn" data-size="XL">XL</button>
+                </div>
+            </div>
+
+            <!-- ADD TO CART -->
+            <button class="add-to-cart">
+                <span>Add to cart</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-left: 8px;">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 
+                             2-1.61L23 6H6"></path>
+                </svg>
+            </button>
+
+            <!-- INFO -->
+            <ul class="product-info">
+               <li>250 gsm, cotton 100%</li>
+<li>Red rhinestone</li>
+<li>Print: discharge</li>
+<li>Custom boxy fitted</li>
+<li>Connected white sleeve</li>
+
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Load cart from localStorage on page load
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Size selection
+    const sizeButtons = document.querySelectorAll('.size-btn');
+    let selectedSize = 'S';
+    
+    sizeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sizeButtons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSize = btn.dataset.size;
+        });
+    });
+
+    // Add to cart
+    const addToCartBtn = document.querySelector('.add-to-cart');
+    addToCartBtn.addEventListener('click', () => {
+        const product = {
+            id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: 'Artemis station Tee with sleeve',
+            price: 28.00,
+            size: selectedSize,
+            color: 'Black',
+            quantity: 1,
+            image: './img/pro33.png'
+        };
+        
+        // Check if same product with same size already exists
+        const existingIndex = cart.findIndex(item => 
+            item.name === product.name && 
+            item.size === product.size && 
+            item.color === product.color
+        );
+        
+        if (existingIndex !== -1) {
+            // Increase quantity
+            cart[existingIndex].quantity++;
+        } else {
+            // Add new item
+            cart.push(product);
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        updateCart();
+        
+        addToCartBtn.style.background = '#28a745';
+        addToCartBtn.querySelector("span").textContent = "Added!";
+        
+        setTimeout(() => {
+            addToCartBtn.style.background = '#333';
+            addToCartBtn.querySelector("span").textContent = "Add to cart";
+        }, 2000);
+    });
+
+    // Cart functions
+    function updateCart() {
+        const cartCount = document.getElementById('cartCount');
+        const cartItemCount = document.getElementById('cartItemCount');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartTotal = document.getElementById('cartTotal');
+        
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+        cartItemCount.textContent = totalItems;
+        
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <p>Your cart is empty</p>
+                </div>
+            `;
+        } else {
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item" data-id="${item.id}">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-size">Size: ${item.size}</div>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus" data-id="${item.id}">−</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+                                <button class="remove-item" data-id="${item.id}">🗑</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = cart.find(i => i.id === btn.dataset.id);
+                    if (item) {
+                        item.quantity++;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        updateCart();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = cart.find(i => i.id === btn.dataset.id);
+                    if (item && item.quantity > 1) {
+                        item.quantity--;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        updateCart();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    cart = cart.filter(i => i.id !== btn.dataset.id);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCart();
+                });
+            });
+        }
+        
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        cartTotal.textContent = `$${total.toFixed(2)} USD`;
+    }
+
+    // Checkout button - redirect to checkout.html
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+        if (cart.length === 0) {
+            alert('Your cart is empty!');
+            return;
+        }
+        
+        // Save cart to localStorage before redirecting
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Redirect to checkout page
+        window.location.href = 'checkout.html';
+    });
+
+    // Toggle cart
+    const cartIcon = document.getElementById('cartIcon');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const closeCart = document.getElementById('closeCart');
+    const continueShopping = document.getElementById('continueShopping');
+    
+    function openCart() {
+        cartSidebar.classList.add('open');
+        cartOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeCartFunc() {
+        cartSidebar.classList.remove('open');
+        cartOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    cartIcon.addEventListener('click', openCart);
+    closeCart.addEventListener('click', closeCartFunc);
+    cartOverlay.addEventListener('click', closeCartFunc);
+    continueShopping.addEventListener('click', closeCartFunc);
+
+    // Arrow key gallery scrolling
+    const gallery = document.getElementById('imageGallery');
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            gallery.scrollBy({ left: gallery.offsetWidth, behavior: 'smooth' });
+        } else if (e.key === 'ArrowLeft') {
+            gallery.scrollBy({ left: -gallery.offsetWidth, behavior: 'smooth' });
+        }
+    });
+    
+    // Initialize cart on page load
+    updateCart();
+</script>
+
+</body>
+</html>
