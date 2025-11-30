@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-   <title>Artemis Phnom Penh</title>
-<link rel="icon" type="image/png" href="./img/logo3.PNG" />
+   <link rel="icon" type="image/png" href="./img/logo3.PNG" />
 <meta name="description" content="Artemis Phnom Penh is a brand created by Thai Mengchhay, representing elegance, creativity, and modern craftsmanship." />
+
     <style>
         * {
             margin: 0;
@@ -78,6 +78,7 @@
             color: rgb(0, 0, 0);
             font-size: 15px;
             transition: 0.3s ease;
+            cursor: pointer;
         }
 
         .social-icons a:hover {
@@ -187,6 +188,21 @@
             color: #000;
         }
 
+        /* ---- BACK BUTTON ---- */
+        .back-btn {
+            margin-top: 15px;
+            background: transparent;
+            color: #666;
+            font-size: 10px;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .back-btn:hover {
+            background: #f5f5f5;
+            transform: none;
+        }
+
         img {
             width: 100%;
             height: 100%;
@@ -208,6 +224,7 @@
             display: block;
             margin: 10px 0;
             transition: 0.3s;
+            cursor: pointer;
         }
 
         nav a:hover {
@@ -226,6 +243,18 @@
         .instruction:hover {
             opacity: 1;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .info-text {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 
@@ -240,29 +269,43 @@
 
     <nav>
         <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="product.html">PRODUCT</a></li>
-            <li><a href="#contact">CONTACT</a></li>
-            <li><a href="lookbook.html">LOOKBOOK</a></li>
-        
+            <li><a href="index.html" data-page="home">HOME</a></li>
+            <li><a href="product.html" data-page="product">PRODUCT</a></li>
+            <li><a href="#" data-page="contact">CONTACT</a></li>
+            <li><a href="lookbook.html" data-page="lookbook">LOOKBOOK</a></li>
         </ul>
     </nav>
 
     <div class="social-icons">
-        <a href="#instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#tiktok"><i class="fab fa-tiktok"></i></a>
-        <a href="#facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" data-social="instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" data-social="tiktok"><i class="fab fa-tiktok"></i></a>
+        <a href="#" data-social="facebook"><i class="fab fa-facebook-f"></i></a>
     </div>
 
     <div class="instruction" id="waitlistText">JOIN OUR WAITLIST</div>
     
     <div class="popup" id="popup">
         <div class="popup-content">
-            <h2>Join Waitlist</h2>
-            <form id="waitlistForm">
-                <input type="email" name="user_email" id="waitlistEmail" placeholder="Enter your email" required>
-                <button type="submit">Submit</button>
-            </form>
+            <!-- Step 1: Email Form -->
+            <div id="emailStep">
+                <h2>Join Waitlist</h2>
+                <form id="waitlistForm">
+                    <input type="email" name="user_email" id="waitlistEmail" placeholder="Enter your email" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <!-- Step 2: Password Form -->
+            <div id="passwordStep" class="hidden">
+                <h2>Enter Password</h2>
+                <p class="info-text">Check your email for the access password</p>
+                <form id="passwordForm">
+                    <input type="password" id="passwordInput" placeholder="Enter password from email" required>
+                    <button type="submit">Access Website</button>
+                    <button type="button" class="back-btn" id="backBtn">Back to Email</button>
+                </form>
+            </div>
+
             <span class="close-btn" id="closePopup">&times;</span>
         </div>
     </div>
@@ -274,17 +317,68 @@
 
             const popup = document.getElementById("popup");
             const waitlistText = document.getElementById("waitlistText");
-            const openPopupBtn = document.getElementById("openPopup");
             const closePopupBtn = document.getElementById("closePopup");
             const waitlistForm = document.getElementById("waitlistForm");
+            const passwordForm = document.getElementById("passwordForm");
+            const emailStep = document.getElementById("emailStep");
+            const passwordStep = document.getElementById("passwordStep");
+            const backBtn = document.getElementById("backBtn");
+            let hasAccess = false;
 
             const openWaitlist = () => popup.style.display = "flex";
-            const closeWaitlist = () => popup.style.display = "none";
+            const closeWaitlist = () => {
+                if (hasAccess) {
+                    popup.style.display = "none";
+                }
+            };
+
+            // Show popup on page load
+            popup.style.display = "flex";
+
+            // Prevent closing popup without access
+            if (closePopupBtn) {
+                closePopupBtn.addEventListener("click", () => {
+                    if (!hasAccess) {
+                        alert("⚠️ Please join our waitlist and enter the password to access the website!");
+                    } else {
+                        closeWaitlist();
+                    }
+                });
+            }
+
+            // Back button
+            if (backBtn) {
+                backBtn.addEventListener("click", () => {
+                    emailStep.classList.remove("hidden");
+                    passwordStep.classList.add("hidden");
+                });
+            }
+
+            // Intercept all navigation clicks
+            document.querySelectorAll("nav a").forEach(link => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (!hasAccess) {
+                        openWaitlist();
+                        alert("⚠️ Please join our waitlist and enter the password to access the website!");
+                    }
+                });
+            });
+
+            // Intercept all social icon clicks
+            document.querySelectorAll(".social-icons a").forEach(link => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (!hasAccess) {
+                        openWaitlist();
+                        alert("⚠️ Please join our waitlist and enter the password to access the website!");
+                    }
+                });
+            });
 
             if (waitlistText) waitlistText.addEventListener("click", openWaitlist);
-            if (openPopupBtn) openPopupBtn.addEventListener("click", openWaitlist);
-            if (closePopupBtn) closePopupBtn.addEventListener("click", closeWaitlist);
 
+            // Handle email submission
             if (waitlistForm) {
                 waitlistForm.addEventListener("submit", function(e) {
                     e.preventDefault();
@@ -292,19 +386,38 @@
                     const imageInput = document.createElement("input");
                     imageInput.type = "hidden"; 
                     imageInput.name = "image_url";
-                    imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/poster.png";
+                    imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/waitlist.jpg";
                     this.appendChild(imageInput);
 
                     emailjs.sendForm("service_8zq4q6o", "template_phcoej8", this)
                         .then(() => {
-                            alert("✅ Thanks for joining! Check your inbox for our special deal.");
-                            popup.style.display = "none";
-                            waitlistForm.reset();
+                            alert("✅ Email sent! Check your inbox for the access password.");
+                            emailStep.classList.add("hidden");
+                            passwordStep.classList.remove("hidden");
                         })
                         .catch((error) => {
                             console.error("FAILED...", error);
                             alert("❌ Oops! Something went wrong. Try again later.");
                         });
+                });
+            }
+
+            // Handle password submission
+            if (passwordForm) {
+                passwordForm.addEventListener("submit", function(e) {
+                    e.preventDefault();
+                    
+                    const enteredPassword = document.getElementById("passwordInput").value;
+                    const correctPassword = "WINTER"; // Change this to your desired password
+                    
+                    if (enteredPassword === correctPassword) {
+                        hasAccess = true;
+                        alert("✅ Access granted! Welcome to the website.");
+                        popup.style.display = "none";
+                        passwordForm.reset();
+                    } else {
+                        alert("❌ Incorrect password. Please check your email and try again.");
+                    }
                 });
             }
         });
