@@ -226,6 +226,12 @@
         .instruction:hover {
             opacity: 1;
         }
+          .disabled {
+      pointer-events: none;  /* disables clicking */
+      color: gray;           /* optional: show disabled look */
+      opacity: 0.6;
+      cursor: default;
+  }
     </style>
 </head>
 
@@ -241,7 +247,7 @@
     <nav>
         <ul>
             <li><a href="index.html">HOME</a></li>
-            <li><a href="product.html">PRODUCT</a></li>
+            <li><a href="product.html" class="disabled">PRODUCT</a></li>
             <li><a href="#contact">CONTACT</a></li>
             <li><a href="lookbook.html">LOOKBOOK</a></li>
         
