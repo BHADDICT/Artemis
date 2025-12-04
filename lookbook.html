@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <title>Artemis Phnom Penh</title>
-<link rel="icon" type="image/png" href="./img/logo3.PNG" />
+    <title>ARTEMISMADE</title>
     <style>
         * {
             margin: 0;
@@ -140,20 +139,22 @@
         }
 
         /* Responsive sizes for different cards */
-        .photo-card.small {
-            width: 280px;
-            height: 380px;
-        }
+     .photo-card.small {
+    width: 160px;
+    height: 210px;
+}
 
-        .photo-card.medium {
-            width: 320px;
-            height: 420px;
-        }
+.photo-card.medium {
+    width: 200px;
+    height: 270px;
+}
 
-        .photo-card.large {
-            width: 360px;
-            height: 480px;
-        }
+.photo-card.large {
+    width: 240px;
+    height: 320px;
+}
+
+        
     </style>
 </head>
 <body>
@@ -295,5 +296,35 @@
         setInterval(updateClock, 1000);
         updateClock();
     </script>
+    <script>
+function randomizeCards() {
+    const cards = document.querySelectorAll('.photo-card');
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+
+    cards.forEach(card => {
+        const cardW = card.offsetWidth;
+        const cardH = card.offsetHeight;
+
+        // Random position but fully inside screen
+        const x = Math.random() * (screenW - cardW);
+        const y = Math.random() * (screenH - cardH);
+
+        card.style.left = x + "px";
+        card.style.top = y + "px";
+
+        // Random rotation (optional)
+        const angle = (Math.random() * 20) - 10;
+        card.style.transform = `rotate(${angle}deg)`;
+    });
+}
+
+// run once on load
+window.addEventListener("load", randomizeCards);
+
+// re-run on resize so they always fit again
+window.addEventListener("resize", randomizeCards);
+</script>
+
 </body>
 </html>
