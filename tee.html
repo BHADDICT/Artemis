@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>Artemis Phnom Penh</title>
-<link rel="icon" type="image/png" href="./img/logo3.PNG" />
+    <title>Artemis Station Zipup - Product Details</title>
     <style>
         * {
             margin: 0;
@@ -33,7 +32,26 @@
             position: relative;
             margin-bottom: 30px;
         }
+ #sold-out {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #999;
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+ #sold-out::after {
+  content: "/";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(88, 87, 87);
+  font-size: 2em;
 
+  white-space: nowrap;
+}
         .back-button {
             position: absolute;
             left: 0;
@@ -536,7 +554,7 @@
                 <span class="back-arrow">←</span>
             </a>
 
-            <img src="./img/logo3.PNG" class="top-logo" alt="Logo">
+            <img src="./img/logo3.png" class="top-logo" alt="Logo">
 
             <div class="cart-icon" id="cartIcon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -613,9 +631,9 @@
                         <button class="color-btn" data-color="white"
                             style="background: white; border-color: #ddd; width: 40px; height: 40px; padding: 0;"></button>
                         <button class="color-btn" data-color="dark-green"
-                            style="background: #15803d; border-color: #15803d; width: 40px; height: 40px; padding: 0;"></button>
+                            style="background: #15803d; border-color: #15803d; width: 40px; height: 40px; padding: 0;" id="sold-out"></button>
                         <button class="color-btn" data-color="light-blue"
-                            style="background: #94bdff; border-color: #8db6f9; width: 40px; height: 40px; padding: 0;"></button>
+                            style="background: #94bdff; border-color: #8db6f9; width: 40px; height: 40px; padding: 0;" id="sold-out"></button>
                     </div>
                 </div>
 
