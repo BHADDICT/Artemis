@@ -207,7 +207,27 @@
         border-radius: 50px;
         padding: 5px 15px;
     }
+.size-btn.sold-out {
+    position: relative;
+    color: transparent !important; /* hide original text */
+    pointer-events: none;          /* disable click */
+    opacity: 0.4;                  /* dim */
+    border-color: #473f3f;
+}
 
+.size-btn.sold-out::after {
+    content: "/";                  /* slash indicator */
+    color: #888;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.size-btn.sold-out:hover {
+    opacity: 0.4; /* no hover effect */
+}
     .quantity-btn {
         background: none;
         border: none;
@@ -579,10 +599,10 @@
             <div class="size-section">
                 <label class="size-label">Size</label>
                 <div class="size-options">
-                    <button class="size-btn selected" data-size="S">S</button>
-                    <button class="size-btn" data-size="M">M</button>
+                    <button class="size-btn sold-out" data-size="S">S</button>
+                    <button class="size-btn selected" data-size="M">M</button>
                     <button class="size-btn" data-size="L">L</button>
-                    <button class="size-btn" data-size="XL">XL</button>
+                    <button class="size-btn sold-out" data-size="XL">XL</button>
                 </div>
             </div>
 
