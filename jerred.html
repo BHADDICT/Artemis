@@ -248,25 +248,28 @@
     }
 .size-btn.sold-out {
     position: relative;
-    color: transparent !important; /* hide original text */
-    pointer-events: none;          /* disable click */
-    opacity: 0.4;                  /* dim */
+    pointer-events: none;   /* disable click */
+    opacity: 0.4;           /* dim */
     border-color: #473f3f;
+    color: #000;            /* KEEP text visible */
 }
 
 .size-btn.sold-out::after {
-    content: "/";                  /* slash indicator */
+    content: "/";
     color: #888;
     font-weight: bold;
+    font-size: 20px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 .size-btn.sold-out:hover {
-    opacity: 0.4; /* no hover effect */
+    opacity: 0.4;
 }
+
 
     .remove-item:hover {
         color: #333;
