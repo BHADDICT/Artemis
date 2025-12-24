@@ -75,7 +75,27 @@
         align-items: center;
         justify-content: center;
     }
+.size-btn.sold-out {
+    position: relative;
+    color: transparent !important; /* hide original text */
+    pointer-events: none;          /* disable click */
+    opacity: 0.4;                  /* dim */
+    border-color: #473f3f;
+}
 
+.size-btn.sold-out::after {
+    content: "/";                  /* slash indicator */
+    color: #888;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.size-btn.sold-out:hover {
+    opacity: 0.4; /* no hover effect */
+}
     .cart-icon svg {
         width: 28px;
         height: 28px;
@@ -584,7 +604,7 @@
                     <button class="size-btn selected" data-size="S">S</button>
                     <button class="size-btn" data-size="M">M</button>
                     <button class="size-btn" data-size="L">L</button>
-                    <button class="size-btn" data-size="XL">XL</button>
+                    <button class="size-btn sold-out" data-size="XL">XL</button>
                 </div>
             </div>
 
