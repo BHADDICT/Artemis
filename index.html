@@ -3,18 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="./img/logo3.PNG">
-    <meta name="description" content="Artemis Phnom Penh is a brand created by Thai Mengchhay, representing elegance, creativity, and modern craftsmanship.">
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7212190583548318"
-     crossorigin="anonymous"></script>
-
+    <link rel="icon" type="image/png" href="./img/logo3.PNG" />
+    <meta name="description" content="Artemis Phnom Penh is a brand created by Thai Mengchhay, representing elegance, creativity, and modern craftsmanship." />
     <title>Artemis</title>
-
-
 
     <style>
         * {
@@ -275,11 +267,10 @@
     <nav>
         <ul>
             <li><a href="index.html">HOME</a></li>
-            <li><a href="product.html">PRODUCT</a></li>
+            <li><a href="product.html" class="disabled">PRODUCT</a></li>
             <li><a href="#contact">CONTACT</a></li>
             <li><a href="lookbook.html">LOOKBOOK</a></li>
-            <li> <div class="instruction" id="waitlistText">JOIN OUR WAITLIST</div>
-    </li>
+            <li> <div class="instruction" id="waitlistText">JOIN OUR WAITLIST</div></li>
         </ul>
     </nav>
 
@@ -289,7 +280,8 @@
         <a href="#facebook"><i class="fab fa-facebook-f"></i></a>
     </div>
 
-   
+
+    
     <!-- Waitlist Popup -->
     <div class="popup" id="popup">
         <div class="popup-content">
@@ -346,7 +338,7 @@
                     e.preventDefault();
                     const password = document.getElementById("passwordInput").value;
                     
-                    if (password === "winter" || password === "WINTER") {
+                    if (password === "winter" || password === "126") {
                         window.location.href = "product.html";
                     } else {
                         alert("❌ Incorrect password. Please try again.");
@@ -363,7 +355,7 @@
                     const imageInput = document.createElement("input");
                     imageInput.type = "hidden"; 
                     imageInput.name = "image_url";
-                    imageInput.value = "https://raw.githubusercontent.com/BHADDICT/artemis-assets/main/waitlist.jpg";
+                    imageInput.value = "https://raw.githubusercontent.com/BHADDICT/Artemis/e83cafd0dfe6f18abbe6bfa3bee581e948932cff/mc.png";
                     this.appendChild(imageInput);
 
                     emailjs.sendForm("service_8zq4q6o", "template_phcoej8", this)
