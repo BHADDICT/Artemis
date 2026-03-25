@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artemis Phnom Penh</title>
-    <meta name="google-adsense-account" content="ca-pub-7212190583548318">
-<link rel="icon" type="image/png" href="./img/logo3.PNG" />
+    <title>Artemis</title>
     <style>
         * {
             margin: 0;
@@ -18,16 +16,7 @@
             background: white;
             color: #333;
         }
-/* .old-price {
-    text-decoration: line-through;
-    color: #888;
-    margin-right: 8px;
-} */
 
-.new-price {
-    color: #000;
-    font-weight: bold;
-}
         /* Header Navigation */
         nav {
             display: flex;
@@ -37,6 +26,16 @@
             font-size: 14px;
             letter-spacing: 2px;
         }
+.old-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 8px;
+}
+
+.new-price {
+    color: #000;
+    font-weight: bold;
+}
 
         nav a {
             color: #666;
@@ -377,14 +376,15 @@
 <body>
     <!-- Header Navigation -->
     <nav>
-        <a href="index.html">HOME</a>
-    </a>
+        <a href="#store">HOME</a>
+        <a href="#contact">CONTACT</a>
+        <a href="#terms">TERMS</a>
     </nav>
 
     <!-- Logo Section -->
     <div class="logo-section">
         <div class="logo-container">
-            <img src="./img/logo3.PNG" alt="Brand Logo" id="logo">
+            <img src="./img/logo3.png" alt="Brand Logo" id="logo">
         </div>
         <h1 class="main-title">COLLECTION</h1>
         <p class="subtitle">ARTEMISMADE </p>
@@ -394,13 +394,78 @@
     <!-- Products Section -->
     <div class="products-container">
         <div class="products-grid" id="productsGrid">
+
+     <a href="dustar.html" class="product-card" data-id="3">
+                <div class="product-image-container">
+                    <img src="./img/mashi2.png" alt="She Devil Shorts Front" class="product-image front">
+                    <img src="./img/mashi.png" alt="She Devil Shorts Back" class="product-image back">
+                    <div class="image-overlay"></div>
+              
+                    <div class="hover-buttons">
+                    
+                         
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                     <h3 class="product-name">ARTEMIS DUSTSTAR TEE</h3>
+                    <p class="product-price">$28.00 USD</p>
+                  
+                  
+                </div>
+            </a>
+     <a href="grey.html" class="product-card" data-id="3">
+                <div class="product-image-container">
+                    <img src="./img/grey1.png" alt="She Devil Shorts Front" class="product-image front">
+                    <img src="./img/grey.png" alt="She Devil Shorts Back" class="product-image back">
+                    <div class="image-overlay"></div>
+              
+                    <div class="hover-buttons">
+                    
+                         
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">ARTEMIS GUARDIAN ZIPUP</h3>
+                    <p class="product-price">$35.00 USD</p>
+                  
+                </div>
+            </a>
+     <a href="batmantee.html" class="product-card" data-id="3">
+                <div class="product-image-container">
+                    <img src="./img/pro4.png" alt="She Devil Shorts Front" class="product-image front">
+                    <img src="./img/pro44.png" alt="She Devil Shorts Back" class="product-image back">
+                    <div class="image-overlay"></div>
+              
+                    <div class="hover-buttons">
+                    
+                         
+                        </button>
+                    </div>
+                    <div class="floating-star">★</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Crimson blink blink</h3>
+                    <p class="product-price">$27.00 USD</p>
+                  
+                </div>
+            </a>
             <!-- Product 1 -->
             <a href="batman.html" class="product-card" data-id="1">
                 <div class="product-image-container">
                     <img src="./img/pro1.png" alt="Muted Shorts Front" class="product-image front">
                     <img src="./img/pro2.png" alt="Muted Shorts Back" class="product-image back">
                     <div class="image-overlay"></div>
-                  
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 1)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
@@ -416,7 +481,14 @@
                     <img src="./img/pro3.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/pro33.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                  <div class="status-badge">SOLD OUT</div>
+                      <div class="status-badge">SOLD OUT</div>
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
@@ -433,7 +505,11 @@
                     <img src="./img/pro44.png" alt="She Devil Shorts Back" class="product-image back">
                     <div class="image-overlay"></div>
               
-                    <div class="status-badge">SOLD OUT</div>
+                    <div class="hover-buttons">
+                    
+                         
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
@@ -447,12 +523,18 @@
                     <img src="./img/pro6.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/pro66.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">Artemis station pant</h3>
-                    <p class="product-price">$32.00 USD</p>
+                    <p class="product-price">$30.00 USD</p>
                    
                 </div>
             </a>
@@ -462,7 +544,13 @@
                     <img src="./img/eve4.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/eve3.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                  
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
@@ -472,24 +560,30 @@
                 </div>
             </a>
 
-       <a href="tshirt.html" class="product-card" data-id="4">
+       <a href="product2.html" class="product-card" data-id="4">
                 <div class="product-image-container">
                     <img src="./img/frontbat.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/new.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                   
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">ARTEMIS FANTASY PARK</h3>
-                    <p class="product-price">
-        <span class="product-price">$25.00</span>
-
+                     <p class="product-price">
+        <span class="old-price">$25.00</span>
+        <span class="new-price">$20.00</span>
     </p>
                    
                 </div>
             </a>
-                   <!-- <a class="product-card" data-id="4">
+                   <!-- <a  class="product-card" data-id="4">
                 <div class="product-image-container">
                     <img src="./img/hoodiefront.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/hoodieback.png" alt="Pank Hoodie Back" class="product-image back">
@@ -510,7 +604,7 @@
                    
                 </div>
             </a> -->
-                   <!-- <a  class="product-card" data-id="4">
+                   <a href="product2.html" class="product-card" data-id="4">
                 <div class="product-image-container">
                     <img src="./img/selu2.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/selu.png" alt="Pank Hoodie Back" class="product-image back">
@@ -530,20 +624,26 @@
                     <p class="product-price">$30.00 USD</p>
                    
                 </div>
-            </a> -->
+            </a>
                    <a href="jerred.html" class="product-card" data-id="4">
                 <div class="product-image-container">
                     <img src="./img/jer.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/jerback.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                   
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">ARTEMIS VISCA BARCA</h3>
-                     <p class="product-price">
-        <span class="product-price">$30.00</span>
-      
+                                    <p class="product-price">
+        <span class="old-price">$30.00</span>
+        <span class="new-price">$25.00</span>
     </p>
                    
                 </div>
@@ -553,31 +653,43 @@
                     <img src="./img/jerwhitefront.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/jerwhite.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">ARTEMIS hala madrid</h3>
-                    <p class="product-price">
-        <span class="product-price">$30.00</span>
-      
+                     <p class="product-price">
+        <span class="old-price">$30.00</span>
+        <span class="new-price">$25.00</span>
     </p>
                    
                 </div>
             </a>
-                   <a href="madehoodie.html" class="product-card" data-id="4">
+                   <a href="product2.html" class="product-card" data-id="4">
                 <div class="product-image-container">
                     <img src="./img/ho1.png" alt="Pank Hoodie Front" class="product-image front">
                     <img src="./img/ho.png" alt="Pank Hoodie Back" class="product-image back">
                     <div class="image-overlay"></div>
-                  
+                    <div class="hover-buttons">
+                        <button class="icon-btn like-btn" onclick="toggleLike(event, 2)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="floating-star">★</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">ARTEMISMADE HOODIE</h3>
-                    <p class="product-price">
-        <span class="product-price">$32.00</span>
-      
+                   <p class="product-price">
+        <span class="old-price">$32.00</span>
+        <span class="new-price">$25.00</span>
     </p>
                    
                 </div>
