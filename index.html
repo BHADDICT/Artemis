@@ -27,17 +27,24 @@
             color: rgb(0, 0, 0);
         }
         
-        #clock {
+        #countdown {
             position: absolute;
             top: 15px;
             left: 15px;
-            font-size: 14px;
+            font-size: 11px;
             font-weight: bold;
             letter-spacing: 2px;
             color: black;
             background: rgba(255, 255, 255, 0.6);
             padding: 6px 10px;
             border-radius: 6px;
+            text-transform: uppercase;
+            line-height: 1.6;
+        }
+
+        #countdown.unlocked {
+            letter-spacing: 3px;
+            font-size: 10px;
         }
 
         #keyIcon {
@@ -103,7 +110,6 @@
             transform: translateY(-4px);
         }
 
-        /* ---- POPUP OVERLAY ---- */
         .popup {
             position: fixed;
             top: 0;
@@ -118,7 +124,6 @@
             z-index: 999;
         }
 
-        /* ---- POPUP BOX ---- */
         .popup-content {
             background: #fff;
             padding: 40px 50px;
@@ -136,7 +141,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* ---- TITLE ---- */
         .popup-content h2 {
             font-size: 11px;
             letter-spacing: 3px;
@@ -145,7 +149,6 @@
             text-transform: uppercase;
         }
 
-        /* ---- INPUT ---- */
         .popup-content input {
             width: 100%;
             padding: 12px 15px;
@@ -168,7 +171,6 @@
             font-size: 12px;
         }
 
-        /* ---- BUTTON ---- */
         .popup-content button {
             width: 100%;
             padding: 12px;
@@ -189,7 +191,6 @@
             transform: translateY(-2px);
         }
 
-        /* ---- CLOSE BUTTON (X) ---- */
         .close-btn {
             position: absolute;
             top: 15px;
@@ -255,7 +256,7 @@
 </head>
 
 <body>
-    <div id="clock"></div>
+    <div id="countdown"></div>
     <div id="keyIcon"><i class="fas fa-key"></i></div>
 
     <div class="logo-container" id="logoContainer">
@@ -267,10 +268,10 @@
     <nav>
         <ul>
             <li><a href="index.html">HOME</a></li>
-            <li><a href="product.html" class="disabled">PRODUCT</a></li>
+            <li><a href="product.html" id="productLink" class="disabled">PRODUCT</a></li>
             <li><a href="#contact">CONTACT</a></li>
             <li><a href="lookbook.html">LOOKBOOK</a></li>
-            <li> <div class="instruction" id="waitlistText">JOIN OUR WAITLIST</div></li>
+            <li><div class="instruction" id="waitlistText">JOIN OUR WAITLIST</div></li>
         </ul>
     </nav>
 
@@ -280,8 +281,6 @@
         <a href="#facebook"><i class="fab fa-facebook-f"></i></a>
     </div>
 
-
-    
     <!-- Waitlist Popup -->
     <div class="popup" id="popup">
         <div class="popup-content">
@@ -315,7 +314,6 @@
             const passwordPopup = document.getElementById("passwordPopup");
             const waitlistText = document.getElementById("waitlistText");
             const keyIcon = document.getElementById("keyIcon");
-            const openPopupBtn = document.getElementById("openPopup");
             const closePopupBtn = document.getElementById("closePopup");
             const closePasswordPopupBtn = document.getElementById("closePasswordPopup");
             const waitlistForm = document.getElementById("waitlistForm");
@@ -324,20 +322,18 @@
             const openWaitlist = () => popup.style.display = "flex";
             const closeWaitlist = () => popup.style.display = "none";
             const openPasswordPopup = () => passwordPopup.style.display = "flex";
-            const closePasswordPopup = () => passwordPopup.style.display = "none";
+            const closePasswordPopupFn = () => passwordPopup.style.display = "none";
 
             if (waitlistText) waitlistText.addEventListener("click", openWaitlist);
-            if (openPopupBtn) openPopupBtn.addEventListener("click", openWaitlist);
             if (closePopupBtn) closePopupBtn.addEventListener("click", closeWaitlist);
+            if (closePasswordPopupBtn) closePasswordPopupBtn.addEventListener("click", closePasswordPopupFn);
             if (keyIcon) keyIcon.addEventListener("click", openPasswordPopup);
-            if (closePasswordPopupBtn) closePasswordPopupBtn.addEventListener("click", closePasswordPopup);
 
             // Password form submission
             if (passwordForm) {
                 passwordForm.addEventListener("submit", function(e) {
                     e.preventDefault();
                     const password = document.getElementById("passwordInput").value;
-                    
                     if (password === "winter" || password === "126") {
                         window.location.href = "product.html";
                     } else {
@@ -353,7 +349,7 @@
                     e.preventDefault();
 
                     const imageInput = document.createElement("input");
-                    imageInput.type = "hidden"; 
+                    imageInput.type = "hidden";
                     imageInput.name = "image_url";
                     imageInput.value = "https://raw.githubusercontent.com/BHADDICT/Artemis/e83cafd0dfe6f18abbe6bfa3bee581e948932cff/mc.png";
                     this.appendChild(imageInput);
@@ -374,17 +370,55 @@
     </script>
 
     <script>
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
+        // April 4, 2026 at 19:00 ICT (Cambodia, UTC+7) = 12:00 UTC
+        const UNLOCK_TIME = new Date('2026-04-04T12:00:00Z');
 
-            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        function checkUnlock() {
+            const productLink = document.getElementById('productLink');
+            const keyIcon = document.getElementById('keyIcon');
+            const now = new Date();
+
+            if (now >= UNLOCK_TIME) {
+                productLink.classList.remove('disabled');
+                productLink.style.pointerEvents = 'auto';
+                productLink.style.color = '';
+                productLink.style.opacity = '';
+
+                if (keyIcon) {
+                    keyIcon.onclick = function(e) {
+                        e.stopImmediatePropagation();
+                        window.location.href = 'product.html';
+                    };
+                }
+            }
         }
 
-        setInterval(updateClock, 1000);
-        updateClock();
+        function updateCountdown() {
+            const now = new Date();
+            const diff = UNLOCK_TIME - now;
+            const el = document.getElementById('countdown');
+
+            if (diff <= 0) {
+                el.classList.add('unlocked');
+                el.textContent = '✦ NOW OPEN';
+                checkUnlock();
+                return;
+            }
+
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const hh = String(totalHours).padStart(2, '0');
+            const mm = String(minutes).padStart(2, '0');
+            const ss = String(seconds).padStart(2, '0');
+
+            el.innerHTML = `DROPS IN<br>${hh}:${mm}:${ss}`;
+        }
+
+        checkUnlock();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     </script>
 
     <script>
@@ -400,17 +434,14 @@
             isDragging = true;
             logo.classList.remove("spinning");
             clearTimeout(autoSpinTimeout);
-
             startX = e.touches ? e.touches[0].clientX : e.clientX;
             e.preventDefault();
         }
 
         function drag(e) {
             if (!isDragging) return;
-
             const currentX = e.touches ? e.touches[0].clientX : e.clientX;
             const diff = currentX - startX;
-
             currentRotation += diff * 0.5;
             logo.style.transform = `rotateY(${currentRotation}deg)`;
             startX = currentX;
@@ -418,7 +449,6 @@
 
         function endDrag() {
             isDragging = false;
-
             autoSpinTimeout = setTimeout(() => {
                 logo.classList.add("spinning");
                 logo.style.transform = "";
