@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <link rel="icon" type="image/png" href="./img/logo3.PNG" />
   <title>ARTEMIS — CHECKOUT</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
@@ -254,6 +253,177 @@
       header{padding:16px 24px;}
       .form-grid.two,.form-grid.three{grid-template-columns:1fr;}
     }
+    /* ─────────────────────────────
+   RESPONSIVE IMPROVEMENTS
+───────────────────────────── */
+
+/* TABLET (≤1024px) */
+@media (max-width: 1024px) {
+  .checkout-wrap {
+    grid-template-columns: 1fr 380px;
+  }
+
+  .checkout-left {
+    padding: 40px 32px;
+  }
+
+  .checkout-right {
+    padding: 40px 28px;
+  }
+
+  .summary-title {
+    font-size: 20px;
+  }
+}
+
+/* MOBILE (≤900px) */
+@media (max-width: 900px) {
+  .checkout-wrap {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .checkout-right {
+    order: -1; /* show order summary on top */
+    padding: 28px 20px;
+  }
+
+  .checkout-left {
+    padding: 28px 20px;
+    border-right: none;
+  }
+
+  header {
+    padding: 14px 20px;
+  }
+
+  .header-logo {
+    font-size: 22px;
+  }
+
+  .form-grid.two,
+  .form-grid.three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SMALL MOBILE (≤640px) */
+@media (max-width: 640px) {
+
+  /* HEADER */
+  header {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .back-link {
+    font-size: 10px;
+  }
+
+  .header-logo {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+
+  .header-secure {
+    display: none; /* cleaner mobile */
+  }
+
+  /* FORM */
+  .field input,
+  .field select {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+
+  /* PAYMENT */
+  .pay-methods {
+    flex-direction: column;
+  }
+
+  .pay-method {
+    padding: 14px;
+    font-size: 10px;
+  }
+
+  /* BUTTON */
+  .place-btn {
+    padding: 15px;
+    font-size: 10px;
+  }
+
+  /* SUMMARY */
+  .summary-title {
+    font-size: 18px;
+  }
+
+  .cart-item {
+    gap: 10px;
+  }
+
+  .cart-item-img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .cart-item-name {
+    font-size: 10px;
+  }
+
+  .cart-item-price {
+    font-size: 12px;
+  }
+
+  /* TOTAL */
+  .total-row.grand {
+    font-size: 14px;
+  }
+
+  /* QR */
+  .qr-card {
+    padding: 24px;
+  }
+
+  .qr-countdown {
+    font-size: 36px;
+  }
+
+  .qr-amount {
+    font-size: 28px;
+  }
+
+  .qr-img {
+    width: 180px;
+  }
+
+  /* SUCCESS */
+  .success-title {
+    font-size: 24px;
+  }
+}
+
+/* EXTRA SMALL (≤400px) */
+@media (max-width: 400px) {
+
+  .checkout-left,
+  .checkout-right {
+    padding: 20px 14px;
+  }
+
+  .place-btn {
+    letter-spacing: 2px;
+  }
+
+  .promo-btn {
+    padding: 12px 14px;
+    font-size: 10px;
+  }
+}
   </style>
 </head>
 <body>
