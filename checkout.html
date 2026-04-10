@@ -3,621 +3,639 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="./img/head.png" type="image/png">
-  <title>ARTEMIS Checkout</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="icon" type="image/png" href="./img/logo3.PNG" />
+  <title>ARTEMIS — CHECKOUT</title>
   <style>
-    :root {
-      --primary: #333;
-      --primary-dark: #000;
-      --bg: #ffffff;
-      --card: #ffffff;
-      --text: #333333;
-      --input-bg: #ffffff;
-      --input-border: #d1d1d1;
-      --input-placeholder: #999;
-      --shadow: none;
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --purple:#8b5cf6;
+      --black:#0a0a0a;
+      --gray:#f5f5f5;
+      --border:#e0e0e0;
+      --text:#111;
+      --muted:#888;
     }
-    * { box-sizing: border-box; }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: var(--bg); 
-      color: var(--text); 
-      margin:0; 
-      padding:0;
-      line-height: 1.6;
+
+    body{
+      font-family:'Space Mono',monospace;
+      background:#fff;
+      color:var(--text);
+      overflow-x:hidden;
     }
-    header { 
-      text-align:center; 
-      padding:20px; 
-      background:#fff; 
-      position:relative; 
-      border-bottom: 1px solid #e0e0e0; 
+
+    /* ── MARQUEE ── */
+    .marquee-banner{background:#000;color:#fff;padding:9px 0;overflow:hidden;white-space:nowrap;}
+    .marquee-track{display:inline-block;animation:marquee 14s linear infinite;}
+    .marquee-track span{font-size:11px;letter-spacing:4px;font-weight:700;padding:0 40px;}
+    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* ── HEADER ── */
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 48px;border-bottom:1px solid var(--border);
+      position:sticky;top:0;background:#fff;z-index:100;
     }
-    header img { max-width:80px; }
-    .checkout-container { 
-      display:flex; 
-      flex-wrap:wrap; 
-      gap:60px; 
-      padding:60px 40px; 
-      max-width:1400px; 
-      margin:auto; 
+    .back-link{
+      display:flex;align-items:center;gap:8px;
+      color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:2px;
+      transition:color .2s;
     }
-    .checkout-left { 
-      flex: 1.2;
-      min-width: 400px;
+    .back-link:hover{color:var(--black);}
+    .back-link svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+    .header-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;color:var(--black);}
+    .header-secure{font-size:10px;letter-spacing:2px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+    .header-secure svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+
+    /* ── LAYOUT ── */
+    .checkout-wrap{
+      display:grid;
+      grid-template-columns:1fr 420px;
+      min-height:calc(100vh - 85px);
     }
-    .checkout-right { 
-      flex: 0.8;
-      background: #fafafa;
-      padding: 30px;
-      border-radius: 8px;
-      align-self: flex-start;
-      position: sticky;
-      top: 20px;
+
+    /* ── LEFT PANEL ── */
+    .checkout-left{
+      padding:52px 64px 52px 48px;
+      border-right:1px solid var(--border);
     }
-    h2 { 
-      font-size:16px; 
-      color:var(--text); 
-      margin-bottom:12px;
-      margin-top:32px;
-      font-weight:600;
-      letter-spacing: -0.2px;
+    .section-label{
+      font-size:10px;letter-spacing:4px;color:var(--muted);
+      text-transform:uppercase;margin-bottom:20px;
+      display:flex;align-items:center;gap:12px;
     }
-    h2:first-of-type { margin-top: 0; }
-    
-    input, select { 
-      width:100%; 
-      padding:14px 16px; 
-      background:var(--input-bg); 
-      color:var(--text); 
-      border:1px solid var(--input-border); 
-      border-radius:6px; 
-      margin-bottom:16px; 
-      font-size:15px;
-      transition: border-color 0.2s;
-      font-family: inherit;
-    }
-    input:focus, select:focus {
-      outline: none;
-      border-color: #333;
-    }
-    input::placeholder { color:var(--input-placeholder); }
-    
-    .name-fields { display:flex; gap:16px; }
-    .name-fields input { flex:1; }
-    
-    .row-fields { display:flex; gap:16px; }
-    .row-fields input { flex:1; }
-    
-    label.checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 16px 0;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      cursor: pointer;
-    }
-    
-    button { 
-      background:var(--primary); 
-      color:#fff; 
-      padding:16px; 
-      border:none; 
-      width:100%; 
-      font-weight:600; 
-      font-size:15px; 
-      border-radius:6px; 
-      margin-top:24px; 
-      cursor:pointer; 
-      transition:0.2s;
-      font-family: inherit;
-    }
-    button:hover { background:var(--primary-dark); }
-    
-    /* Order Summary Styles */
-    #orderSummary .item { 
-      display:flex; 
-      gap: 16px;
-      align-items:flex-start; 
-      border-bottom:1px solid #e5e5e5; 
-      padding:16px 0;
-      position: relative;
-    }
-    #orderSummary .item:first-child { padding-top: 0; }
-    
-    #orderSummary img { 
-      width:64px; 
-      height:64px; 
-      object-fit:cover; 
+    .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    .section-label span{white-space:nowrap;}
+
+    .form-grid{display:grid;gap:14px;margin-bottom:28px;}
+    .form-grid.two{grid-template-columns:1fr 1fr;}
+    .form-grid.three{grid-template-columns:1fr 1fr 1fr;}
+
+    .field{display:flex;flex-direction:column;gap:6px;}
+    .field label{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+    .field input,
+    .field select{
+      padding:13px 16px;
+      border:1.5px solid var(--border);
       border-radius:8px;
-      border: 1px solid #e5e5e5;
-      background: white;
-      position: relative;
+      font-size:13px;
+      font-family:'Space Mono',monospace;
+      background:#fff;
+      color:var(--text);
+      outline:none;
+      transition:border-color .2s,box-shadow .2s;
     }
-    
-    .item-badge {
-      position: absolute;
-      top: -6px;
-      left: 52px;
-      background: #666;
-      color: white;
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
-      border: 2px solid #fafafa;
+    .field input:focus,
+    .field select:focus{
+      border-color:var(--purple);
+      box-shadow:0 0 0 3px rgba(139,92,246,.1);
     }
-    
-    .item-details {
-      flex: 1;
-      font-size: 14px;
+    .field input::placeholder{color:#bbb;}
+    .field input.error{border-color:#ef4444;}
+
+    /* Province */
+    #provinceWrap{display:none;}
+
+    /* Payment toggle */
+    .pay-methods{display:flex;gap:12px;margin-bottom:28px;}
+    .pay-method{
+      flex:1;padding:16px;border:1.5px solid var(--border);border-radius:10px;
+      cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;
+      font-size:11px;letter-spacing:1.5px;font-weight:700;
     }
-    
-    .item-details strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 14px;
-      font-weight: 500;
+    .pay-method.active{border-color:var(--purple);background:rgba(139,92,246,.05);}
+    .pay-method svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+    .pay-method-dot{
+      width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border);
+      margin-left:auto;flex-shrink:0;position:relative;transition:border-color .2s;
     }
-    
-    .item-details small {
-      color: #666;
-      font-size: 13px;
+    .pay-method.active .pay-method-dot{border-color:var(--purple);}
+    .pay-method.active .pay-method-dot::after{
+      content:'';position:absolute;inset:3px;border-radius:50%;background:var(--purple);
     }
-    
-    .item-price {
-      font-weight: 600;
-      font-size: 14px;
-      white-space: nowrap;
+
+    /* Promo */
+    .promo-row{display:flex;gap:10px;}
+    .promo-row input{flex:1;}
+    .promo-btn{
+      padding:13px 20px;border:1.5px solid var(--border);border-radius:8px;
+      background:#fff;font-family:'Space Mono',monospace;font-size:11px;
+      letter-spacing:2px;font-weight:700;cursor:pointer;white-space:nowrap;
+      transition:all .2s;color:var(--text);
     }
-    
-    #orderSummary .summary { 
-      margin-top:24px; 
-      font-size:15px;
-      padding-top:20px;
-      border-top: 1px solid #e5e5e5;
+    .promo-btn:hover{background:var(--gray);border-color:#ccc;}
+    .promo-msg{font-size:10px;letter-spacing:1px;margin-top:6px;}
+    .promo-msg.ok{color:#16a34a;}
+    .promo-msg.err{color:#ef4444;}
+
+    /* CTA */
+    .place-btn{
+      width:100%;padding:17px;
+      background:var(--black);color:#fff;
+      border:none;border-radius:10px;
+      font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:4px;
+      cursor:pointer;margin-top:28px;
+      transition:all .3s;
+      display:flex;align-items:center;justify-content:center;gap:10px;
     }
-    
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 14px;
+    .place-btn:hover{background:var(--purple);transform:translateY(-1px);box-shadow:0 12px 28px rgba(139,92,246,.3);}
+    .place-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+    .place-btn .loader{
+      width:16px;height:16px;border:2px solid rgba(255,255,255,.3);
+      border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;
     }
-    
-    .summary-row.total {
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #e5e5e5;
+    .place-btn.loading .loader{display:block;}
+    .place-btn.loading .btn-text{display:none;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── RIGHT PANEL (ORDER SUMMARY) ── */
+    .checkout-right{
+      background:#fafafa;
+      padding:52px 40px;
+      display:flex;flex-direction:column;gap:0;
     }
-    
-    .summary-row .label {
-      color: #666;
+    .summary-title{
+      font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;
+      margin-bottom:28px;color:var(--black);
     }
-    
-    .summary-row.total .label {
-      color: #333;
+
+    .cart-items-list{border-top:1px solid var(--border);}
+    .cart-item{
+      display:flex;gap:14px;padding:18px 0;
+      border-bottom:1px solid var(--border);align-items:flex-start;
     }
-    
-    /* Promo code section */
-    .promo-section {
-      margin: 24px 0;
-      padding: 16px;
-      background: white;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
+    .cart-item-img-wrap{position:relative;flex-shrink:0;}
+    .cart-item-img{
+      width:64px;height:64px;object-fit:cover;border-radius:8px;
+      background:#eee;border:1px solid var(--border);display:block;
     }
-    
-    .promo-input-group {
-      display: flex;
-      gap: 10px;
+    .cart-item-badge{
+      position:absolute;top:-8px;right:-8px;
+      background:#555;color:#fff;border-radius:50%;
+      width:20px;height:20px;font-size:10px;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+      border:2px solid #fafafa;
     }
-    
-    .promo-input-group input {
-      margin-bottom: 0;
+    .cart-item-details{flex:1;min-width:0;}
+    .cart-item-name{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+    .cart-item-meta{font-size:10px;letter-spacing:1px;color:var(--muted);}
+    .cart-item-price{font-size:13px;font-weight:700;white-space:nowrap;align-self:center;}
+
+    .summary-totals{margin-top:24px;padding-top:24px;border-top:1px solid var(--border);}
+    .total-row{display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;margin-bottom:12px;color:var(--muted);}
+    .total-row.grand{
+      font-size:16px;font-weight:700;color:var(--text);
+      border-top:1px solid var(--border);margin-top:12px;padding-top:16px;
+      letter-spacing:2px;
     }
-    
-    .promo-input-group button {
-      width: auto;
-      padding: 14px 24px;
-      margin: 0;
-      white-space: nowrap;
-      background: #f5f5f5;
-      color: #333;
-      border: 1px solid #d1d1d1;
+    .total-row .discount-val{color:#16a34a;}
+
+    .empty-cart{
+      text-align:center;padding:60px 0;color:var(--muted);
+      font-size:11px;letter-spacing:3px;
     }
-    
-    .promo-input-group button:hover {
-      background: #e5e5e5;
+
+    /* ── QR PAYMENT SCREEN ── */
+    #qrScreen{display:none;padding:20px 0;}
+    .qr-card{
+      background:#fff;border:1.5px solid var(--border);border-radius:16px;
+      padding:36px;text-align:center;
     }
-    
-    #promoMessage {
-      margin-top: 8px;
-      font-size: 13px;
+    .qr-countdown{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:4px;color:#ef4444;margin-bottom:8px;}
+    .qr-store{font-size:10px;letter-spacing:4px;color:var(--muted);margin-bottom:4px;}
+    .qr-amount{font-size:36px;font-weight:700;margin-bottom:24px;}
+    .qr-img{width:240px;height:auto;border-radius:10px;margin-bottom:20px;}
+    .qr-instructions{font-size:11px;letter-spacing:1.5px;color:var(--muted);line-height:1.9;margin-bottom:20px;}
+    .qr-tg{
+      display:inline-flex;align-items:center;gap:8px;
+      color:var(--text);font-weight:700;font-size:12px;letter-spacing:1px;
+      text-decoration:none;padding:10px 20px;border:1.5px solid var(--border);
+      border-radius:8px;transition:all .2s;margin-bottom:24px;
     }
-    
-    .payment-card-modern { 
-      background:#fff; 
-      color:#333; 
-      text-align:center; 
-      padding:40px 30px; 
-      border-radius:12px; 
-      max-width:500px; 
-      margin:auto; 
-      box-shadow:0 2px 20px rgba(0,0,0,0.1); 
-      border: 1px solid #e0e0e0; 
+    .qr-tg:hover{border-color:var(--purple);color:var(--purple);}
+    .done-btn{
+      width:100%;padding:15px;background:var(--black);color:#fff;border:none;
+      border-radius:10px;font-family:'Space Mono',monospace;font-size:11px;
+      font-weight:700;letter-spacing:3px;cursor:pointer;transition:all .3s;
+      display:flex;align-items:center;justify-content:center;gap:10px;
     }
-    .countdown-timer { 
-      font-size:24px; 
-      font-weight:bold; 
-      color:#e74c3c; 
-      margin-bottom:16px; 
+    .done-btn:hover{background:var(--purple);}
+    .done-btn:disabled{opacity:.6;cursor:not-allowed;}
+    .done-btn .loader{
+      width:14px;height:14px;border:2px solid rgba(255,255,255,.3);
+      border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;
     }
-    .store-name { 
-      font-weight:600; 
-      font-size:15px; 
-      color:#666; 
-      margin-bottom:8px; 
+    .done-btn.loading .loader{display:block;}
+    .done-btn.loading .btn-lbl{display:none;}
+
+    /* ── SUCCESS ── */
+    #successScreen{display:none;text-align:center;padding:60px 0;}
+    .success-icon{
+      width:72px;height:72px;background:#f0fdf4;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
     }
-    .price-label { 
-      font-size:20px; 
-      margin-bottom:4px; 
-      color:#333; 
+    .success-icon svg{width:36px;height:36px;stroke:#22c55e;fill:none;stroke-width:2.5;}
+    .success-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:5px;margin-bottom:10px;}
+    .success-sub{font-size:11px;letter-spacing:2px;color:var(--muted);line-height:2;}
+    .continue-btn{
+      display:inline-block;margin-top:28px;padding:14px 36px;
+      background:var(--black);color:#fff;border:none;border-radius:10px;
+      font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+      letter-spacing:3px;cursor:pointer;text-decoration:none;transition:all .3s;
     }
-    .total-amount { 
-      font-size:36px; 
-      font-weight:bold; 
-      margin-bottom:24px; 
-      color:#333; 
-    }
-    .loader { 
-      border:3px solid #f3f3f3; 
-      border-top:3px solid #333; 
-      border-radius:50%; 
-      width:20px; 
-      height:20px; 
-      animation:spin 0.8s linear infinite; 
-      display:inline-block; 
-      margin-left:8px; 
-      vertical-align:middle; 
-    }
-    @keyframes spin { 
-      0%{transform:rotate(0deg);} 
-      100%{transform:rotate(360deg);} 
-    }
-    .payment-method label { 
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
-    .payment-method input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      margin: 0;
-    }
-    
-    @media(max-width:768px){
-      .checkout-container{
-        flex-direction:column;
-        padding: 20px;
-        gap: 30px;
-      }
-      .checkout-left {
-        min-width: auto;
-      }
-      .checkout-right {
-        position: static;
-      }
+    .continue-btn:hover{background:var(--purple);}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .checkout-wrap{grid-template-columns:1fr;grid-template-rows:auto auto;}
+      .checkout-right{order:-1;padding:32px 24px;}
+      .checkout-left{padding:32px 24px;border-right:none;}
+      header{padding:16px 24px;}
+      .form-grid.two,.form-grid.three{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
+
+<!-- MARQUEE -->
+<div class="marquee-banner">
+  <div class="marquee-track">
+    <span>ARTEMIS</span><span>- MISSED IT. THAT'S IT</span>
+    <span>ARTEMIS</span><span>- MISSED IT. THAT'S IT</span>
+    <span>ARTEMIS</span><span>- MISSED IT. THAT'S IT</span>
+    <span>ARTEMIS</span><span>- MISSED IT. THAT'S IT</span>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
-  <a href="product.html" style="position:absolute;top:25px;left:25px;font-size:26px;color:#333;"><i class="fas fa-home"></i></a>
-       <img src="./img/logo3.png" class="top-logo" alt="Logo">
+  <a href="product.html" class="back-link">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    BACK TO STORE
+  </a>
+  <div class="header-logo">ARTEMIS</div>
+  <div class="header-secure">
+    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    SECURE CHECKOUT
+  </div>
 </header>
 
-<div class="checkout-container">
-  <div class="checkout-left">
-    <h2>Contact</h2>
-    <input type="email" id="email" placeholder="Email" required />
-    
-    <h2>Delivery</h2>
-    <select id="regionSelect">
-      <option value="">Country/Region</option>
-      <option value="MY">Cambodia - Phnom Penh</option>
-      <option value="pr">Cambodia - Provinces</option>
-    </select>
-    <div id="provinceInputContainer" style="display:none;">
-      <input type="text" id="provinceInput" placeholder="Your Province" />
-    </div>
-    <div class="name-fields">
-      <input type="text" id="firstName" placeholder="First Name" />
-      <input type="text" id="lastName" placeholder="Last Name" />
-    </div>
-    <input type="text" id="instagramInput" placeholder="Instagram @" />
-    <input type="text" id="address" placeholder="Address" />
-    <div class="row-fields">
-      <input type="text" id="city" placeholder="City" />
-      <input type="text" id="postalCode" placeholder="Postal code (optional)" />
-    </div>
-    <input type="tel" id="phone" placeholder="Phone" />
-    
-    <h2>Payment</h2>
-    <div class="payment-method">
-      <label>
-        <input type="radio" name="paymentMethod" value="paid" checked /> 
-        Paid (QR)
-      </label>
-    </div>
-    
-    <div class="promo-section">
-      <h2 style="margin-top:0;">Discount code</h2>
-      <div class="promo-input-group">
-        <input type="text" id="promoCodeInput" placeholder="Discount code" />
-        <button type="button" id="applyPromoBtn">Apply</button>
+<div class="checkout-wrap">
+
+  <!-- ── LEFT: FORM ── -->
+  <div class="checkout-left" id="formPanel">
+
+    <!-- CONTACT -->
+    <div class="section-label"><span>01 — CONTACT</span></div>
+    <div class="form-grid" style="margin-bottom:32px;">
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="co-email" placeholder="you@example.com">
       </div>
-      <div id="promoMessage"></div>
+      <div class="field">
+        <label>Instagram @</label>
+        <input type="text" id="co-instagram" placeholder="@yourhandle">
+      </div>
     </div>
 
-    <button id="payNow">Complete order</button>
+    <!-- DELIVERY -->
+    <div class="section-label"><span>02 — DELIVERY</span></div>
+    <div class="form-grid two" style="margin-bottom:14px;">
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" id="co-fname" placeholder="First">
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" id="co-lname" placeholder="Last">
+      </div>
+    </div>
+    <div class="form-grid" style="margin-bottom:14px;">
+      <div class="field">
+        <label>Region</label>
+        <select id="co-region">
+          <option value="">Select region…</option>
+          <option value="pp">Cambodia — Phnom Penh</option>
+          <option value="pr">Cambodia — Province</option>
+        </select>
+      </div>
+      <div class="field" id="provinceWrap">
+        <label>Province</label>
+        <input type="text" id="co-province" placeholder="Your province">
+      </div>
+    </div>
+    <div class="form-grid" style="margin-bottom:14px;">
+      <div class="field">
+        <label>Street Address</label>
+        <input type="text" id="co-address" placeholder="House / Street / Area">
+      </div>
+    </div>
+    <div class="form-grid two" style="margin-bottom:32px;">
+      <div class="field">
+        <label>Phone</label>
+        <input type="tel" id="co-phone" placeholder="+855 XX XXX XXX">
+      </div>
+      <div class="field">
+        <label>Postal Code <span style="font-size:9px;color:#bbb;">(optional)</span></label>
+        <input type="text" id="co-postal" placeholder="00000">
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD -->
+    <div class="section-label"><span>03 — PAYMENT</span></div>
+    <div class="pay-methods" style="margin-bottom:32px;">
+      <div class="pay-method active" data-method="qr" onclick="selectPayMethod(this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+        ABA QR PAY
+        <div class="pay-method-dot"></div>
+      </div>
+    </div>
+
+    <!-- PROMO CODE -->
+    <div class="section-label"><span>04 — DISCOUNT CODE</span></div>
+    <div class="form-grid" style="margin-bottom:6px;">
+      <div class="field">
+        <label>Promo Code</label>
+        <div class="promo-row">
+          <input type="text" id="co-promo" placeholder="Enter code…" style="margin-bottom:0;">
+          <button class="promo-btn" onclick="applyPromo()">APPLY</button>
+        </div>
+      </div>
+    </div>
+    <div class="promo-msg" id="promoMsg"></div>
+
+    <!-- CTA -->
+    <button class="place-btn" id="placeBtn" onclick="placeOrder()">
+      <span class="btn-text">COMPLETE ORDER →</span>
+      <span class="loader"></span>
+    </button>
   </div>
-  
-  <div class="checkout-right" id="orderSummary"></div>
+
+  <!-- ── RIGHT: ORDER SUMMARY ── -->
+  <div class="checkout-right">
+    <div class="summary-title">YOUR ORDER</div>
+
+    <!-- cart list -->
+    <div class="cart-items-list" id="cartList"></div>
+
+    <!-- totals -->
+    <div class="summary-totals" id="summaryTotals"></div>
+
+    <!-- QR screen -->
+    <div id="qrScreen">
+      <div class="qr-card">
+        <div class="qr-countdown" id="qrTimer">06:00</div>
+        <div class="qr-store">artemisphnompenh</div>
+        <div class="qr-amount" id="qrAmount"></div>
+        <img class="qr-img" src="./img/bank.jpg" alt="ABA QR" onerror="this.style.display='none'">
+        <div class="qr-instructions">
+          Scan with ABA Mobile to pay.<br>
+          Then send proof of payment to Telegram.
+        </div>
+        <a class="qr-tg" href="https://t.me/Tmcartemis34" target="_blank">📩 @artemis_contact</a>
+        <button class="done-btn" id="doneBtn">
+          <span class="btn-lbl">✅ DONE — CONFIRM ORDER</span>
+          <span class="loader"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Success screen -->
+    <div id="successScreen">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-title">ORDER PLACED!</div>
+      <div class="success-sub">THANK YOU FOR YOUR PURCHASE.<br>CHECK YOUR EMAIL FOR CONFIRMATION.</div>
+      <a class="continue-btn" href="product.html">CONTINUE SHOPPING</a>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+/* ════════════════════════════════════
+   STATE
+════════════════════════════════════ */
+emailjs.init("z38jUWYxRvfJS_RC8");
 
-  emailjs.init("1uThHFmx4SJgzaxOh");
+let cart = [];
+let discountAmount = 0;
+let promoApplied = "";
+const DELIVERY_FEE = 2.00;
 
-  // Get cart from localStorage - works for all product pages (pro1.html, pro2.html, pro3.html, etc.)
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const deliveryFee = 2.00; // Fixed $2 shipping
-  let discountAmountFixed = 0; 
+/* ── Load cart ── */
+function loadCart(){
+  try {
+    cart = JSON.parse(localStorage.getItem("artemis_cart") || "[]");
+    if (!cart.length) cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  } catch(e){ cart = []; }
+}
 
-  console.log("Cart loaded from localStorage:", cart);
+const fmt = n => `$${parseFloat(n).toFixed(2)}`;
 
-  function renderOrderSummary(){
-    const summary = document.getElementById("orderSummary");
-    summary.innerHTML = "";
-    
-    if(cart.length === 0){ 
-      summary.innerHTML = "<p>Your cart is empty.</p>"; 
-      return; 
-    }
-    
-    let subtotal = 0;
-    cart.forEach(item => {
-      const itemPrice = item.price || 0;
-      const itemQty = item.quantity || item.qty || 1;
-      const itemTotal = itemPrice * itemQty;
-      subtotal += itemTotal;
-      
-      summary.innerHTML += `
-        <div class="item">
-          <div style="position: relative;">
-            <img src="${item.image || item.img || ''}" alt="${item.name || item.title || 'Product'}" onerror="this.style.display='none'"/>
-            <span class="item-badge">${itemQty}</span>
-          </div>
-          <div class="item-details">
-            <strong>${item.name || item.title || 'Product'}</strong>
-            <small>Size: ${item.size || '-'} · Color: ${item.color || '-'}</small>
-          </div>
-          <div class="item-price">${itemTotal.toFixed(2)}</div>
-        </div>`;
-    });
-    
-    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
-    summary.innerHTML += `
-      <div class="summary">
-        <div class="summary-row">
-          <span class="label">Subtotal</span>
-          <span>${subtotal.toFixed(2)}</span>
-        </div>
-        ${discountAmountFixed > 0 ? `
-          <div class="summary-row">
-            <span class="label">Discount</span>
-            <span style="color:#27ae60;">-${discountAmountFixed.toFixed(2)}</span>
-          </div>` : ""}
-        <div class="summary-row">
-          <span class="label">Shipping</span>
-          <span>${deliveryFee.toFixed(2)}</span>
-        </div>
-        <div class="summary-row total">
-          <span class="label">Total</span>
-          <span>USD ${total.toFixed(2)}</span>
-        </div>
-      </div>`;
+function subtotal(){
+  return cart.reduce((s, i) => s + (i.price * (i.qty || i.quantity || 1)), 0);
+}
+function grandTotal(){
+  return Math.max(subtotal() - discountAmount + DELIVERY_FEE, 0);
+}
+
+/* ════════════════════════════════════
+   RENDER ORDER SUMMARY
+════════════════════════════════════ */
+function renderSummary(){
+  const list = document.getElementById("cartList");
+  const totals = document.getElementById("summaryTotals");
+
+  if (!cart.length) {
+    list.innerHTML = `<div class="empty-cart">YOUR CART IS EMPTY</div>`;
+    totals.innerHTML = "";
+    return;
   }
 
-  // Show/hide province input if region is PR
-  document.getElementById("regionSelect").addEventListener("change", function(){
-    document.getElementById("provinceInputContainer").style.display = this.value === "pr" ? "block" : "none";
-  });
-
-  // Promo code handler with Apply button
-  document.getElementById("applyPromoBtn").addEventListener("click", function() {
-    const code = document.getElementById("promoCodeInput").value.trim().toUpperCase();
-    const promoMessage = document.getElementById("promoMessage");
-    
-    if (code === "2A") {
-      discountAmountFixed = 2.5;
-      promoMessage.textContent = "✓ Discount code applied";
-      promoMessage.style.color = "#27ae60";
-    } else if (code === "") {
-      discountAmountFixed = 0;
-      promoMessage.textContent = "";
-    } else {
-      discountAmountFixed = 0;
-      promoMessage.textContent = "Invalid discount code";
-      promoMessage.style.color = "#e74c3c";
-      setTimeout(() => {
-        promoMessage.textContent = "";
-      }, 3000);
-    }
-    renderOrderSummary();
-  });
-
-  // Pay Now button click handler
-  document.getElementById("payNow").addEventListener("click", function(){
-    const email = document.getElementById("email").value.trim();
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const instagram = document.getElementById("instagramInput").value.trim();
-    const address = document.getElementById("address").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const regionSelect = document.getElementById("regionSelect").value;
-    const provinceInput = document.getElementById("provinceInput").value.trim();
-    const promoCode = document.getElementById("promoCodeInput").value.trim().toUpperCase();
-    const region = regionSelect === "pr" ? provinceInput : "Phnom Penh";
-
-    // Validation
-    if(cart.length === 0) return alert("🛒 Your cart is empty.");
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert("❌ Enter valid email.");
-    if(!firstName) return alert("❌ Enter first name.");
-    if(!lastName) return alert("❌ Enter last name.");
-    if(!instagram) return alert("❌ Enter Instagram username.");
-    if(!address) return alert("❌ Enter full address.");
-
-    const phonePattern = /^\+?\d{7,15}$/;
-    const cleanedPhone = phone.replace(/\D/g,"");
-    const repeatedDigits = /^(\d)\1+$/;
-    const sequential = ["0123456789","123456789","987654321"].some(seq => cleanedPhone.startsWith(seq));
-    if(!phonePattern.test(phone) || repeatedDigits.test(cleanedPhone) || sequential || /0{5,}/.test(cleanedPhone)) 
-      return alert("❌ Invalid phone number.");
-    if(!regionSelect) return alert("❌ Select region.");
-    if(regionSelect === "pr" && !provinceInput) return alert("❌ Enter province name.");
-
-    // Apply promo code
-    if(promoCode === "2A") {
-      discountAmountFixed = 2.5;
-    } else {
-      discountAmountFixed = 0;
-    }
-
-    // Build order table for email
-    let subtotal = 0, rows = "";
-    cart.forEach(item => {
-      const itemPrice = item.price || 0;
-      const itemQty = item.quantity || item.qty || 1;
-      const itemTotal = itemPrice * itemQty;
-      subtotal += itemTotal;
-      const itemName = item.name || item.title || 'Product';
-      const itemSize = item.size || '-';
-      const itemColor = item.color || '-';
-      
-      rows += `<tr>
-        <td>${itemName}</td>
-        <td>${itemSize}</td>
-        <td>${itemColor}</td>
-        <td>${itemQty}</td>
-        <td>$${itemTotal.toFixed(2)}</td>
-      </tr>`;
-    });
-    
-    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
-    const orderHTML = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:600px;">
-      <thead style="background:#eee;">
-        <tr><th>Product</th><th>Size</th><th>Color</th><th>Qty</th><th>Price</th></tr>
-      </thead>
-      <tbody>${rows}</tbody></table>
-      <br/><strong>Subtotal:</strong> $${subtotal.toFixed(2)}
-      <br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}
-      ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
-      <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>
-      ${discountAmountFixed > 0 ? `<br/><strong>Promo Code Applied:</strong> ${promoCode}` : ""}`;
-
-    // Show payment QR screen
-    document.querySelector(".checkout-left").style.display = "none";
-    document.getElementById("orderSummary").innerHTML = `
-      <div class="payment-card-modern">
-        <div class="countdown-timer" id="countdown">06:00</div>
-        <div class="store-name">artemisphnompenh</div>
-        <div class="price-label">$</div>
-        <div class="total-amount">${total.toFixed(2)}</div>
-        <div class="qr-wrapper" style="text-align:center;">
-          <p>Scan the QR to Pay with ABA</p>
-          <img src="./img/bank.jpg" alt="ABA QR" style="width:300px;height:auto;border-radius:8px;" />
+  list.innerHTML = cart.map(item => {
+    const qty = item.qty || item.quantity || 1;
+    const lineTotal = item.price * qty;
+    return `
+      <div class="cart-item">
+        <div class="cart-item-img-wrap">
+          <img class="cart-item-img" src="${item.img || item.image || ''}" 
+               alt="${item.name}" onerror="this.style.background='#eee';this.style.border='none';">
+          <span class="cart-item-badge">${qty}</span>
         </div>
-        <div style="margin-top:20px;">
-          <p>Send the proof of payment to this Telegram:</p>
-          <p><a href="https://t.me/Tmcartemis34" target="_blank" style="color:#333;font-weight:bold;">📩 @artemis_contact</a></p>
-          <button id="doneBtn" style="display:block;">✅ Done</button>
+        <div class="cart-item-details">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-meta">SIZE: ${item.size || '—'}</div>
         </div>
+        <div class="cart-item-price">${fmt(lineTotal)}</div>
       </div>`;
+  }).join("");
 
-    // Countdown timer for 6 minutes
-    let time = 360;
-    const countdown = document.getElementById("countdown");
-    const timer = setInterval(() => {
-      if(time <= 0){
-        clearInterval(timer);
-        countdown.textContent = "00:00";
-      } else {
-        const min = String(Math.floor(time/60)).padStart(2, "0");
-        const sec = String(time % 60).padStart(2, "0");
-        countdown.textContent = `${min}:${sec}`;
-        time--;
-      }
-    }, 1000);
+  totals.innerHTML = `
+    <div class="total-row"><span>Subtotal</span><span>${fmt(subtotal())}</span></div>
+    ${discountAmount > 0 ? `<div class="total-row"><span>Discount</span><span class="discount-val">−${fmt(discountAmount)}</span></div>` : ""}
+    <div class="total-row"><span>Shipping</span><span>${fmt(DELIVERY_FEE)}</span></div>
+    <div class="total-row grand"><span>TOTAL</span><span>USD ${fmt(grandTotal())}</span></div>`;
+}
 
-    // Done button sends the email
-    requestAnimationFrame(() => {
-      const doneBtn = document.getElementById("doneBtn");
-      if(!doneBtn) return;
-      doneBtn.addEventListener("click", function(){
-        doneBtn.disabled = true;
-        doneBtn.innerHTML = "Sending... <span class='loader'></span>";
-        
-        emailjs.send("service_wuj46zm","template_3xm1tyg",{
-          user_email: email,
-          user_name: `${firstName} ${lastName}`,
-          message_html: `<strong>Email:</strong> ${email}<br/>
-                        <strong>Name:</strong> ${firstName} ${lastName}<br/>
-                        <strong>Instagram:</strong> ${instagram}<br/>
-                        <strong>Address:</strong> ${address}<br/>
-                        <strong>Phone:</strong> ${phone}<br/>
-                        <strong>Region:</strong> ${region}<br/>
-                        ${discountAmountFixed > 0 ? `<strong>Promo Code Applied:</strong> ${promoCode}<br/>` : ""}
-                        <br/>${orderHTML}`
-        })
-        .then(() => {
-          alert("✅ Order sent successfully!");
-          localStorage.removeItem("cart");
-          localStorage.removeItem("deliveryFee");
-          window.location.href = "thankyou.html";
-        })
-        .catch(err => {
-          console.error(err);
-          alert("❌ Failed to send order. Please try again.");
-          doneBtn.disabled = false;
-          doneBtn.innerHTML = "✅ Done";
-        });
-      });
-    });
-  });
+/* ════════════════════════════════════
+   PROMO
+════════════════════════════════════ */
+function applyPromo(){
+  const code = document.getElementById("co-promo").value.trim().toUpperCase();
+  const msg = document.getElementById("promoMsg");
+  msg.className = "promo-msg";
 
-  renderOrderSummary();
+  if (code === "2A") {
+    discountAmount = 2.5;
+    promoApplied = code;
+    msg.classList.add("ok");
+    msg.textContent = "✓ Discount applied — $2.50 off";
+  } else if (!code) {
+    discountAmount = 0; promoApplied = "";
+    msg.textContent = "";
+  } else {
+    discountAmount = 0; promoApplied = "";
+    msg.classList.add("err");
+    msg.textContent = "✗ Invalid code";
+    setTimeout(() => { msg.textContent = ""; }, 3000);
+  }
+  renderSummary();
+}
+
+/* ════════════════════════════════════
+   PAYMENT METHOD
+════════════════════════════════════ */
+function selectPayMethod(el){
+  document.querySelectorAll(".pay-method").forEach(m => m.classList.remove("active"));
+  el.classList.add("active");
+}
+
+/* ════════════════════════════════════
+   PROVINCE TOGGLE
+════════════════════════════════════ */
+document.getElementById("co-region").addEventListener("change", function(){
+  document.getElementById("provinceWrap").style.display = this.value === "pr" ? "flex" : "none";
 });
-</script>
 
+/* ════════════════════════════════════
+   VALIDATION
+════════════════════════════════════ */
+function shake(id){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add("error");
+  el.focus();
+  setTimeout(() => el.classList.remove("error"), 2500);
+}
+function val(id){ return document.getElementById(id).value.trim(); }
+
+function validate(){
+  if (!cart.length){ alert("🛒 Your cart is empty."); return false; }
+  if (!val("co-email") || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val("co-email"))){ shake("co-email"); alert("❌ Enter a valid email."); return false; }
+  if (!val("co-instagram")){ shake("co-instagram"); alert("❌ Enter your Instagram username."); return false; }
+  if (!val("co-fname")){ shake("co-fname"); alert("❌ Enter your first name."); return false; }
+  if (!val("co-lname")){ shake("co-lname"); alert("❌ Enter your last name."); return false; }
+  if (!val("co-region")){ shake("co-region"); alert("❌ Select your region."); return false; }
+  if (val("co-region") === "pr" && !val("co-province")){ shake("co-province"); alert("❌ Enter your province."); return false; }
+  if (!val("co-address")){ shake("co-address"); alert("❌ Enter your address."); return false; }
+
+  const phone = val("co-phone");
+  const cleaned = phone.replace(/\D/g, "");
+  if (!cleaned || cleaned.length < 7 || /^(\d)\1+$/.test(cleaned)){ shake("co-phone"); alert("❌ Enter a valid phone number."); return false; }
+
+  return true;
+}
+
+/* ════════════════════════════════════
+   BUILD ORDER ROWS FOR EMAIL TEMPLATE
+════════════════════════════════════ */
+function buildOrderRows(){
+  return cart.map(item => {
+    const qty = item.qty || item.quantity || 1;
+    return `<tr>
+      <td style="padding:12px;border-bottom:1px solid #f0f0f0;">${item.name}</td>
+      <td style="padding:12px;border-bottom:1px solid #f0f0f0;">${item.size || '—'}</td>
+      <td style="padding:12px;border-bottom:1px solid #f0f0f0;">${qty}</td>
+      <td style="padding:12px;border-bottom:1px solid #f0f0f0;font-weight:700;">$${(item.price * qty).toFixed(2)}</td>
+    </tr>`;
+  }).join("");
+}
+
+/* ════════════════════════════════════
+   COUNTDOWN TIMER
+════════════════════════════════════ */
+function startCountdown(seconds){
+  let t = seconds;
+  const el = document.getElementById("qrTimer");
+  const iv = setInterval(() => {
+    if (t <= 0){ clearInterval(iv); el.textContent = "00:00"; return; }
+    const m = String(Math.floor(t/60)).padStart(2,"0");
+    const s = String(t%60).padStart(2,"0");
+    el.textContent = `${m}:${s}`;
+    t--;
+  }, 1000);
+}
+
+/* ════════════════════════════════════
+   PLACE ORDER → SHOW QR
+════════════════════════════════════ */
+function placeOrder(){
+  if (!validate()) return;
+
+  document.getElementById("formPanel").style.display = "none";
+  document.getElementById("qrScreen").style.display = "block";
+  document.getElementById("qrAmount").textContent = `USD ${fmt(grandTotal())}`;
+  startCountdown(360);
+
+  const doneBtn = document.getElementById("doneBtn");
+  doneBtn.addEventListener("click", function handler(){
+    doneBtn.removeEventListener("click", handler);
+    doneBtn.classList.add("loading");
+    doneBtn.disabled = true;
+
+    const region = val("co-region") === "pr" ? val("co-province") : "Phnom Penh";
+    const discountRow = discountAmount > 0
+      ? `<div style="display:flex;justify-content:space-between;font-size:10px;letter-spacing:1.5px;color:#16a34a;margin-bottom:10px;"><span>Discount (${promoApplied})</span><span>-$${discountAmount.toFixed(2)}</span></div>`
+      : "";
+
+    /* ─── Send via EmailJS template_dc57cxf ─── */
+    emailjs.send("service_kgp1log", "template_7rjrfvb", {
+      user_name:     `${val("co-fname")} ${val("co-lname")}`,
+      user_email:    val("co-email"),
+      instagram:     val("co-instagram"),
+      phone:         val("co-phone"),
+      region:        region,
+      address:       val("co-address"),
+      promo_code:    promoApplied || "—",
+      order_rows:    buildOrderRows(),
+      subtotal:      fmt(subtotal()),
+      shipping:      fmt(DELIVERY_FEE),
+      discount_row:  discountRow,
+      grand_total:   `USD ${fmt(grandTotal())}`,
+    })
+    .then(() => {
+      localStorage.removeItem("artemis_cart");
+      localStorage.removeItem("cart");
+      document.getElementById("qrScreen").style.display = "none";
+      document.getElementById("successScreen").style.display = "block";
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Failed to send order. Please try again.");
+      doneBtn.classList.remove("loading");
+      doneBtn.disabled = false;
+    });
+  }, { once: true });
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+loadCart();
+renderSummary();
+</script>
 </body>
 </html>
