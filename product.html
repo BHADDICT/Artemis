@@ -85,58 +85,21 @@ nav a:hover::after{width:100%;}
 .color-label-row{font-size:10px;letter-spacing:3px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:10px;}
 .color-label-row span{color:#333;}
 .color-options{display:flex;gap:10px;flex-wrap:wrap;}
-.color-swatch{
-  width:34px;height:34px;border-radius:50%;
-  border:2.5px solid transparent;
-  cursor:pointer;position:relative;
-  transition:transform .2s;
-  outline:none;
-  flex-shrink:0;
-}
+.color-swatch{width:34px;height:34px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;position:relative;transition:transform .2s;outline:none;flex-shrink:0;}
 .color-swatch:hover:not(.soldout){transform:scale(1.15);}
 .color-swatch.selected{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--purple);}
-/* white needs a visible border */
 .color-swatch.white-swatch{border-color:#ddd;}
-/* sold-out: diagonal strike through the circle */
 .color-swatch.soldout{cursor:not-allowed;opacity:0.45;}
-.color-swatch.soldout::after{
-  content:'';
-  position:absolute;inset:0;
-  border-radius:50%;
-  background:linear-gradient(
-    135deg,
-    transparent 42%, rgba(80,80,80,0.9) 42%,
-    rgba(80,80,80,0.9) 58%, transparent 58%
-  );
-}
+.color-swatch.soldout::after{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,transparent 42%,rgba(80,80,80,0.9) 42%,rgba(80,80,80,0.9) 58%,transparent 58%);}
 
 /* SIZE OPTIONS */
 .size-label{font-size:10px;letter-spacing:3px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:10px;}
 .size-options{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
-.size-opt{
-  width:52px;height:48px;
-  border:1.5px solid #ddd;border-radius:8px;
-  background:#fff;font-size:12px;font-weight:700;letter-spacing:1px;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .2s;
-  position:relative;overflow:hidden;
-}
+.size-opt{width:52px;height:48px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative;overflow:hidden;}
 .size-opt:hover:not(.soldout){border-color:#333;}
 .size-opt.selected{border-color:var(--purple);background:var(--purple);color:#fff;}
-/* sold-out size: greyed + diagonal line */
-.size-opt.soldout{
-  color:#bbb;border-color:#e8e8e8;
-  cursor:not-allowed;background:#fafafa;
-}
-.size-opt.soldout::before{
-  content:'';
-  position:absolute;
-  top:50%;left:0;right:0;
-  height:1.5px;
-  background:#ccc;
-  transform:rotate(-25deg);
-}
+.size-opt.soldout{color:#bbb;border-color:#e8e8e8;cursor:not-allowed;background:#fafafa;}
+.size-opt.soldout::before{content:'';position:absolute;top:50%;left:0;right:0;height:1.5px;background:#ccc;transform:rotate(-25deg);}
 
 .qty-label{font-size:10px;letter-spacing:3px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:10px;}
 .qty-picker{display:flex;align-items:center;gap:0;border:1.5px solid #ddd;border-radius:10px;width:fit-content;overflow:hidden;margin-bottom:24px;}
@@ -202,24 +165,11 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
   .product-name{font-size:12px;}
   .product-price{font-size:13px;}
 }
-@media (max-width: 768px) {
-  .atc-overlay {
-    font-size: 9px;
-    padding: 10px;
-    letter-spacing: 2px;
-  }
+@media(max-width:768px){
+  .atc-overlay{font-size:9px;padding:10px;letter-spacing:2px;}
+  .image-overlay{inset:10px;border-radius:12px;}
+  .product-card:hover .image-overlay{background:rgba(0,0,0,0.04);}
 }
-@media (max-width: 768px) {
-  .image-overlay {
-    inset: 10px;
-    border-radius: 12px;
-  }
-
-  .product-card:hover .image-overlay {
-    background: rgba(0,0,0,0.04);
-  }
-}
-
 </style>
 </head>
 <body>
@@ -257,24 +207,6 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
   <h1 class="main-title">ARTEMISPHNOMPENH</h1>
   <div class="gradient-line"></div>
 </div>
-
-<!--
-==========================================================
-  HOW TO CONFIGURE EACH PRODUCT CARD
-==========================================================
-  data-colors (optional)
-    Comma-separated CSS color values.
-    Append ":soldout" to mark that color unavailable.
-    e.g.  data-colors="#111111,#1a237e,#ffffff,#ef4444,#22c55e:soldout"
-
-  data-sizes (optional, default = "S,M,L,XL")
-    Comma-separated size labels.
-    Append ":soldout" to mark that size unavailable.
-    e.g.  data-sizes="S,M,L:soldout,XL"
-
-  data-price="0"  →  product is globally sold out (no modal shown)
-==========================================================
--->
 
 <div class="products-container">
   <div class="products-grid">
@@ -378,7 +310,7 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
       </div>
     </a>
 
-    <!-- ARTEMISMADE TEE — 5 color swatches; green is sold out -->
+    <!-- ARTEMISMADE TEE -->
     <a href="tee.html" class="product-card"
        data-name="ARTEMISMADE TEE" data-price="20.00" data-img="./img/eve4.png"
        data-colors="#111111,#1a237e,#ffffff,#ef4444,#22c55e:soldout"
@@ -485,15 +417,13 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
 
 <footer><p>ARTEMIS</p></footer>
 
-<!-- ══════════ SIZE PICKER SHEET ══════════ -->
+<!-- SIZE PICKER SHEET -->
 <div class="size-overlay" id="sizeOverlay" onclick="closeSizePicker(event)">
   <div class="size-sheet" onclick="event.stopPropagation()">
-
     <div class="size-sheet-head">
       <h3 id="spTitle">SELECT SIZE</h3>
       <button class="size-sheet-close" onclick="closeSizePicker()">✕</button>
     </div>
-
     <div class="size-sheet-img-row">
       <img class="size-sheet-thumb" id="spThumb" src="" alt="">
       <div class="size-sheet-meta">
@@ -501,28 +431,23 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
         <div class="price" id="spPrice"></div>
       </div>
     </div>
-
-    <!-- COLOR ROW — hidden unless product has data-colors -->
     <div class="color-row" id="colorRow">
       <div class="color-label-row">COLOR — <span id="colorSelectedLabel">SELECT</span></div>
       <div class="color-options" id="colorOptions"></div>
     </div>
-
     <div class="size-label">SIZE</div>
     <div class="size-options" id="sizeOptions"></div>
-
     <div class="qty-label">QUANTITY</div>
     <div class="qty-picker">
       <button onclick="spQtyChange(-1)">−</button>
       <span id="spQty">1</span>
       <button onclick="spQtyChange(1)">+</button>
     </div>
-
     <button class="confirm-atc" onclick="confirmAdd()">ADD TO CART</button>
   </div>
 </div>
 
-<!-- ══════════ CART DRAWER ══════════ -->
+<!-- CART DRAWER -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-head">
@@ -544,31 +469,31 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════
-   STATE
-══════════════════════════════════════ */
-let cart           = JSON.parse(localStorage.getItem('cart')) || [];
-let spProduct      = null;
+/* ═══════════════════════════════════════════
+   SHARED CART STRUCTURE  (matches dustar.html)
+   Every item: { key, name, size, color, price, img, qty }
+   key format:  "PRODUCT NAME|SIZE"
+             or "PRODUCT NAME|SIZE|COLOR" (if product has colors)
+═══════════════════════════════════════════ */
+
+let cart          = JSON.parse(localStorage.getItem('cart')) || [];
+let spProduct     = null;
 let spSelectedSize  = null;
-let spSelectedColor = null;   // stays null for products with no colors
-let spQtyVal       = 1;
+let spSelectedColor = null;
+let spQtyVal        = 1;
 
-/* ══════════════════════════════════════
-   PERSIST
-══════════════════════════════════════ */
-function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
+/* ── persist ── */
+function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
 
-/* ══════════════════════════════════════
-   UTILS
-══════════════════════════════════════ */
+/* ── utils ── */
 const fmt = n => '$' + parseFloat(n).toFixed(2);
-function showToast(msg){
+function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=> t.classList.remove('show'), 2400);
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-/* Human-readable color names used in the cart line */
 const COLOR_NAMES = {
   '#111111':'Black','#000000':'Black',
   '#1a237e':'Dark Blue',
@@ -576,53 +501,52 @@ const COLOR_NAMES = {
   '#ef4444':'Red',
   '#22c55e':'Green'
 };
-function colorLabel(hex){ return COLOR_NAMES[hex.toLowerCase()] || hex; }
+function colorLabel(hex) { return COLOR_NAMES[hex.toLowerCase()] || hex; }
 
-/* ══════════════════════════════════════
+/* ═══════════════════════════════════════════
    SIZE PICKER — open
-══════════════════════════════════════ */
-function openSizePicker(e, btn){
-  e.preventDefault(); e.stopPropagation();
+═══════════════════════════════════════════ */
+function openSizePicker(e, btn) {
+  e.preventDefault();
+  e.stopPropagation();
 
   const card  = btn.closest('.product-card');
   const price = parseFloat(card.dataset.price);
-  if(!price){ showToast('SOLD OUT'); return; }
+  if (!price) { showToast('SOLD OUT'); return; }
 
-  /* reset state */
   spProduct       = { name: card.dataset.name, price, img: card.dataset.img };
   spSelectedSize  = null;
   spSelectedColor = null;
   spQtyVal        = 1;
 
-  /* fill header */
   document.getElementById('spQty').textContent  = '1';
   document.getElementById('spTitle').textContent = 'SELECT SIZE';
   document.getElementById('spThumb').src         = spProduct.img;
   document.getElementById('spName').textContent  = spProduct.name;
   document.getElementById('spPrice').textContent = fmt(spProduct.price);
 
-  /* ── COLOR SWATCHES ── */
+  /* color swatches */
   const colorRow  = document.getElementById('colorRow');
   const colorOpts = document.getElementById('colorOptions');
   const rawColors = (card.dataset.colors || '').trim();
-
   colorOpts.innerHTML = '';
-  if(rawColors){
-    rawColors.split(',').forEach(entry => {
-      const parts     = entry.trim().split(':');
-      const hex       = parts[0];
-      const soldOut   = parts[1] === 'soldout';
-      const label     = colorLabel(hex);
-      const isWhite   = hex.toLowerCase() === '#ffffff';
 
-      const sw        = document.createElement('button');
-      sw.className    = 'color-swatch' + (soldOut ? ' soldout' : '') + (isWhite ? ' white-swatch' : '');
-      sw.style.background = hex;
-      sw.dataset.hex      = hex;
-      sw.dataset.label    = label;
-      sw.title            = label + (soldOut ? ' — Sold Out' : '');
-      sw.type             = 'button';
-      if(!soldOut) sw.addEventListener('click', ()=> selectColor(sw));
+  if (rawColors) {
+    rawColors.split(',').forEach(entry => {
+      const parts   = entry.trim().split(':');
+      const hex     = parts[0];
+      const soldOut = parts[1] === 'soldout';
+      const label   = colorLabel(hex);
+      const isWhite = hex.toLowerCase() === '#ffffff';
+
+      const sw = document.createElement('button');
+      sw.className         = 'color-swatch' + (soldOut ? ' soldout' : '') + (isWhite ? ' white-swatch' : '');
+      sw.style.background  = hex;
+      sw.dataset.hex       = hex;
+      sw.dataset.label     = label;
+      sw.title             = label + (soldOut ? ' — Sold Out' : '');
+      sw.type              = 'button';
+      if (!soldOut) sw.addEventListener('click', () => selectColor(sw));
       colorOpts.appendChild(sw);
     });
     document.getElementById('colorSelectedLabel').textContent = 'SELECT';
@@ -631,7 +555,7 @@ function openSizePicker(e, btn){
     colorRow.classList.remove('visible');
   }
 
-  /* ── SIZE BUTTONS ── */
+  /* size buttons */
   const sizeOpts = document.getElementById('sizeOptions');
   sizeOpts.innerHTML = '';
   const rawSizes = (card.dataset.sizes || 'S,M,L,XL').trim();
@@ -640,12 +564,12 @@ function openSizePicker(e, btn){
     const label   = parts[0];
     const soldOut = parts[1] === 'soldout';
 
-    const sb      = document.createElement('button');
-    sb.className  = 'size-opt' + (soldOut ? ' soldout' : '');
+    const sb = document.createElement('button');
+    sb.className   = 'size-opt' + (soldOut ? ' soldout' : '');
     sb.textContent = label;
     sb.title       = soldOut ? label + ' — Sold Out' : label;
     sb.type        = 'button';
-    if(!soldOut) sb.addEventListener('click', ()=> selectSize(sb));
+    if (!soldOut) sb.addEventListener('click', () => selectSize(sb));
     sizeOpts.appendChild(sb);
   });
 
@@ -653,75 +577,89 @@ function openSizePicker(e, btn){
   document.body.style.overflow = 'hidden';
 }
 
-/* ── close ── */
-function closeSizePicker(e){
-  if(e && e.target !== document.getElementById('sizeOverlay')) return;
+function closeSizePicker(e) {
+  if (e && e.target !== document.getElementById('sizeOverlay')) return;
   document.getElementById('sizeOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-/* ── select color ── */
-function selectColor(btn){
+function selectColor(btn) {
   document.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   spSelectedColor = btn.dataset.label;
   document.getElementById('colorSelectedLabel').textContent = btn.dataset.label.toUpperCase();
 }
 
-/* ── select size ── */
-function selectSize(btn){
+function selectSize(btn) {
   document.querySelectorAll('.size-opt').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   spSelectedSize = btn.textContent.trim();
 }
 
-/* ── qty ── */
-function spQtyChange(d){
+function spQtyChange(d) {
   spQtyVal = Math.max(1, Math.min(10, spQtyVal + d));
   document.getElementById('spQty').textContent = spQtyVal;
 }
 
 /* ── confirm add ── */
-function confirmAdd(){
+function confirmAdd() {
   const hasColors = document.getElementById('colorRow').classList.contains('visible');
-  if(hasColors && !spSelectedColor){ showToast('PLEASE SELECT A COLOR'); return; }
-  if(!spSelectedSize){ showToast('PLEASE SELECT A SIZE'); return; }
+  if (hasColors && !spSelectedColor) { showToast('PLEASE SELECT A COLOR'); return; }
+  if (!spSelectedSize)               { showToast('PLEASE SELECT A SIZE');  return; }
 
-  const key = spProduct.name + '|' + spSelectedSize + (spSelectedColor ? '|' + spSelectedColor : '');
-  const ex  = cart.find(i => i.key === key);
-  if(ex){ ex.qty += spQtyVal; }
-  else{
+  /* Build key — same format dustar.html uses */
+  const key = spSelectedColor
+    ? spProduct.name + '|' + spSelectedSize + '|' + spSelectedColor
+    : spProduct.name + '|' + spSelectedSize;
+
+  const existing = cart.find(i => i.key === key);
+  if (existing) {
+    existing.qty += spQtyVal;
+  } else {
     cart.push({
       key,
-      name  : spProduct.name,
-      size  : spSelectedSize,
-      color : spSelectedColor || null,
-      price : spProduct.price,
-      img   : spProduct.img,
-      qty   : spQtyVal
+      name:  spProduct.name,
+      size:  spSelectedSize,
+      color: spSelectedColor || null,
+      price: spProduct.price,
+      img:   spProduct.img,
+      qty:   spQtyVal
     });
   }
-  saveCart(); renderCart(); updateBadge();
+
+  saveCart();
+  renderCart();
+  updateBadge();
+
   document.getElementById('sizeOverlay').classList.remove('open');
   document.body.style.overflow = '';
   showToast('✓ ADDED TO CART');
   setTimeout(openCart, 350);
 }
 
-/* ══════════════════════════════════════
-   CART
-══════════════════════════════════════ */
-function removeItem(idx){ cart.splice(idx,1); saveCart(); renderCart(); updateBadge(); }
-function changeQty(idx,d){
-  cart[idx].qty += d;
-  if(cart[idx].qty <= 0) removeItem(idx);
-  else{ saveCart(); renderCart(); updateBadge(); }
+/* ═══════════════════════════════════════════
+   CART DRAWER
+═══════════════════════════════════════════ */
+function removeItem(key) {
+  cart = cart.filter(i => i.key !== key);
+  saveCart(); renderCart(); updateBadge();
 }
-function cartTotal(){ return cart.reduce((s,i)=> s + i.price * i.qty, 0); }
-function cartCount(){ return cart.reduce((s,i)=> s + i.qty, 0); }
-function updateBadge(){
+
+function changeQty(key, d) {
+  const item = cart.find(i => i.key === key);
+  if (!item) return;
+  item.qty += d;
+  if (item.qty <= 0) removeItem(key);
+  else { saveCart(); renderCart(); updateBadge(); }
+}
+
+function cartTotalVal() { return cart.reduce((s, i) => s + i.price * i.qty, 0); }
+function cartCount()    { return cart.reduce((s, i) => s + i.qty, 0); }
+
+function updateBadge() {
   const b = document.getElementById('cartBadge');
-  const n = cartCount(); b.textContent = n;
+  const n = cartCount();
+  b.textContent = n;
   n > 0 ? b.classList.add('show') : b.classList.remove('show');
 }
 
@@ -732,9 +670,10 @@ const binSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
   <path d="M9 6V4h6v2"/>
 </svg>`;
 
-function renderCart(){
+function renderCart() {
   const el = document.getElementById('cartItems');
-  if(!cart.length){
+
+  if (!cart.length) {
     el.innerHTML = `<div class="cart-empty">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -746,7 +685,8 @@ function renderCart(){
     document.getElementById('cartTotal').textContent = '$0.00';
     return;
   }
-  el.innerHTML = cart.map((item,i) => `
+
+  el.innerHTML = cart.map(item => `
     <div class="cart-item">
       <img class="cart-item-img" src="${item.img}" onerror="this.style.background='#eee'">
       <div class="cart-item-info">
@@ -754,33 +694,37 @@ function renderCart(){
         <div class="cart-item-meta">SIZE: ${item.size}${item.color ? ' &nbsp;·&nbsp; ' + item.color.toUpperCase() : ''}</div>
         <div class="cart-item-price">${fmt(item.price * item.qty)}</div>
         <div class="cart-qty-row">
-          <button class="cart-qty-btn" onclick="changeQty(${i},-1)">−</button>
+          <button class="cart-qty-btn" onclick="changeQty('${item.key}',-1)">−</button>
           <span  class="cart-qty-num">${item.qty}</span>
-          <button class="cart-qty-btn" onclick="changeQty(${i},1)">+</button>
+          <button class="cart-qty-btn" onclick="changeQty('${item.key}',1)">+</button>
         </div>
       </div>
-      <button class="bin-btn" onclick="removeItem(${i})" title="Remove">${binSVG}</button>
-    </div>`).join('');
-  document.getElementById('cartTotal').textContent = fmt(cartTotal());
+      <button class="bin-btn" onclick="removeItem('${item.key}')" title="Remove">${binSVG}</button>
+    </div>
+  `).join('');
+
+  document.getElementById('cartTotal').textContent = fmt(cartTotalVal());
 }
 
-function openCart(){
+function openCart() {
   document.getElementById('cartDrawer').classList.add('open');
   document.getElementById('cartOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-function closeCart(){
+function closeCart() {
   document.getElementById('cartDrawer').classList.remove('open');
   document.getElementById('cartOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-function openCheckout(){
-  if(!cart.length){ showToast('YOUR CART IS EMPTY'); return; }
+function openCheckout() {
+  if (!cart.length) { showToast('YOUR CART IS EMPTY'); return; }
+  saveCart();
   window.location.href = 'checkout.html';
 }
 
-/* init */
-renderCart(); updateBadge();
+/* ── init ── */
+renderCart();
+updateBadge();
 </script>
 </body>
 </html>
