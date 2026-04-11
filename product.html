@@ -244,8 +244,8 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
 
 <!-- NAV -->
 <nav>
-  <a href="index.html">HOME</a>
-  <a href="">CONTACT</a>
+  <a href="#store">HOME</a>
+  <a href="#contact">CONTACT</a>
   <a href="#terms">TERMS</a>
   <div class="nav-right">
     <button class="cart-btn" onclick="openCart()">
@@ -411,12 +411,12 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
     </div>
     <div class="size-label">SIZE</div>
     <div class="size-options" id="sizeOptions">
-     
+      <button class="size-opt" onclick="selectSize(this)">XS</button>
       <button class="size-opt" onclick="selectSize(this)">S</button>
       <button class="size-opt" onclick="selectSize(this)">M</button>
       <button class="size-opt" onclick="selectSize(this)">L</button>
       <button class="size-opt" onclick="selectSize(this)">XL</button>
-
+      <button class="size-opt" onclick="selectSize(this)">XXL</button>
     </div>
     <div class="qty-label">QUANTITY</div>
     <div class="qty-picker">
@@ -451,10 +451,18 @@ footer{text-align:center;padding:30px;color:#aaa;font-size:13px;letter-spacing:2
 
 <script>
 /* ── STATE ── */
-let cart = [];
+// Load cart from localStorage on page init; shared across all pages using the same key
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
 let spProduct = null;
 let spSelectedSize = null;
 let spQtyVal = 1;
+
+/* ── PERSIST ── */
+// Call after every cart mutation to keep localStorage in sync
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
 
 /* ── UTILS ── */
 const fmt = n => '$' + parseFloat(n).toFixed(2);
@@ -502,6 +510,7 @@ function confirmAdd(){
   const ex = cart.find(i => i.key === key);
   if(ex){ ex.qty += spQtyVal; }
   else{ cart.push({ key, name: spProduct.name, size: spSelectedSize, price: spProduct.price, img: spProduct.img, qty: spQtyVal }); }
+  saveCart(); // ← persist
   renderCart(); updateBadge();
   document.getElementById('sizeOverlay').classList.remove('open');
   document.body.style.overflow = '';
@@ -511,12 +520,17 @@ function confirmAdd(){
 
 /* ── CART ── */
 function removeItem(idx){
-  cart.splice(idx, 1); renderCart(); updateBadge();
+  cart.splice(idx, 1);
+  saveCart(); // ← persist
+  renderCart(); updateBadge();
 }
 function changeQty(idx, d){
   cart[idx].qty += d;
   if(cart[idx].qty <= 0) removeItem(idx);
-  else { renderCart(); updateBadge(); }
+  else {
+    saveCart(); // ← persist
+    renderCart(); updateBadge();
+  }
 }
 function cartTotal(){ return cart.reduce((s, i) => s + i.price * i.qty, 0); }
 function cartCount(){ return cart.reduce((s, i) => s + i.qty, 0); }
@@ -574,10 +588,10 @@ function closeCart(){
   document.body.style.overflow = '';
 }
 
-/* ── CHECKOUT → saves cart to localStorage then redirects ── */
+/* ── CHECKOUT ── */
 function openCheckout(){
   if(!cart.length){ showToast('YOUR CART IS EMPTY'); return; }
-  localStorage.setItem('artemis_cart', JSON.stringify(cart));
+  // cart is already in localStorage under 'cart' — no extra save needed
   window.location.href = 'checkout.html';
 }
 
