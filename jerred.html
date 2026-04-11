@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>barca</title>
+<title>Goddess Tee - Product Details</title>
 <style>
     * {
         margin: 0;
@@ -537,7 +537,7 @@
             <span class="back-arrow">←</span>
         </a>
 
-        <img src="./img/logo3.PNG" class="top-logo" alt="Logo">
+        <img src="./img/logo3.png" class="top-logo" alt="Logo">
 
         <div class="cart-icon" id="cartIcon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -612,7 +612,7 @@
             </div>
 
             <!-- ADD TO CART -->
-            <button class="add-to-cart">
+           <button class="add-to-cart" id="addToCartBtn">
                 <span>Add to cart</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -626,11 +626,10 @@
 
             <!-- INFO -->
             <ul class="product-info">
-                <li>270GSM COTTON 100%</li>
-                <li>custom pattern</li>
-                <li>custom fitting</li>
-                <li>Embroidery, Rubber Print
-</li>
+                <li>420gsm fleece terry</li>
+                <li>Custom boxy fit</li>
+                <li>Color: black</li>
+                <li>Print: discharge</li>
             </ul>
 
         </div>
@@ -638,14 +637,40 @@
 </div>
 
 <script>
-    // Load cart from localStorage on page load
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Size selection
-    const sizeButtons = document.querySelectorAll('.size-btn');
+    /* ─── SAVE ─── */
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    /* ─── MIGRATE old cart format (image→img, quantity→qty, add key) ─── */
+    function migrateCart(arr) {
+        return arr.map(item => {
+            if (item.key !== undefined) return item;
+            const name  = item.name  || '';
+            const size  = item.size  || '';
+            const color = item.color || null;
+            const key   = color ? `${name}|${size}|${color}` : `${name}|${size}`;
+            return {
+                key,
+                name,
+                size,
+                color,
+                price: item.price    || 0,
+                img:   item.image    || item.img || '',
+                qty:   item.quantity || item.qty || 1
+            };
+        });
+    }
+
+    /* ─── STATE ─── */
+    let cart = migrateCart(JSON.parse(localStorage.getItem('cart')) || []);
+    saveCart();
     let selectedSize = 'L';
-    
+
+    /* ─── SIZE SELECTION ─── */
+    const sizeButtons = document.querySelectorAll('.size-btn');
     sizeButtons.forEach(btn => {
+        if (btn.classList.contains('sold-out')) return;
         btn.addEventListener('click', () => {
             sizeButtons.forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -653,175 +678,147 @@
         });
     });
 
-    // Add to cart
-    const addToCartBtn = document.querySelector('.add-to-cart');
+    /* ─── ADD TO CART ─── */
+    const addToCartBtn = document.getElementById('addToCartBtn');
     addToCartBtn.addEventListener('click', () => {
-        const product = {
-            id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            name: 'ARTEMIS VISCA BARCA',
-            price: 25.00,
-            size: selectedSize,
-            color: 'Black',
-            quantity: 1,
-            image: './img/jer.png'
-        };
-        
-        // Check if same product with same size already exists
-        const existingIndex = cart.findIndex(item => 
-            item.name === product.name && 
-            item.size === product.size && 
-            item.color === product.color
-        );
-        
-        if (existingIndex !== -1) {
-            // Increase quantity
-            cart[existingIndex].quantity++;
+        // Key matches the format used in product.html (main store)
+        const key = 'ARTEMIS VISCA BARCA|' + selectedSize;
+        const existing = cart.find(i => i.key === key);
+
+        if (existing) {
+            existing.qty++;
         } else {
-            // Add new item
-            cart.push(product);
+            cart.push({
+                key,
+                name:  'ARTEMIS VISCA BARCA',
+                size:  selectedSize,
+                color: null,
+                price: 32.00,
+                img:   './img/jer.png',
+                qty:   1
+            });
         }
-        
-        // Save to localStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
+
+        saveCart();
         updateCart();
-        
+
+        // Button feedback
         addToCartBtn.style.background = '#28a745';
-        addToCartBtn.querySelector("span").textContent = "Added!";
-        
+        addToCartBtn.querySelector('span').textContent = 'Added!';
         setTimeout(() => {
             addToCartBtn.style.background = '#333';
-            addToCartBtn.querySelector("span").textContent = "Add to cart";
+            addToCartBtn.querySelector('span').textContent = 'Add to cart';
         }, 2000);
     });
 
-    // Cart functions
+    /* ─── RENDER CART ─── */
     function updateCart() {
-        const cartCount = document.getElementById('cartCount');
-        const cartItemCount = document.getElementById('cartItemCount');
+        const cartCount          = document.getElementById('cartCount');
+        const cartItemCount      = document.getElementById('cartItemCount');
         const cartItemsContainer = document.getElementById('cartItemsContainer');
-        const cartTotal = document.getElementById('cartTotal');
-        
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = totalItems;
+        const cartTotal          = document.getElementById('cartTotal');
+
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        cartCount.textContent     = totalItems;
         cartItemCount.textContent = totalItems;
-        
+
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = `
                 <div class="empty-cart">
                     <div class="empty-cart-icon">🛒</div>
                     <p>Your cart is empty</p>
-                </div>
-            `;
+                </div>`;
         } else {
             cartItemsContainer.innerHTML = cart.map(item => `
-                <div class="cart-item" data-id="${item.id}">
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'">
+                <div class="cart-item" data-key="${item.key}">
+                    <img src="${item.img}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'">
                     <div class="cart-item-details">
                         <div class="cart-item-name">${item.name}</div>
-                        <div class="cart-item-size">Size: ${item.size}</div>
+                        <div class="cart-item-size">Size: ${item.size}${item.color ? ' · ' + item.color : ''}</div>
                         <div class="cart-item-controls">
                             <div class="quantity-controls">
-                                <button class="quantity-btn minus" data-id="${item.id}">−</button>
-                                <span class="quantity">${item.quantity}</span>
-                                <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                                <button class="quantity-btn minus" data-key="${item.key}">−</button>
+                                <span class="quantity">${item.qty}</span>
+                                <button class="quantity-btn plus"  data-key="${item.key}">+</button>
                             </div>
-                            <div style="display: flex; align-items: center;">
-                                <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
-                                <button class="remove-item" data-id="${item.id}">🗑</button>
+                            <div style="display:flex;align-items:center;">
+                                <span class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</span>
+                                <button class="remove-item" data-key="${item.key}">🗑</button>
                             </div>
                         </div>
                     </div>
                 </div>
             `).join('');
-            
-            // Add event listeners
+
+            // Plus
             document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const item = cart.find(i => i.id === btn.dataset.id);
-                    if (item) {
-                        item.quantity++;
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                        updateCart();
-                    }
+                    const item = cart.find(i => i.key === btn.dataset.key);
+                    if (item) { item.qty++; saveCart(); updateCart(); }
                 });
             });
-            
+
+            // Minus
             document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const item = cart.find(i => i.id === btn.dataset.id);
-                    if (item && item.quantity > 1) {
-                        item.quantity--;
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                        updateCart();
-                    }
+                    const item = cart.find(i => i.key === btn.dataset.key);
+                    if (item && item.qty > 1) { item.qty--; saveCart(); updateCart(); }
                 });
             });
-            
+
+            // Remove
             document.querySelectorAll('.remove-item').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    cart = cart.filter(i => i.id !== btn.dataset.id);
-                    localStorage.setItem('cart', JSON.stringify(cart));
+                    cart = cart.filter(i => i.key !== btn.dataset.key);
+                    saveCart();
                     updateCart();
                 });
             });
         }
-        
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
         cartTotal.textContent = `$${total.toFixed(2)} USD`;
     }
 
-    // Checkout button - redirect to checkout.html
+    /* ─── CHECKOUT ─── */
     document.getElementById('checkoutBtn').addEventListener('click', () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
-        }
-        
-        // Save cart to localStorage before redirecting
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        // Redirect to checkout page
+        if (cart.length === 0) { alert('Your cart is empty!'); return; }
+        saveCart();
         window.location.href = 'checkout.html';
     });
 
-    // Toggle cart
-    const cartIcon = document.getElementById('cartIcon');
-    const cartSidebar = document.getElementById('cartSidebar');
-    const cartOverlay = document.getElementById('cartOverlay');
-    const closeCart = document.getElementById('closeCart');
-    const continueShopping = document.getElementById('continueShopping');
-    
-    function openCart() {
+    /* ─── CART TOGGLE ─── */
+    const cartIcon       = document.getElementById('cartIcon');
+    const cartSidebar    = document.getElementById('cartSidebar');
+    const cartOverlay    = document.getElementById('cartOverlay');
+    const closeCartBtn   = document.getElementById('closeCart');
+    const continueBtn    = document.getElementById('continueShopping');
+
+    function openCartPanel()  {
         cartSidebar.classList.add('open');
         cartOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-    
-    function closeCartFunc() {
+    function closeCartPanel() {
         cartSidebar.classList.remove('open');
         cartOverlay.classList.remove('active');
         document.body.style.overflow = '';
     }
-    
-    cartIcon.addEventListener('click', openCart);
-    closeCart.addEventListener('click', closeCartFunc);
-    cartOverlay.addEventListener('click', closeCartFunc);
-    continueShopping.addEventListener('click', closeCartFunc);
 
-    // Arrow key gallery scrolling
+    cartIcon.addEventListener('click', openCartPanel);
+    closeCartBtn.addEventListener('click', closeCartPanel);
+    cartOverlay.addEventListener('click', closeCartPanel);
+    continueBtn.addEventListener('click', closeCartPanel);
+
+    /* ─── ARROW KEY GALLERY SCROLL ─── */
     const gallery = document.getElementById('imageGallery');
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-            gallery.scrollBy({ left: gallery.offsetWidth, behavior: 'smooth' });
-        } else if (e.key === 'ArrowLeft') {
-            gallery.scrollBy({ left: -gallery.offsetWidth, behavior: 'smooth' });
-        }
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') gallery.scrollBy({ left:  gallery.offsetWidth, behavior: 'smooth' });
+        if (e.key === 'ArrowLeft')  gallery.scrollBy({ left: -gallery.offsetWidth, behavior: 'smooth' });
     });
-    
-    // Initialize cart on page load
+
+    /* ─── INIT ─── */
     updateCart();
 </script>
-
 </body>
 </html>
