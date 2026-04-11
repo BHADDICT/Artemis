@@ -1,936 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artemis Station Zipup - Product Details</title>
+    <title>Artemismade Tee - Product Details</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --purple: #8b5cf6; --black: #0a0a0a; }
+        body { font-family: 'Arial', sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* TOP BAR */
+        .top-bar { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 30px; }
+        .back-button { position: absolute; left: 0; display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: white; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #333; font-size: 14px; font-weight: 500; transition: all 0.3s ease; }
+        .back-button:hover { background: #f9f9f9; border-color: #333; }
+        .top-logo { width: 80px; height: 80px; object-fit: contain; }
+
+        /* CART ICON */
+        .cart-icon { position: absolute; right: 0; width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
+        .cart-icon svg { width: 28px; height: 28px; stroke: #333; }
+        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--purple); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+
+        /* CART SIDEBAR */
+        .cart-sidebar { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; background: white; box-shadow: -2px 0 10px rgba(0,0,0,0.1); z-index: 1000; transition: right 0.3s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.open { right: 0; }
+        .cart-overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
+        .cart-overlay-bg.active { display: block; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid #e0e0e0; }
+        .cart-title { font-size: 18px; font-weight: 600; letter-spacing: 2px; }
+        .close-cart { background: none; border: none; font-size: 28px; cursor: pointer; color: #333; line-height: 1; }
+        .cart-items-panel { flex: 1; overflow-y: auto; padding: 20px 30px; }
+        .cart-item { display: flex; gap: 15px; padding: 20px 0; border-bottom: 1px solid #f0f0f0; }
+        .cart-item-image { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background: #f5f5f5; flex-shrink: 0; }
+        .cart-item-details { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+        .cart-item-name { font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+        .cart-item-meta { font-size: 12px; color: #888; letter-spacing: 1px; }
+        .cart-item-controls { display: flex; align-items: center; justify-content: space-between; }
+        .quantity-controls { display: flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0; border-radius: 50px; padding: 5px 14px; }
+        .quantity-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: #333; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+        .quantity { font-weight: 600; font-size: 14px; min-width: 20px; text-align: center; }
+        .cart-item-price { font-weight: 600; font-size: 15px; }
+        .remove-item { background: none; border: none; cursor: pointer; color: #999; font-size: 18px; margin-left: 10px; }
+        .remove-item:hover { color: #ef4444; }
+        .cart-footer-panel { border-top: 1px solid #e0e0e0; padding: 25px 30px; }
+        .cart-summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
+        .cart-summary-row.total { font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 1px solid #e0e0e0; }
+        .checkout-btn { width: 100%; padding: 16px; background: var(--black); color: white; border: none; border-radius: 50px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.3s ease; letter-spacing: 2px; }
+        .checkout-btn:hover { background: var(--purple); }
+        .continue-shopping { width: 100%; padding: 12px; background: none; color: #333; border: none; font-size: 14px; cursor: pointer; text-decoration: underline; }
+        .empty-cart { text-align: center; padding: 60px 30px; color: #999; }
+        .empty-cart-icon { font-size: 48px; margin-bottom: 15px; }
+
+        /* PRODUCT LAYOUT */
+        .product-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .image-gallery { display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px; scrollbar-width: thin; scrollbar-color: #333 #f0f0f0; }
+        .image-gallery::-webkit-scrollbar { height: 8px; }
+        .image-gallery::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 10px; }
+        .image-gallery::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .product-image { min-width: 100%; width: 100%; height: 500px; object-fit: cover; border-radius: 8px; }
+        .scroll-indicator { text-align: center; margin-top: 15px; color: #888; font-size: 13px; letter-spacing: 1px; }
+        .details-section { display: flex; flex-direction: column; }
+        .product-title { font-size: 26px; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px; }
+        .price { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+        .tax-info { font-size: 12px; color: #888; margin-bottom: 28px; letter-spacing: 1px; }
+
+        /* COLOR SWATCHES */
+        .section-label { font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .section-label span { color: var(--purple); font-weight: 700; }
+        .color-section { margin-bottom: 26px; }
+        .color-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .color-swatch {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 2.5px solid transparent;
+            cursor: pointer; position: relative;
+            transition: transform .2s;
+            outline: none;
+        }
+        .color-swatch:hover:not(.soldout) { transform: scale(1.15); }
+        .color-swatch.selected { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--purple); }
+        .color-swatch.white-sw { border-color: #ddd; }
+        .color-swatch.soldout { cursor: not-allowed; opacity: 0.4; }
+        .color-swatch.soldout::after {
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
+            background: linear-gradient(135deg, transparent 42%, rgba(60,60,60,0.85) 42%, rgba(60,60,60,0.85) 58%, transparent 58%);
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* ---- TOP BAR ---- */
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin-bottom: 30px;
-        }
- #sold-out {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  border: 1px solid #999;
-  opacity: 0.6;
-  pointer-events: none;
-  position: relative;
-}
- #sold-out::after {
-  content: "/";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: rgb(88, 87, 87);
-  font-size: 2em;
-
-  white-space: nowrap;
-}
-        .back-button {
-            position: absolute;
-            left: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #333;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: #f9f9f9;
-            border-color: #333;
-        }
-
-        .back-arrow {
-            font-size: 18px;
-        }
-
-        .top-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-        }
-
-        .cart-icon {
-            position: absolute;
-            right: 0;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cart-icon svg {
-            width: 28px;
-            height: 28px;
-            stroke: #333;
-        }
-
-        /* ---- CART COUNT BADGE ---- */
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #333;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* ---- CART SIDEBAR ---- */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 450px;
-            height: 100vh;
-            background: white;
-            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: right 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.open {
-            right: 0;
-        }
-
-        .cart-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
-
-        .cart-overlay.active {
-            display: block;
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 30px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .cart-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #333;
-            line-height: 1;
-        }
-
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 30px;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 15px;
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .cart-item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            background: #f5f5f5;
-        }
-
-        .cart-item-details {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .cart-item-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .cart-item-size {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 50px;
-            padding: 5px 15px;
-        }
-
-        .quantity-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #333;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quantity-btn:hover {
-            color: #000;
-        }
-
-        .quantity {
-            font-weight: 600;
-            font-size: 14px;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .cart-item-price {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .remove-item {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #999;
-            font-size: 20px;
-            padding: 0;
-            margin-left: 10px;
-        }
-
-        .remove-item:hover {
-            color: #333;
-        }
-
-        .cart-footer {
-            border-top: 1px solid #e0e0e0;
-            padding: 25px 30px;
-        }
-
-        .cart-summary {
-            margin-bottom: 20px;
-        }
-
-        .cart-summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-
-        .cart-summary-row.total {
-            font-size: 18px;
-            font-weight: 700;
-            padding-top: 12px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 16px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .checkout-btn:hover {
-            background: #000;
-        }
-
-        .continue-shopping {
-            width: 100%;
-            padding: 12px;
-            background: none;
-            color: #333;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 60px 30px;
-            color: #999;
-        }
-
-        .empty-cart-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        /* ---- PRODUCT LAYOUT ---- */
-        .product-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* ---- IMAGE GALLERY ---- */
-        .image-section {
-            position: relative;
-        }
-
-        .image-gallery {
-            display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            gap: 20px;
-            scrollbar-width: thin;
-            scrollbar-color: #333 #f0f0f0;
-        }
-
-        .image-gallery::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .image-gallery::-webkit-scrollbar-track {
-            background: #f0f0f0;
-            border-radius: 10px;
-        }
-
-        .image-gallery::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 10px;
-        }
-
-        .product-image {
-            min-width: 100%;
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .scroll-indicator {
-            text-align: center;
-            margin-top: 15px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        /* ---- PRODUCT DETAILS ---- */
-        .details-section {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .price {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .tax-info {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        /* ---- SIZE SELECTION ---- */
-        .size-section {
-            margin-bottom: 30px;
-        }
-
-        .size-label {
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .size-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
+        /* SIZE BUTTONS */
+        .size-section { margin-bottom: 26px; }
+        .size-options { display: flex; gap: 10px; flex-wrap: wrap; }
         .size-btn {
-            padding: 12px 20px;
-            border: 2px solid #ddd;
-            background: white;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            padding: 10px 20px; border: 2px solid #ddd; background: white;
+            border-radius: 50px; cursor: pointer; font-size: 13px; font-weight: 700;
+            letter-spacing: 1px; transition: all 0.2s; position: relative; overflow: hidden;
+        }
+        .size-btn:hover:not(.soldout) { border-color: #333; }
+        .size-btn.selected { background: var(--black); color: white; border-color: var(--black); }
+        .size-btn.soldout { color: #ccc; border-color: #eee; cursor: not-allowed; background: #fafafa; }
+        .size-btn.soldout::before {
+            content: ''; position: absolute; top: 50%; left: 0; right: 0;
+            height: 1.5px; background: #ccc; transform: rotate(-20deg);
         }
 
-        .size-btn:hover {
-            border-color: #333;
-        }
+        /* ADD TO CART */
+        .add-to-cart { width: 100%; padding: 16px; background: var(--black); color: white; border: none; border-radius: 50px; font-size: 14px; font-weight: 700; letter-spacing: 3px; cursor: pointer; margin-bottom: 28px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .add-to-cart:hover { background: var(--purple); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(139,92,246,.35); }
+        .add-to-cart.added { background: #22c55e; }
 
-        .size-btn.selected {
-            background: #333;
-            color: white;
-            border-color: #333;
-        }
+        .product-info { list-style: none; }
+        .product-info li { padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; line-height: 1.6; color: #666; }
+        .product-info li::before { content: "→ "; color: #333; font-weight: bold; }
 
-        .color-btn {
-            padding: 12px 20px;
-            border: 2px solid #ddd;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
+        /* TOAST */
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: #000; color: #fff; padding: 12px 26px; border-radius: 30px; font-size: 11px; letter-spacing: 2px; font-weight: 700; opacity: 0; transition: all .35s; z-index: 1300; white-space: nowrap; pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .color-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .color-btn.selected {
-            box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.3);
-            transform: scale(1.05);
-        }
-
-        /* ---- ADD TO CART BUTTON ---- */
-        .add-to-cart {
-            width: 100%;
-            padding: 18px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .add-to-cart:hover {
-            background: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        /* ---- PRODUCT INFO LIST ---- */
-        .product-info {
-            list-style: none;
-        }
-
-        .product-info li {
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .product-info li:before {
-            content: "→ ";
-            color: #333;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-        /* ---- RESPONSIVE ---- */
         @media (max-width: 768px) {
-            .product-container {
-                grid-template-columns: 1fr;
-                padding: 20px;
-                gap: 30px;
-            }
-
-            .product-image {
-                height: 300px;
-            }
-
-            .product-title {
-                font-size: 24px;
-            }
-
-            .top-logo {
-                width: 60px;
-                height: 60px;
-            }
-
-            .cart-sidebar {
-                width: 100%;
-            }
+            .product-container { grid-template-columns: 1fr; padding: 20px; gap: 30px; }
+            .product-image { height: 300px; }
+            .cart-sidebar { width: 100%; }
+            .top-logo { width: 60px; height: 60px; }
         }
     </style>
 </head>
-
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <!-- TOP BAR: Back Button + Logo + Cart -->
-        <div class="top-bar">
-            <a href="product.html" class="back-button">
-                <span class="back-arrow">←</span>
-            </a>
-
-            <img src="./img/logo3.png" class="top-logo" alt="Logo">
-
-            <div class="cart-icon" id="cartIcon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                </svg>
-                <span class="cart-count" id="cartCount">0</span>
-            </div>
-        </div>
-
-        <!-- CART SIDEBAR -->
-        <div class="cart-overlay" id="cartOverlay"></div>
-        <div class="cart-sidebar" id="cartSidebar">
-            <div class="cart-header">
-                <div class="cart-title">Your Cart - <span id="cartItemCount">0</span></div>
-                <button class="close-cart" id="closeCart">×</button>
-            </div>
-
-            <div class="cart-items" id="cartItemsContainer">
-                <div class="empty-cart" id="emptyCart">
-                    <div class="empty-cart-icon">🛒</div>
-                    <p>Your cart is empty</p>
-                </div>
-            </div>
-
-            <div class="cart-footer">
-                <div class="cart-summary">
-                    <div class="cart-summary-row">
-                        <span>Shipping</span>
-                        <span>Calculated at next step</span>
-                    </div>
-                    <div class="cart-summary-row total">
-                        <span>Estimated total</span>
-                        <span id="cartTotal">$0.00 USD</span>
-                    </div>
-                </div>
-                <button class="checkout-btn" id="checkoutBtn">Checkout</button>
-                <button class="continue-shopping" id="continueShopping">Continue Shopping</button>
-            </div>
-        </div>
-
-        <div class="product-container">
-
-            <!-- IMAGES -->
-            <div class="image-section">
-                <div class="image-gallery" id="imageGallery">
-                    <img src="./img/eve2.png" alt="Artemis station zipup - Front View" class="product-image">
-                    <img src="./img/eve4.png" alt="Artemis station zipup - Back View" class="product-image">
-                    <img src="./img/eve7.png" alt="Side View" class="product-image">
-                    <img src="./img/eve9.png" alt="Detail View" class="product-image">
-                </div>
-                <div class="scroll-indicator">← Scroll to see more images →</div>
-            </div>
-
-            <!-- DETAILS -->
-            <div class="details-section">
-
-                <h1 class="product-title" id="productTitle">ARTEMISMADE TEE BLACK</h1>
-
-                <div class="price">$20.00 USD</div>
-
-                <!-- COLOR -->
-                <div class="size-section">
-                    <label class="size-label">Color</label>
-                    <div class="size-options">
-                        <button class="color-btn selected" data-color="black"
-                            style="background: #1a1a1a; border-color: #1a1a1a; width: 40px; height: 40px; padding: 0;"></button>
-                        <button class="color-btn" data-color="dark-blue"
-                            style="background: #1e3a8a; border-color: #1e3a8a; width: 40px; height: 40px; padding: 0;"></button>
-                        <button class="color-btn" data-color="red"
-                            style="background: #8e0a0a; border-color: #8e0a0a; width: 40px; height: 40px; padding: 0;"></button>
-                        <button class="color-btn" data-color="white"
-                            style="background: white; border-color: #ddd; width: 40px; height: 40px; padding: 0;"></button>
-                        <button class="color-btn" data-color="dark-green"
-                            style="background: #15803d; border-color: #15803d; width: 40px; height: 40px; padding: 0;" id="sold-out"></button>
-                        <button class="color-btn" data-color="light-blue"
-                            style="background: #94bdff; border-color: #8db6f9; width: 40px; height: 40px; padding: 0;" id="sold-out"></button>
-                    </div>
-                </div>
-
-                <!-- SIZE -->
-                <div class="size-section">
-                    <label class="size-label">Size</label>
-                    <div class="size-options">
-                        <button class="size-btn selected" data-size="S">S</button>
-                        <button class="size-btn" data-size="M">M</button>
-                        <button class="size-btn" data-size="L">L</button>
-                        <button class="size-btn" data-size="XL">XL</button>
-                    </div>
-                </div>
-
-                <!-- ADD TO CART -->
-                <button class="add-to-cart">
-                    <span>Add to cart</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                </button>
-
-                <!-- INFO -->
-                <ul class="product-info">
-                    <li>250gsm, cotton 100%</li>
-                    <li>print: rubber print</li>
-                    <li>custom boxy fitted</li>
-                </ul>
-
-            </div>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <a href="index.html" class="back-button"><span>←</span></a>
+        <img src="./img/logo3.png" class="top-logo" alt="Artemis">
+        <div class="cart-icon" id="cartIconBtn" style="position:absolute;right:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
         </div>
     </div>
 
-<script>
-    // Product images by color
-    const productImages = {
-        'black': ['./img/eve7.png', './img/eve8.png'],
-        'dark-blue': ['./img/eve2.png', './img/eve1.png'],
-        'red': ['./img/eve4.png', './img/eve3.png'],
-        'white': ['./img/eve5.png', './img/eve6.png'],
-        'dark-green': ['./img/eve9.png', './img/eve10.png'],
-        'light-blue': ['./img/eve11.png', './img/eve12.png']
-    };
+    <!-- CART SIDEBAR -->
+    <div class="cart-overlay-bg" id="cartOverlayBg"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <div class="cart-title">YOUR CART</div>
+            <button class="close-cart" id="closeCartBtn">✕</button>
+        </div>
+        <div class="cart-items-panel" id="cartItemsPanel"></div>
+        <div class="cart-footer-panel">
+            <div class="cart-summary-row"><span>Shipping</span><span>+ $2.00 at checkout</span></div>
+            <div class="cart-summary-row total"><span>SUBTOTAL</span><span id="cartTotalDisplay">$0.00</span></div>
+            <button class="checkout-btn" id="checkoutBtn">PROCEED TO CHECKOUT →</button>
+            <button class="continue-shopping" id="continueShoppingBtn">Continue Shopping</button>
+        </div>
+    </div>
 
-    // Color display names
-    const colorNames = {
-        'black': 'BLACK',
-        'dark-blue': 'DARK BLUE',
-        'red': 'RED',
-        'white': 'WHITE',
-        'dark-green': 'DARK GREEN',
-        'light-blue': 'LIGHT BLUE'
-    };
+    <!-- PRODUCT -->
+    <div class="product-container">
 
-    // Cart state - Load from localStorage
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        <!-- IMAGES -->
+        <div class="image-section">
+            <div class="image-gallery" id="imageGallery">
+                <img src="./img/eve7.png" alt="Artemismade Tee" class="product-image">
+                <img src="./img/eve8.png" alt="Artemismade Tee" class="product-image">
+            </div>
+            <div class="scroll-indicator">← SCROLL FOR MORE →</div>
+        </div>
 
-    // Product base name
-    const productBaseName = 'ARTEMISMADE TEE';
+        <!-- DETAILS -->
+        <div class="details-section">
+            <h1 class="product-title" id="productTitle">ARTEMISMADE TEE — BLACK</h1>
+            <div class="price">$20.00 USD</div>
+            <div class="tax-info">TAX INCLUDED. SHIPPING CALCULATED AT CHECKOUT.</div>
 
-    // Color selection
-    const colorButtons = document.querySelectorAll('.color-btn');
-    let selectedColor = 'black';
-    const productTitle = document.getElementById('productTitle');
-
-    // Function to update product title
-    function updateProductTitle() {
-        productTitle.textContent = `${productBaseName} ${colorNames[selectedColor]}`;
-    }
-
-    colorButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            colorButtons.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedColor = btn.dataset.color;
-            updateGalleryImages(selectedColor);
-            updateProductTitle();
-        });
-    });
-
-    // Update gallery images based on selected color
-    function updateGalleryImages(color) {
-        const gallery = document.getElementById('imageGallery');
-        const images = productImages[color];
-
-        gallery.innerHTML = images.map(src =>
-            `<img src="${src}" alt="${productBaseName} ${colorNames[color]}" class="product-image">`
-        ).join('');
-
-        gallery.scrollTo({ left: 0, behavior: 'smooth' });
-    }
-
-    // Size selection
-    const sizeButtons = document.querySelectorAll('.size-btn');
-    let selectedSize = 'S';
-
-    sizeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            sizeButtons.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedSize = btn.dataset.size;
-        });
-    });
-
-    // Add to cart button
-    const addToCartBtn = document.querySelector('.add-to-cart');
-    addToCartBtn.addEventListener('click', () => {
-        const fullProductName = `${productBaseName} ${colorNames[selectedColor]}`;
-        
-        console.log('Adding to cart:', {
-            name: fullProductName,
-            size: selectedSize,
-            color: selectedColor
-        });
-        
-        // Check if the exact product with same color AND size exists
-        const existingItemIndex = cart.findIndex(item => {
-            const match = item.name === fullProductName && item.size === selectedSize && item.color === colorNames[selectedColor];
-            console.log('Checking item:', item.name, item.size, item.color, 'vs', fullProductName, selectedSize, colorNames[selectedColor], 'Match:', match);
-            return match;
-        });
-
-        console.log('Existing item index:', existingItemIndex);
-
-        if (existingItemIndex !== -1) {
-            // Item exists, increase quantity
-            console.log('Increasing quantity for existing item');
-            cart[existingItemIndex].quantity++;
-        } else {
-            // New item, add to cart
-            console.log('Adding new item to cart');
-            const newItem = {
-                id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                name: fullProductName,
-                price: 20.00,
-                size: selectedSize,
-                color: colorNames[selectedColor],
-                quantity: 1,
-                image: productImages[selectedColor][0]
-            };
-            console.log('New item:', newItem);
-            cart.push(newItem);
-        }
-
-        console.log('Cart after adding:', JSON.parse(JSON.stringify(cart))); // Deep copy for logging
-        
-        // Save to localStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        updateCart();
-
-        // Visual feedback
-        addToCartBtn.style.background = '#28a745';
-        addToCartBtn.querySelector("span").textContent = "Added!";
-        setTimeout(() => {
-            addToCartBtn.style.background = '#333';
-            addToCartBtn.querySelector("span").textContent = "Add to cart";
-        }, 2000);
-    });
-
-    // Update cart display
-    function updateCart() {
-        console.log('Updating cart, current items:', cart); // Debug log
-        
-        const cartCount = document.getElementById('cartCount');
-        const cartItemCount = document.getElementById('cartItemCount');
-        const cartItemsContainer = document.getElementById('cartItemsContainer');
-        const emptyCart = document.getElementById('emptyCart');
-        const cartTotal = document.getElementById('cartTotal');
-
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = totalItems;
-        cartItemCount.textContent = totalItems;
-
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = `
-                <div class="empty-cart">
-                    <div class="empty-cart-icon">🛒</div>
-                    <p>Your cart is empty</p>
+            <!-- COLOR -->
+            <div class="color-section">
+                <div class="section-label">COLOR — <span id="colorLabel">BLACK</span></div>
+                <div class="color-options" id="colorOptions">
+                    <!-- built by JS from PRODUCT_CONFIG -->
                 </div>
-            `;
-        } else {
-            const cartHTML = cart.map(item => `
-                <div class="cart-item" data-id="${item.id}">
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'">
-                    <div class="cart-item-details">
-                        <div class="cart-item-name">${item.name}</div>
-                        <div class="cart-item-size">Size: ${item.size}</div>
-                        <div class="cart-item-controls">
-                            <div class="quantity-controls">
-                                <button class="quantity-btn minus" data-id="${item.id}">−</button>
-                                <span class="quantity">${item.quantity}</span>
-                                <button class="quantity-btn plus" data-id="${item.id}">+</button>
-                            </div>
-                            <div style="display: flex; align-items: center;">
-                                <span class="cart-item-price">${(item.price * item.quantity).toFixed(2)}</span>
-                                <button class="remove-item" data-id="${item.id}">🗑</button>
-                            </div>
-                        </div>
+            </div>
+
+            <!-- SIZE -->
+            <div class="size-section">
+                <div class="section-label">SIZE</div>
+                <div class="size-options" id="sizeOptions">
+                    <!-- built by JS from PRODUCT_CONFIG -->
+                </div>
+            </div>
+
+            <!-- ADD TO CART -->
+            <button class="add-to-cart" id="addToCartBtn">
+                <span id="atcLabel">ADD TO CART</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+            </button>
+
+            <ul class="product-info">
+                <li>250gsm, cotton 100%</li>
+                <li>Print: rubber print</li>
+                <li>Custom boxy fitted</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   PRODUCT CONFIG
+   colors: hex value, soldout flag, display name, images [front, back]
+   sizes:  label, soldout flag
+══════════════════════════════════════ */
+const PRODUCT = {
+    name : 'ARTEMISMADE TEE',
+    price: 20.00,
+    colors: [
+        { hex: '#111111', label: 'BLACK',      soldout: false, images: ['./img/eve7.png',  './img/eve8.png']  },
+        { hex: '#1e3a8a', label: 'DARK BLUE',  soldout: false, images: ['./img/eve2.png',  './img/eve1.png']  },
+        { hex: '#8e0a0a', label: 'RED',         soldout: false, images: ['./img/eve4.png',  './img/eve3.png']  },
+        { hex: '#ffffff', label: 'WHITE',       soldout: false, images: ['./img/eve5.png',  './img/eve6.png']  },
+        { hex: '#15803d', label: 'DARK GREEN',  soldout: true,  images: ['./img/eve9.png',  './img/eve10.png'] },
+        { hex: '#94bdff', label: 'LIGHT BLUE',  soldout: true,  images: ['./img/eve11.png', './img/eve12.png'] },
+    ],
+    sizes: [
+        { label: 'S',  soldout: false },
+        { label: 'M',  soldout: false },
+        { label: 'L',  soldout: false },
+        { label: 'XL', soldout: false },
+    ]
+};
+
+/* ══════════════════════════════════════
+   SHARED CART  — same key & shape as index.html
+   shape: { key, name, size, color, price, img, qty }
+══════════════════════════════════════ */
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
+
+/* ── state ── */
+let selectedColor = PRODUCT.colors.find(c => !c.soldout) || PRODUCT.colors[0];
+let selectedSize  = PRODUCT.sizes.find(s => !s.soldout)  || PRODUCT.sizes[0];
+
+/* ══════════════════════════════════════
+   BUILD COLOR SWATCHES
+══════════════════════════════════════ */
+const colorOptsEl = document.getElementById('colorOptions');
+PRODUCT.colors.forEach(c => {
+    const btn = document.createElement('button');
+    const isWhite = c.hex === '#ffffff';
+    btn.className = 'color-swatch' + (c.soldout ? ' soldout' : '') + (isWhite ? ' white-sw' : '');
+    btn.style.background = c.hex;
+    btn.title = c.label + (c.soldout ? ' — Sold Out' : '');
+    btn.type  = 'button';
+    if(c === selectedColor) btn.classList.add('selected');
+    if(!c.soldout){
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedColor = c;
+            document.getElementById('colorLabel').textContent = c.label;
+            document.getElementById('productTitle').textContent = PRODUCT.name + ' — ' + c.label;
+            updateGallery(c.images);
+        });
+    }
+    colorOptsEl.appendChild(btn);
+});
+
+/* ══════════════════════════════════════
+   BUILD SIZE BUTTONS
+══════════════════════════════════════ */
+const sizeOptsEl = document.getElementById('sizeOptions');
+PRODUCT.sizes.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'size-btn' + (s.soldout ? ' soldout' : '');
+    btn.textContent = s.label;
+    btn.title = s.soldout ? s.label + ' — Sold Out' : s.label;
+    btn.type  = 'button';
+    if(s === selectedSize) btn.classList.add('selected');
+    if(!s.soldout){
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSize = s;
+        });
+    }
+    sizeOptsEl.appendChild(btn);
+});
+
+/* ══════════════════════════════════════
+   GALLERY
+══════════════════════════════════════ */
+function updateGallery(images){
+    const g = document.getElementById('imageGallery');
+    g.innerHTML = images.map(src => `<img src="${src}" class="product-image" alt="${PRODUCT.name}">`).join('');
+    g.scrollTo({ left: 0, behavior: 'smooth' });
+}
+
+/* ══════════════════════════════════════
+   ADD TO CART
+   key = "ARTEMISMADE TEE|M|DARK BLUE"  — same pattern as index.html
+══════════════════════════════════════ */
+document.getElementById('addToCartBtn').addEventListener('click', () => {
+    if(!selectedColor || !selectedSize){ showToast('PLEASE SELECT SIZE & COLOR'); return; }
+
+    const key = PRODUCT.name + '|' + selectedSize.label + '|' + selectedColor.label;
+    const ex  = cart.find(i => i.key === key);
+    if(ex){ ex.qty++; }
+    else{
+        cart.push({
+            key,
+            name : PRODUCT.name,
+            size : selectedSize.label,
+            color: selectedColor.label,
+            price: PRODUCT.price,
+            img  : selectedColor.images[0],
+            qty  : 1
+        });
+    }
+    saveCart();
+    updateCartUI();
+
+    /* feedback */
+    const btn  = document.getElementById('addToCartBtn');
+    const lbl  = document.getElementById('atcLabel');
+    btn.classList.add('added');
+    lbl.textContent = 'ADDED!';
+    setTimeout(() => { btn.classList.remove('added'); lbl.textContent = 'ADD TO CART'; }, 2000);
+
+    showToast('✓ ADDED TO CART');
+    setTimeout(openCartPanel, 400);
+});
+
+/* ══════════════════════════════════════
+   CART UI
+══════════════════════════════════════ */
+const binSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+  <polyline points="3 6 5 6 21 6"/>
+  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+  <path d="M10 11v6"/><path d="M14 11v6"/>
+  <path d="M9 6V4h6v2"/>
+</svg>`;
+
+function updateCartUI(){
+    const totalQty = cart.reduce((s,i) => s + i.qty, 0);
+    document.getElementById('cartCount').textContent = totalQty;
+
+    const panel = document.getElementById('cartItemsPanel');
+    if(!cart.length){
+        panel.innerHTML = `<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Your cart is empty</p></div>`;
+        document.getElementById('cartTotalDisplay').textContent = '$0.00';
+        return;
+    }
+
+    panel.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+            <img src="${item.img}" class="cart-item-image" onerror="this.style.display='none'">
+            <div class="cart-item-details">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-meta">SIZE: ${item.size}${item.color ? ' · ' + item.color : ''}</div>
+                <div class="cart-item-controls">
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQty(${idx},-1)">−</button>
+                        <span class="quantity">${item.qty}</span>
+                        <button class="quantity-btn" onclick="changeQty(${idx},1)">+</button>
+                    </div>
+                    <div style="display:flex;align-items:center;">
+                        <span class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</span>
+                        <button class="remove-item" onclick="removeItem(${idx})">${binSVG}</button>
                     </div>
                 </div>
-            `).join('');
-            
-            cartItemsContainer.innerHTML = cartHTML;
+            </div>
+        </div>`).join('');
 
-            // Reattach event listeners for quantity buttons
-            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const item = cart.find(i => i.id === btn.dataset.id);
-                    if (item) {
-                        item.quantity++;
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                        updateCart();
-                    }
-                });
-            });
-            
-            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const item = cart.find(i => i.id === btn.dataset.id);
-                    if (item && item.quantity > 1) {
-                        item.quantity--;
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                        updateCart();
-                    }
-                });
-            });
+    const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    document.getElementById('cartTotalDisplay').textContent = '$' + total.toFixed(2);
+}
 
-            // Reattach event listeners for remove buttons
-            document.querySelectorAll('.remove-item').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    cart = cart.filter(i => i.id !== btn.dataset.id);
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCart();
-                });
-            });
-        }
+function changeQty(idx, d){
+    cart[idx].qty += d;
+    if(cart[idx].qty <= 0) cart.splice(idx, 1);
+    saveCart(); updateCartUI();
+}
+function removeItem(idx){
+    cart.splice(idx, 1);
+    saveCart(); updateCartUI();
+}
 
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        cartTotal.textContent = `$${total.toFixed(2)} USD`;
-    }
+/* ══════════════════════════════════════
+   CART PANEL OPEN / CLOSE
+══════════════════════════════════════ */
+function openCartPanel(){
+    document.getElementById('cartSidebar').classList.add('open');
+    document.getElementById('cartOverlayBg').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeCartPanel(){
+    document.getElementById('cartSidebar').classList.remove('open');
+    document.getElementById('cartOverlayBg').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.getElementById('cartIconBtn').addEventListener('click', openCartPanel);
+document.getElementById('closeCartBtn').addEventListener('click', closeCartPanel);
+document.getElementById('cartOverlayBg').addEventListener('click', closeCartPanel);
+document.getElementById('continueShoppingBtn').addEventListener('click', closeCartPanel);
+document.getElementById('checkoutBtn').addEventListener('click', () => {
+    if(!cart.length){ showToast('YOUR CART IS EMPTY'); return; }
+    window.location.href = 'checkout.html';
+});
 
-    // Toggle cart sidebar
-    const cartIcon = document.getElementById('cartIcon');
-    const cartSidebar = document.getElementById('cartSidebar');
-    const cartOverlay = document.getElementById('cartOverlay');
-    const closeCart = document.getElementById('closeCart');
-    const continueShopping = document.getElementById('continueShopping');
-    const checkoutBtn = document.getElementById('checkoutBtn');
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+}
 
-    function openCart() {
-        cartSidebar.classList.add('open');
-        cartOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeCartFunc() {
-        cartSidebar.classList.remove('open');
-        cartOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
+/* ══════════════════════════════════════
+   KEYBOARD GALLERY NAV
+══════════════════════════════════════ */
+const gallery = document.getElementById('imageGallery');
+document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight') gallery.scrollBy({ left: gallery.offsetWidth, behavior: 'smooth' });
+    if(e.key === 'ArrowLeft')  gallery.scrollBy({ left: -gallery.offsetWidth, behavior: 'smooth' });
+});
 
-    cartIcon.addEventListener('click', openCart);
-    closeCart.addEventListener('click', closeCartFunc);
-    cartOverlay.addEventListener('click', closeCartFunc);
-    continueShopping.addEventListener('click', closeCartFunc);
-    
-    // Checkout button - redirect to checkout.html
-    checkoutBtn.addEventListener('click', () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
-        }
-        
-        // Save cart to localStorage before redirecting
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        // Redirect to checkout page
-        window.location.href = 'checkout.html';
-    });
-
-    // Arrow key gallery scrolling
-    const gallery = document.getElementById('imageGallery');
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') gallery.scrollBy({ left: gallery.offsetWidth, behavior: 'smooth' });
-        if (e.key === 'ArrowLeft') gallery.scrollBy({ left: -gallery.offsetWidth, behavior: 'smooth' });
-    });
-
-    // Initialize cart and title
-    updateCart();
-    updateProductTitle();
+/* init */
+document.getElementById('colorLabel').textContent   = selectedColor.label;
+document.getElementById('productTitle').textContent = PRODUCT.name + ' — ' + selectedColor.label;
+updateCartUI();
 </script>
-
 </body>
 </html>
